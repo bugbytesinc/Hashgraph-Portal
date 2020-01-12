@@ -1,0 +1,32 @@
+ul.navigation-menu {
+    margin: 0;
+    padding: 0;
+
+    li {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        a {
+            display: block;
+            padding: px(12) px(16);
+            text-decoration: none;
+            color: $control-foreground;
+            background: $control-content-background;
+
+            &.active {
+                color: $list-selected-foreground;
+                background: $list-selected-background;
+                margin-right: px(-1);
+                border-style: solid;
+                border-color: $list-selected-border;
+                border-width: px(1) px(1) px(1) 0;
+            }
+
+            &:hover {
+                background: $list-mouse-over-background;
+                border-color: $list-mouse-over-border;
+            }
+        }
+    }
+}

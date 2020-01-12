@@ -1,0 +1,21 @@
+{
+  "name": "hashgraph.portal.css",
+  "version": "1.0.0",
+  "description": "CSS Compiler for Hashgraph Portal Project",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "start": "webpack --watch --mode development"
+  },
+  "author": "BugBytes, Inc.",
+  "license": "Apache 2.0",
+  "devDependencies": {
+    "css-loader": "^3.3.0",
+    "extract-loader": "^3.1.0",
+    "file-loader": "^5.0.2",
+    "node-sass": "^4.13.0",
+    "sass-loader": "^8.0.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  }
+}

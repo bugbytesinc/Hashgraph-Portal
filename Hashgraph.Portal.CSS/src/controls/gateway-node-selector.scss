@@ -1,0 +1,14 @@
+.gateway-node-selector
+{
+    display: inline-block;
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
+    .account-id {
+        font-weight: bold;        
+    }
+    .at {
+        opacity: 0.6;
+    }
+}

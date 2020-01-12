@@ -1,0 +1,106 @@
+.network-results-display {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-rows: min-content 1fr;
+    color: $control-foreground;
+    overflow: hidden;
+
+    &>ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        &>li {
+            margin: 0 px(8) 0 0;
+            padding: px(8) px(12);
+            display: inline-block;
+            background-color: $control-background;
+            border-color: $control-border;
+            border-style: solid;
+            border-width: px(1) px(1) 0 px(1);
+            user-select: none;
+
+            &:hover {
+                background: $control-mouse-over-background;
+            }
+
+            &.active {
+                background-color: $list-selected-background;
+            }
+
+            cursor: pointer;
+        }
+    }
+
+    .network-results-tab {
+        background-color: $control-content-background;
+        border: px(1) solid $control-border;
+
+        &.results {
+            padding: px(16);
+            display: grid;
+            grid-template-columns: max-content minmax(0, 1fr);
+            grid-column-gap: px(24);
+            grid-row-gap: px(6);
+            align-items: baseline;
+            align-content: start;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        &.logs {
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: px(16);
+
+            &>.sending,
+            &>.received,
+            &>.waiting,
+            &>.timestamp {
+                padding: px(3);
+                color: $group-box-header-foreground;
+                background-color: lighten($control-background, 10%);
+                border: px(1) solid $group-box-header-foreground;
+            }
+
+            &>.request,
+            &>.response,
+            &>.transaction,
+            &>.data {
+                padding: px(3);
+                white-space: pre;
+                border-width: 0 px(1) px(1) px(1);
+                border-style: solid;
+                border-color: $group-box-header-foreground;
+                margin-bottom: px(16);
+                overflow-x: auto;
+            }
+        }
+
+        &.txid {
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: px(16);
+        }
+
+        &.errors {
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: px(16);
+
+            &>ul {
+                margin: px(8) 0 0 px(18);
+                padding: 0;
+
+                &>li {
+                    margin-bottom: px(8);
+                }
+            }
+
+            &>div {
+                margin: 0 0 px(8) 0;
+            }
+        }
+    }
+}

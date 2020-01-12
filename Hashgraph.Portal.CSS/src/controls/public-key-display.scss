@@ -1,0 +1,58 @@
+.public-key-display {
+    overflow-x: hidden;
+    position: relative;
+
+    &.key-type-ed25519 {
+        display: grid;
+        grid-template-columns: 3em minmax(0, 1fr);
+
+        &::before {
+            content: 'Ed25519';
+            color: $group-box-header-foreground;
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-size: 0.6em;
+        }
+
+        &>span:nth-child(1) {
+            color: $secondary-content-foreground;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
+        }
+
+        &>span:nth-child(2) {
+            display: inline-block;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    &.key-type-rsa3072 {
+        content: 'RSA 3072';
+        color: $group-box-header-foreground;
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-size: 0.6em;
+
+    }
+
+    &.key-type-ecdsa384 {
+        content: 'ECDSA 384';
+        color: $group-box-header-foreground;
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-size: 0.6em;
+    }
+
+    &.key-type-contract {
+        content: 'Contract';
+        color: $group-box-header-foreground;
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-size: 0.6em;
+    }
+}

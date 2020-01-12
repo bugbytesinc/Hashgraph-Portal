@@ -1,0 +1,28 @@
+textarea
+{
+    font-size: px(18);
+    margin: 0;
+    padding: px(1) px(3);
+    color: $control-foreground;
+    background-color: $control-content-background;
+    border: 1px solid $control-border;
+    &::selection{
+        color: $control-highlight-foreground;
+        background-color: $control-highlight-background;
+    }
+    &.invalid
+    {
+        border-color: $control-invalid-border-color;
+    }
+
+
+    
+    // $control-highlight-background: #943AB4;
+    // $control-mouse-over-background: #EAEDF4;
+    // $control-pressed-background: #BCBFC6;
+    // $control-pressed-border: #3D91FD;
+    // $control-default-border: #C12B8A;
+    // $control-mouse-over-border: #8632A4;
+    // $control-focus-border: #943AB4;
+
+}

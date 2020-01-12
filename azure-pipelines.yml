@@ -1,0 +1,52 @@
+#  Required Variables set by external Pipeline Configuration
+#
+#  buildConfiguration:             Build Configuration Type, for example 'Release'
+#  Build.ArtifactStagingDirectory: Directory to stage artifact assembly.
+
+steps:
+
+- task: Npm@1
+  displayName: 'Install NPM Packages for SCSS Project'
+  inputs:
+    workingDir: Hashgraph.Portal.CSS
+    verbose: false
+
+- task: Npm@1
+  displayName: 'Build CSS from SCSS Files'
+  inputs:
+    command: custom
+    workingDir: Hashgraph.Portal.CSS
+    verbose: false
+    customCommand: 'run build'
+
+- task: DotNetCoreInstaller@0
+  displayName: 'Ensure .Net Core 3.1'  
+  inputs:
+    version: '3.1.100' # Need .net core 3.1 or greater to support protobuf
+
+- task: DotNetCoreCLI@2
+  displayName: Restore Dependencies  
+  inputs:
+    command: restore
+    projects: '**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: Build Projects  
+  inputs:
+    command: build
+    projects: '**/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: Publish Projects
+  inputs:
+    command: publish
+    publishWebProjects: True
+    arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory)'
+    zipAfterPublish: True
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    pathtoPublish: '$(build.artifactstagingdirectory)'
+    artifactName: 'hashgaph-portal-package-$(Build.BuildNumber)'

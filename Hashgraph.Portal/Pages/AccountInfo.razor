@@ -1,0 +1,41 @@
+﻿@page "/accountinfo"
+<EditForm class="query-page get-account-info" Model="@_input" OnValidSubmit="HandleValidSubmit">
+    <h2>Get Account Info</h2>
+    <DataAnnotationsValidator />
+    <section class="entry-form">
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <label for="accountNumber">Account Number</label>
+        <InputAddress id="address" @bind-Value="@_input.Address" placeholder="Address (shrd.rlm.num)" />
+        <button type="submit">Get Info</button>
+    </section>
+    <Network @ref="_network">
+        @if (_output != null)
+        {
+            <div>Account Address</div>
+            <AddressDisplay Address="@_output.Address" />
+            <div>Balance</div>
+            <BalanceDisplay Balance="@_output.Balance" />
+            <div>Smart Contract ID</div>
+            <div>@_output.SmartContractId</div>
+            <div>Proxy Address</div>
+            <AddressDisplay Address="@_output.Proxy" />
+            <div>Send Create Record Threshold</div>
+            <BalanceDisplay Balance="@_output.SendThresholdCreateRecord" />
+            <div>Receive Create Record Threshold</div>
+            <BalanceDisplay Balance="@_output.ReceiveThresholdCreateRecord" />
+            <div>Receive Signature Required</div>
+            <div>@(_output.ReceiveSignatureRequired ? "Yes" : "No")</div>
+            <div>Auto-Renewal Period</div>
+            <TimespanDisplay TimeSpan="@_output.AutoRenewPeriod"/>
+            <div>Endorsement</div>
+            <EndorsementDisplay Endorsement="_output.Endorsement" />
+        }
+        else
+        {
+            <div>Waiting for Input</div>
+        }
+    </Network>
+</EditForm>

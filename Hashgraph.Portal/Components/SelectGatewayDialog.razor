@@ -1,0 +1,41 @@
+﻿@if (_input != null)
+{
+    <div class="dialog-mask">
+        <EditForm Model="@_input" class="dialog-container select-network-node-dialog">
+            <div class="dialog-title">Please Select a Network Node</div>
+            <div class="dialog-content">
+                @if (GatewayListService.MainNet.Count > 0)
+                {
+                    <div>Main Network</div>
+                    <table>
+                        @foreach (var node in GatewayListService.MainNet)
+                        {
+                            <tr @onclick="@(()=>Select(node))" class="@(node == _selected ? "selected" : "")">
+                                <td>@node.ShardNum.@node.RealmNum.@node.AccountNum</td>
+                                <td> at </td>
+                                <td>@node.Url</td>
+                            </tr>
+                        }
+                    </table>
+                }
+                @if (GatewayListService.TestNet.Count > 0)
+                {
+                    <div>Test Network</div>
+                    <table>
+                        @foreach (var node in GatewayListService.TestNet)
+                        {
+                            <tr @onclick="@(()=>Select(node))" class="@(node == _selected ? "selected" : "")">
+                                <td>@node.ShardNum.@node.RealmNum.@node.AccountNum</td>
+                                <td> at </td>
+                                <td>@node.Url</td>
+                            </tr>
+                        }
+                    </table>
+                }
+            </div>
+            <div class="dialog-footer">
+                <button @onclick="Close">Close</button>
+            </div>
+        </EditForm>
+    </div>
+}

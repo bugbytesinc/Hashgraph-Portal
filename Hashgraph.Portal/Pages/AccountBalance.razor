@@ -1,0 +1,25 @@
+﻿@page "/accountbalance"
+<EditForm class="query-page get-account-balance" Model="@_input" OnValidSubmit="HandleValidSubmit">
+    <h2>Get Account Balance</h2>
+    <DataAnnotationsValidator />
+    <section class="entry-form">
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <label for="accountNumber">Account Number</label>
+        <InputAddress id="address" @bind-Value="@_input.Address" placeholder="Address (shrd.rlm.num)" />
+        <button type="submit">Get Balance</button>
+    </section>
+    <Network @ref="_network">
+        @if (_output.HasValue)
+        {
+            <div>Account</div>
+            <AddressDisplay Address="@_input.Address" />
+            <div>Balance</div>
+            <BalanceDisplay Balance="@_output.GetValueOrDefault()" />
+        }
+        else
+        {
+            <div>Waiting for Input</div>
+        }
+    </Network>
+</EditForm>
