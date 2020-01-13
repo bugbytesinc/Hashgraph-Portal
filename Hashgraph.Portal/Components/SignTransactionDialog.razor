@@ -11,10 +11,16 @@
                 </p>
                 <label for="transaction">Transaction in Hex</label>
                 <InputTextArea id="transaction" @bind-Value="_input.TransactionInHex" readonly="readonly" />
-                <button @onclick="CopyTransactionToClipboard">Copy</button>
+                @if (_supportsClipboard)
+                {
+                    <button @onclick="CopyTransactionToClipboard">Copy</button>
+                }
                 <label for="signatures">Signature(s) in Hex</label>
                 <InputTextArea id="signatures" @bind-Value="_input.SignatureInHex" @oninput="SignatureInHexChanged" />
-                <button @onclick="PasteSignaturesFromClipboard">Paste</button>
+                @if (_supportsClipboard)
+                {
+                    <button @onclick="PasteSignaturesFromClipboard">Paste</button>
+                }
                 <div class="signature-review">
                     <div class="status-message">@_input.StatusMessage</div>
                     @if (_input.SignatureMap != null)

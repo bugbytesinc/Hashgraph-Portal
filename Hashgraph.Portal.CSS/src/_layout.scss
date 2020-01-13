@@ -45,4 +45,15 @@ body {
 
 #blazor-error-ui {
     display: none;
+    position: absolute;
+    background: white;
+    left: 30vmin;
+    right: 30vmin;
+    top: 10vmin;
+    padding: 5vmin;
+    font-size: 5vmin;
+    text-align: center;
+    color: $control-foreground;
+    background: rgba($control-background,0.95);
+    border: px(5) solid $control-focus-border;
 }
