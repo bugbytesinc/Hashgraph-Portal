@@ -41,21 +41,21 @@ namespace Hashgraph.Portal.Components
                             builder.AddMultipleAttributes(1, AdditionalAttributes);
                             builder.AddAttribute(2, "class", GetBaseClassAttributes());
                             builder.OpenElement(3, "div");
-                            builder.AddAttribute(4, "class", "list-type");
+                            builder.AddAttribute(4, "class", "list-header");
                             var list = Endorsement.List;
                             var required = Endorsement.RequiredCount;
                             var count = 7;
                             if (list.Length == required)
                             {
-                                builder.AddContent(5, "Requires All of the following:");
+                                builder.AddMarkupContent(5, "Requires <b>All</b> of the following:");
                             }
                             else if (required == 1)
                             {
-                                builder.AddContent(5, "Requires One of the following:");
+                                builder.AddMarkupContent(5, "Requires <b>One</b> of the following:");
                             }
                             else
                             {
-                                builder.AddContent(5, $"Requires {required} of the following:");
+                                builder.AddMarkupContent(5, $"Requires <b>{required}</b> of the following:");
                             }
                             builder.CloseElement();
                             builder.OpenElement(6, "ul");

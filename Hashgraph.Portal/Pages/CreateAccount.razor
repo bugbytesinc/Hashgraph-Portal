@@ -1,0 +1,35 @@
+﻿@page "/createaccount"
+<EditForm class="query-page get-account-balance" Model="@_input" OnValidSubmit="HandleValidSubmit">
+    <h2>Create Account</h2>
+    <DataAnnotationsValidator />
+    <section class="entry-form">
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <label for="initialbalance">Initial Balance (Xfer from Payer, tℏ)</label>
+        <InputUInt64 id="initialbalance" @bind-Value="@_input.InitialBalance" placeholder="Initial Balance (tℏ)" />
+        <label for="sendthresholdcreaterecord">Send Threshold (for Create Record)</label>
+        <InputUInt64 id="sendthresholdcreaterecord" @bind-Value="@_input.SendThresholdCreateRecord" placeholder="Leave Empty for None (tℏ)" />
+        <label for="receivethresholdcreaterecord">Receive Threshold (for Create Record)</label>
+        <InputUInt64 id="receivethresholdcreaterecord" @bind-Value="@_input.ReceiveThresholdCreateRecord" placeholder="Leave Empty for None (tℏ)" />
+        <label for="requirereceiverignature">Require Signature to Receive Funds</label>
+        <InputCheckbox id="requirereceiverignature" @bind-Value="@_input.RequireReceiveSignature" />
+        <label for="proxy">Proxy Address</label>
+        <InputAddress id="proxy" @bind-Value="@_input.Proxy" placeholder="Optional Proxy (shrd.rlm.num)" />
+        <label for="endorsment">Endorsement</label>
+        <InputEndorsement id="endorsment" @bind-Value="@_input.Endorsement" />
+        <button type="submit">Create Account</button>
+    </section>
+    <Network @ref="_network">
+        @if (_output != null)
+        {
+            <div>Created Account ID</div>
+            <AddressDisplay Address="@_output.Address" />
+        }
+        else
+        {
+            <div>Waiting for Input</div>
+        }
+    </Network>
+</EditForm>

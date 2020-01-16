@@ -4,19 +4,18 @@
 
     &.key-type-ed25519 {
         display: grid;
-        grid-template-columns: 3em minmax(0, 1fr);
+        grid-template-columns: min-content 4em minmax(0, 1fr);
 
         &::before {
             content: 'Ed25519';
             color: $group-box-header-foreground;
-            position: absolute;
-            top: 0;
-            left: 0;
+            margin-right: px(8);
             font-size: 0.6em;
+            padding-top: 0.4em;
         }
 
         &>span:nth-child(1) {
-            color: $secondary-content-foreground;
+            opacity: 0.65;
             overflow-x: hidden;
             text-overflow: ellipsis;
         }
@@ -29,30 +28,32 @@
     }
 
     &.key-type-rsa3072 {
-        content: 'RSA 3072';
-        color: $group-box-header-foreground;
-        position: absolute;
-        top: 0;
-        left: 0;
-        font-size: 0.6em;
+        &::before {
+            content: 'RSA 3072';
+            color: $group-box-header-foreground;    
+            margin-right: px(8);
+            font-size: 0.6em;
+            padding-top: 0.4em;
+        }
 
     }
 
     &.key-type-ecdsa384 {
-        content: 'ECDSA 384';
-        color: $group-box-header-foreground;
-        position: absolute;
-        top: 0;
-        left: 0;
-        font-size: 0.6em;
+        &::before {
+            content: 'ECDSA 384';
+            color: $group-box-header-foreground;    
+            margin-right: px(8);
+            font-size: 0.6em;
+            padding-top: 0.4em;
+        }
     }
 
     &.key-type-contract {
-        content: 'Contract';
-        color: $group-box-header-foreground;
-        position: absolute;
-        top: 0;
-        left: 0;
-        font-size: 0.6em;
+        &::before {
+            content: 'Contract';
+            color: $group-box-header-foreground;
+            font-size: 0.6em;
+            padding-top: 0.4em;
+        }
     }
 }

@@ -17,7 +17,7 @@
         label {            
             color: $secondary-control-foreground;
         }
-        button {
+        &>button {
             justify-self: end;
             grid-column: 1 / 3;
         }

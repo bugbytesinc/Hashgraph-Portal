@@ -14,7 +14,11 @@ namespace Hashgraph.Portal.Components
             {
                 builder.OpenElement(0, "span");
                 builder.AddMultipleAttributes(1, AdditionalAttributes);
-                if (Balance < 1_000_000)
+                if( Balance == 0 )
+                {
+                    builder.AddContent(2, $"0 tℏ");
+                }
+                else if (Balance < 1_000_000)
                 {
                     builder.AddContent(2, $"{Balance:#,#} tℏ");
                 }

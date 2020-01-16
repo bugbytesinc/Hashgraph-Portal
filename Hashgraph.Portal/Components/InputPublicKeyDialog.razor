@@ -1,0 +1,23 @@
+﻿@if (_input != null)
+{
+    <div class="dialog-mask">
+            <EditForm Model="@_input" class="dialog-container input-public-key-dialog">
+                <div class="dialog-title">Add Public Key</div>
+                <div class="dialog-content input-public-key-dialog-content">
+                    <label for="keytype">Key Type</label>
+                    <InputPublicKeyType id="keytype" @bind-Value="_input.Type" />
+                    <label for="publickey">Public Key in Hex</label>
+                    <InputTextArea id="publickey" @bind-Value="_input.KeyInHex" @oninput="KeyInHexChanged" />
+                    @if (_supportsClipboard)
+                    {
+                        <button type="button" @onclick="PastePublicKeyFromClipboard">Paste</button>
+                    }
+                    <div class="status-message">@_input.StatusMessage</div>
+                </div>
+                <div class="dialog-footer">
+                    <button type="button" @onclick="Close">Cancel</button>
+                    <button @onclick="Submit">Add Key</button>
+                </div>
+            </EditForm>
+    </div>
+}

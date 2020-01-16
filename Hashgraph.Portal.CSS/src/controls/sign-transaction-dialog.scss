@@ -8,12 +8,6 @@
             margin-top: px(8);
             font-size: px(12);
             color: $secondary-control-foreground;
-
-            .validation-message {
-                display: inline;
-                font-weight: bold;
-                color: $error-content-foreground;
-            }
         }
 
         textarea {
