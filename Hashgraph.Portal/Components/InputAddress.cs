@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
+using System.Globalization;
 
 namespace Hashgraph.Portal.Components
 {
     public class InputAddress : InputBase<Address>
     {
+        [Parameter] public string ParsingErrorMessage { get; set; } = "The {0} field expected an address in the format <shard>.<realm>.<number>";
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
             if (builder != null)
@@ -37,7 +39,7 @@ namespace Hashgraph.Portal.Components
                     }
                 }
                 result = null;
-                validationErrorMessage = "Expected an address in the format <shard>.<realm>.<number>";
+                validationErrorMessage = string.Format(CultureInfo.InvariantCulture, ParsingErrorMessage, FieldIdentifier.FieldName);
                 return false;
             }
             result = null;

@@ -1,0 +1,42 @@
+.input-public-key-dialog {
+    min-width: 40vw;
+    max-width: 60vw;
+
+    .dialog-content {
+        display: grid;
+
+        label {
+            margin-top: px(8);
+            font-size: px(12);
+            color: $secondary-control-foreground;
+        }
+
+        textarea {
+            min-height: px(60);
+            resize: none;
+        }
+
+        button {
+            font-size: px(12);
+            padding: px(2) px(6);
+            margin-top: px(-1);
+            justify-self: end;
+        }
+
+        .status-message {
+            font-weight: bold;
+            color: $group-box-header-foreground;
+            margin: px(8) 0;
+            min-height: px(32);
+        }
+    }
+    .dialog-footer {
+        justify-content: end;
+        text-align: initial;
+        display: grid;
+        grid-template-columns: max-content max-content;
+        grid-column-gap: px(8);        
+        padding: px(12) px(16);
+        border-top: px(1) solid lighten($dialog-header-background, 40%);
+    }
+}

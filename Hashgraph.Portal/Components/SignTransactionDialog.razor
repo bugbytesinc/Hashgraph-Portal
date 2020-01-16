@@ -13,13 +13,13 @@
                 <InputTextArea id="transaction" @bind-Value="_input.TransactionInHex" readonly="readonly" />
                 @if (_supportsClipboard)
                 {
-                    <button @onclick="CopyTransactionToClipboard">Copy</button>
+                    <button type="button" @onclick="CopyTransactionToClipboard">Copy</button>
                 }
                 <label for="signatures">Signature(s) in Hex</label>
                 <InputTextArea id="signatures" @bind-Value="_input.SignatureInHex" @oninput="SignatureInHexChanged" />
                 @if (_supportsClipboard)
                 {
-                    <button @onclick="PasteSignaturesFromClipboard">Paste</button>
+                    <button type="button" @onclick="PasteSignaturesFromClipboard">Paste</button>
                 }
                 <div class="signature-review">
                     <div class="status-message">@_input.StatusMessage</div>
@@ -43,7 +43,7 @@
                         <div class="countdown">Transaction expires in <span>@_input.RemainingSeconds</span> seconds...</div>
                         break;
                 }
-                <button @onclick="Close">Cancel</button>
+                <button type="button" @onclick="Close">Cancel</button>
                 <button @onclick="SubmitToNetwork">Submit to Network</button>
             </div>
         </EditForm>
