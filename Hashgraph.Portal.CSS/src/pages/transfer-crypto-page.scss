@@ -1,0 +1,19 @@
+.transfer-crypto-page {
+    &>.entry-form {
+        &>label {
+            min-width: px(120);
+        }
+
+        &>.simple-transfer {
+            grid-column: 1 / 3;
+
+            &>label {
+                min-width: px(120);
+            }
+        }
+        &>.multi-transfer {
+            margin-top: px(24);
+            grid-column: 1 / 3;
+        }
+    }
+}

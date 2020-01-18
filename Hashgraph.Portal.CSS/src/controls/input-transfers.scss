@@ -1,0 +1,80 @@
+.simple-transfer {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-column-gap: px(24);
+    grid-row-gap: px(6);
+    align-items: baseline;
+
+    label {
+        color: $secondary-control-foreground;
+    }
+}
+
+.multi-transfer {
+    $icon-params: (fill: $control-foreground, fill-hover: $glyph-hover, width: px(24), height: px(24));
+
+    overflow-x: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: px(24);
+    align-items: start;
+
+    &>.transfers-from,
+    &>.transfers-to {
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(px(30), max-content);
+        grid-column-gap: px(8);
+        grid-row-gap: px(8);
+
+        &>h3 {
+            text-align: center;
+            grid-column: 1 / 4;
+        }
+
+        &>a.add-row {
+            cursor: pointer;
+            justify-self: end;
+            grid-column: 1 / 3;
+            color: $glyph-foreground;
+            font-size: px(12);
+
+            &:hover {
+                color: $glyph-hover;
+                text-decoration: underline;
+            }
+        }
+
+        &>button.delete-row {
+            justify-self: end;
+            background: none;
+            border: none;
+            @include svg-button(map-merge($icon-params, $delete-icon));
+        }
+        &>.totals {
+            margin-top: px(12);
+            margin-bottom: px(12);
+            grid-column: 1 / 3;
+            display: grid;
+            grid-template-columns: 1fr max-content;
+            border-top: px(0.5) solid $control-border;
+        }
+    }
+}
+
+.simple-transfer,
+.multi-transfer {
+    &>a {
+        cursor: pointer;
+        justify-self: end;
+        grid-column: 1 / 3;
+        color: $glyph-foreground;
+        font-size: px(12);
+
+        &:hover {
+            color: $glyph-hover;
+            text-decoration: underline;
+        }
+    }
+}
