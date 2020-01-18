@@ -1,0 +1,27 @@
+﻿@page "/deleteaccount"
+<EditForm class="query-page delete-account-page" Model="@_input" OnValidSubmit="HandleValidSubmit">
+    <h2>Delete Account</h2>
+    <DataAnnotationsValidator />
+    <section class="entry-form">
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="(shrd.rlm.num)" />
+        <label for="deleteaccount">Account to Delete</label>
+        <InputAddress id="deleteaccount" @bind-Value="@_input.DeleteAddress" placeholder="(shrd.rlm.num)" />
+        <label for="transfertoaccount">Send Remaining Funds To</label>
+        <InputAddress id="transfertoaccount" @bind-Value="@_input.TransferToAddress" placeholder="(shrd.rlm.num)" />
+        <button type="submit">Delete Account</button>
+    </section>
+    <Network @ref="_network">
+        @if (_output != null)
+        {
+            <div>Accepted, Status:</div>
+            <div>@_output.Status</div>
+        }
+        else
+        {
+            <div>Waiting for Input</div>
+        }
+    </Network>
+</EditForm>
