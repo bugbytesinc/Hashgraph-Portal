@@ -1,0 +1,69 @@
+﻿@if (Value != null)
+{
+    if (_simpleMode)
+    {
+        var fromEntry = Value.From[0];
+        var toEntry = Value.To[0];
+        <section class="simple-transfer @_otherCssClasses @_fieldCssClasses">
+            <label for="fromaccount">From Address</label>
+            <InputAddress id="fromaccount" @bind-Value="@fromEntry.Address" placeholder="(shrd.rlm.num)" />
+            <label for="toaccount">To Address</label>
+            <InputAddress id="toaccount" @bind-Value="@toEntry.Address" placeholder="(shrd.rlm.num)" />
+            <label for="transferamount">Amount (tℏ)</label>
+            <InputNumber id="transferamount" @bind-Value="@fromEntry.Amount" placeholder="Transfer Amount (tℏ)" />
+            <a @onclick="ToggleSimpleMode">Transfer to Multiple Accounts</a>
+        </section>
+    }
+    else
+    {
+        long sumFrom = 0;
+        long sumTo = 0;
+        bool showDeleteFrom = Value.From.Count > 1;
+        bool showDeleteTo = Value.To.Count > 1;
+        <section class="multi-transfer @_otherCssClasses @_fieldCssClasses">
+            <div class="transfers-from">
+                <h3>From</h3>
+                <div>Address</div>
+                <div>Amount</div>
+                <span></span>
+                @foreach (var item in Value.From)
+                {
+                    sumFrom += item.Amount;
+                    <InputAddress @bind-Value="@item.Address" placeholder="(shrd.rlm.num)" />
+                    <InputNumber @bind-Value="@item.Amount" placeholder="(tℏ)" />
+                    if (showDeleteFrom)
+                    {
+                        <button type="button" class="delete-row" @onclick="()=>RemoveFromRow(item)"></button>
+                    }
+                }
+                <a class="add-row" @onclick="AddFromRow">Add Sender</a>
+                <div class="totals">
+                    <div>Total</div>
+                    <div>@sumFrom.ToString("#,##0") tℏ</div>
+                </div>
+            </div>
+            <div class="transfers-to">
+                <h3>To</h3>
+                <div>Address</div>
+                <div>Amount</div>
+                <span></span>
+                @foreach (var item in Value.To)
+                {
+                    sumTo += item.Amount;
+                    <InputAddress @bind-Value="@item.Address" placeholder="(shrd.rlm.num)" />
+                    <InputNumber @bind-Value="@item.Amount" placeholder="(tℏ)" />
+                    if (showDeleteTo)
+                    {
+                        <button type="button" class="delete-row" @onclick="()=>RemoveToRow(item)"></button>
+                    }
+                }
+                <a class="add-row" @onclick="AddToRow">Add Recipient</a>
+                <div class="totals">
+                    <div>Total</div>
+                    <div>@sumTo.ToString("#,##0") tℏ</div>
+                </div>
+            </div>
+            <a @onclick="ToggleSimpleMode">Change to Simple Transfer</a>
+        </section>
+    }
+}

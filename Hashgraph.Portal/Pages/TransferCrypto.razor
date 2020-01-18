@@ -1,0 +1,24 @@
+﻿@page "/transfercrypto"
+<EditForm class="query-page transfer-crypto-page" Model="@_input" OnValidSubmit="HandleValidSubmit">
+    <h2>Transfer Crypto</h2>
+    <DataAnnotationsValidator />
+    <section class="entry-form">
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <label for="payer">Fee Payer</label>
+        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <InputTransfers id="transfers" @bind-Value="@_input.Transfers" />
+        <button type="submit">Transfer</button>
+    </section>
+    <Network @ref="_network">
+        @if (_output != null)
+        {
+            <div>Accepted, Status:</div>
+            <div>@_output.Status</div>
+        }
+        else
+        {
+            <div>Waiting for Input</div>
+        }
+    </Network>
+</EditForm>
