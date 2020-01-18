@@ -1,13 +1,45 @@
-.gateway-node-selector
-{
-    display: inline-block;
+.gateway-node-selector {
     cursor: pointer;
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    color: $control-foreground;
+    background-color: $control-content-background;
+    border: px(1) solid $control-border;
+
+    &>span {
+        min-width: px(260);
+        font-size: px(16);
+        padding: px(1) px(3);
+        &.empty
+        {
+            color: $control-placeholder-color;
+        }
+    }
+
+    &:after {
+        content: '...';
+        margin: 0;
+        padding: px(1) px(3);
+        color: $control-foreground;
+        background-color: $control-background;
+        border-left: px(1) solid $control-border;
+    }
+
     &:hover {
-        text-decoration: underline;
+        color: $glyph-hover;
+        border-color: $control-mouse-over-border;
+
+        &:after {
+            color: $control-highlight-foreground;
+            background-color: $control-highlight-background;
+
+        }
     }
+
     .account-id {
-        font-weight: bold;        
+        font-weight: bold;
     }
+
     .at {
         opacity: 0.6;
     }
