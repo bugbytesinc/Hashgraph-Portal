@@ -8,11 +8,11 @@
         <label for="payer">Payer</label>
         <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
         <label for="initialbalance">Initial Balance (Xfer from Payer, tℏ)</label>
-        <InputUInt64 id="initialbalance" @bind-Value="@_input.InitialBalance" placeholder="Initial Balance (tℏ)" />
+        <InputNumber id="initialbalance" @bind-Value="@_input.InitialBalance" placeholder="Initial Balance (tℏ)" />
         <label for="sendthresholdcreaterecord">Send Threshold (for Create Record)</label>
-        <InputUInt64 id="sendthresholdcreaterecord" @bind-Value="@_input.SendThresholdCreateRecord" placeholder="Leave Empty for None (tℏ)" />
+        <InputNumber id="sendthresholdcreaterecord" @bind-Value="@_input.SendThresholdCreateRecord" placeholder="Leave Empty for None (tℏ)" />
         <label for="receivethresholdcreaterecord">Receive Threshold (for Create Record)</label>
-        <InputUInt64 id="receivethresholdcreaterecord" @bind-Value="@_input.ReceiveThresholdCreateRecord" placeholder="Leave Empty for None (tℏ)" />
+        <InputNumber id="receivethresholdcreaterecord" @bind-Value="@_input.ReceiveThresholdCreateRecord" placeholder="Leave Empty for None (tℏ)" />
         <label for="requirereceiverignature">Require Signature to Receive Funds</label>
         <InputCheckbox id="requirereceiverignature" @bind-Value="@_input.RequireReceiveSignature" />
         <label for="proxy">Proxy Address</label>

@@ -29,17 +29,17 @@ namespace Hashgraph.Portal.Pages
                 var createParams = new CreateAccountParams
                 {
                     Endorsement = _input.Endorsement,
-                    InitialBalance = _input.InitialBalance.GetValueOrDefault(),
+                    InitialBalance = (ulong) _input.InitialBalance.GetValueOrDefault(),
                     RequireReceiveSignature = _input.RequireReceiveSignature,
                     Proxy = _input.Proxy
                 };
                 if (_input.SendThresholdCreateRecord.HasValue)
                 {
-                    createParams.SendThresholdCreateRecord = _input.SendThresholdCreateRecord.Value;
+                    createParams.SendThresholdCreateRecord = (ulong) _input.SendThresholdCreateRecord.Value;
                 }
                 if (_input.ReceiveThresholdCreateRecord.HasValue)
                 {
-                    createParams.ReceiveThresholdCreateRecord = _input.ReceiveThresholdCreateRecord.Value;
+                    createParams.ReceiveThresholdCreateRecord = (ulong) _input.ReceiveThresholdCreateRecord.Value;
                 }
                 _output = await client.CreateAccountAsync(createParams);
             });
@@ -49,10 +49,14 @@ namespace Hashgraph.Portal.Pages
     {
         [Required] public Gateway Gateway { get; set; }
         [Required] public Address Payer { get; set; }
-        [Required] public ulong? InitialBalance { get; set; }
+        [Required] 
+        [Range(1,long.MaxValue)]
+        public long? InitialBalance { get; set; }
         [Required] public Endorsement Endorsement { get; set; }
-        public ulong? SendThresholdCreateRecord { get; set; }
-        public ulong? ReceiveThresholdCreateRecord { get; set; }
+        [Range(1,long.MaxValue)]
+        public long? SendThresholdCreateRecord { get; set; }
+        [Range(1, long.MaxValue)]
+        public long? ReceiveThresholdCreateRecord { get; set; }
         public bool RequireReceiveSignature { get; set; }
         public Address Proxy { get; set; }
     }
