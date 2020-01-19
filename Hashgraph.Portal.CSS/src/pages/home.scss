@@ -2,5 +2,20 @@
     padding: px(8) px(16);
     overflow-x: hidden;
     overflow-y: auto;
-    font-size: px(20);
+    font-size: px(18);
+    &>p
+    {
+        max-width: 8in;
+        line-height: 1.4;
+    }
+    &>img
+    {
+        margin: px(16) px(48);
+        max-width: 8in;
+    }
+    &>h1
+    {
+        font-size: px(48);
+        color: $group-box-header-foreground;
+    }
 }
