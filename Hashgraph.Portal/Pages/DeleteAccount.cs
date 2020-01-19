@@ -32,9 +32,13 @@ namespace Hashgraph.Portal.Pages
     }
     public class DeleteAccountInput
     {
-        [Required] public Gateway Gateway { get; set; }
-        [Required] public Address Payer { get; set; }
-        [Required] public Address DeleteAddress { get; set; }
-        [Required] public Address TransferToAddress { get; set; }
+        [Required(ErrorMessage = "Please select a Network Gateway Node.")]
+        public Gateway Gateway { get; set; }
+        [Required(ErrorMessage = "Please enter the account that will pay the Transaction Fees.")]
+        public Address Payer { get; set; }
+        [Required(ErrorMessage = "Please enter the account you wish to delete.")]
+        public Address DeleteAddress { get; set; }
+        [Required(ErrorMessage = "Please enter the account that will receive the remaining funds from the deleted account.")]
+        public Address TransferToAddress { get; set; }
     }
 }

@@ -31,7 +31,10 @@ namespace Hashgraph.Portal.Pages
     }
     public class AccountBalanceInput
     {
-        [Required] public Gateway Gateway { get; set; }
-        [Required] public Address Address { get; set; }
+        [Required(ErrorMessage ="Please select a Network Gateway Node.")] 
+        public Gateway Gateway { get; set; }
+
+        [Required(ErrorMessage ="Please enter the address of the account to query.")]
+        public Address Address { get; set; }
     }
 }

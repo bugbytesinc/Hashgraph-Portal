@@ -101,9 +101,12 @@ namespace Hashgraph.Portal.Pages
     }
     public class UpdateAccountInput
     {
-        [Required] public Gateway Gateway { get; set; }
-        [Required] public Address Payer { get; set; }
-        [Required] public Address Address { get; set; }
+        [Required(ErrorMessage = "Please select a Network Gateway Node.")]
+        public Gateway Gateway { get; set; }
+        [Required(ErrorMessage = "Please enter the account that will pay the Update Transaction Fees.")]
+        public Address Payer { get; set; }
+        [Required(ErrorMessage = "Please enter the account you wish to update.")]
+        public Address Address { get; set; }
         public bool UpdateEndorsement { get; set; }
         public Endorsement Endorsement { get; set; }
         public bool UpdateSendThresholdCreateRecord { get; set; }
