@@ -35,6 +35,10 @@
 
         }
     }
+    &.invalid
+    {
+        border-color: $control-invalid-border-color;
+    }
 
     .account-id {
         font-weight: bold;

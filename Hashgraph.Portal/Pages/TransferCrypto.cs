@@ -35,8 +35,11 @@ namespace Hashgraph.Portal.Pages
     }
     public class TransferCryptoInput
     {
-        [Required] public Gateway Gateway { get; set; }
-        [Required] public Address Payer { get; set; }
-        [Required] public CryptoTransferList Transfers { get; set; } = new CryptoTransferList();
+        [Required(ErrorMessage = "Please select a Network Gateway Node.")]
+        public Gateway Gateway { get; set; }
+        [Required(ErrorMessage = "Please enter the account that will pay the Transaction Fees.")]
+        public Address Payer { get; set; }
+        [Required(ErrorMessage = "Please enter transfer information.")]
+        public CryptoTransferList Transfers { get; set; } = new CryptoTransferList();
     }
 }

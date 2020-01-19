@@ -17,6 +17,7 @@ namespace Hashgraph.Portal.Components
         {
             Value = gateway;
             await ValueChanged.InvokeAsync(gateway);
+            EditContext.NotifyFieldChanged(FieldIdentifier);
             StateHasChanged();
         }
         protected override void BuildRenderTree(RenderTreeBuilder builder)

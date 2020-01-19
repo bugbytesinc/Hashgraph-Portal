@@ -31,8 +31,11 @@ namespace Hashgraph.Portal.Pages
     }
     public class AccountInfoInput
     {
-        [Required] public Gateway Gateway { get; set; }
-        [Required] public Address Address { get; set; }
-        [Required] public Address Payer { get; set; }
+        [Required(ErrorMessage = "Please select a Network Gateway Node.")]
+        public Gateway Gateway { get; set; }
+        [Required(ErrorMessage = "Please enter the account that will pay the Query Transaction Fees.")]
+        public Address Payer { get; set; }
+        [Required(ErrorMessage = "Please enter the account you wish to Query.")]
+        public Address Address { get; set; }
     }
 }
