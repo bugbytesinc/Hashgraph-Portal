@@ -1,0 +1,54 @@
+﻿@page "/updateaccount"
+<EditForm class="query-page update-account-page" EditContext="@_editContext"  OnValidSubmit="HandleValidSubmit">
+    <h2>Update Account</h2>
+    <DataAnnotationsValidator />
+    <section class="entry-form">
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="(shrd.rlm.num)" />
+        <label for="address">Account to Update</label>
+        <InputAddress id="address" @bind-Value="@_input.Address" placeholder="(shrd.rlm.num)" />
+        <div class="toggle-property">
+            <InputCheckbox id="togglesendthresholdcreaterecord" @bind-Value="@_input.UpdateSendThresholdCreateRecord" />
+            <label for="togglesendthresholdcreaterecord">Update Send Threshold (for Create Record)</label>
+        </div>
+        @if (_input.UpdateSendThresholdCreateRecord)
+        {
+            <label for="Sendthresholdcreaterecord">Threshold</label>
+            <InputNumber id="Sendthresholdcreaterecord" @bind-Value="@_input.SendThresholdCreateRecord" placeholder="Send Threshold (tℏ)" />
+        }
+        <div class="toggle-property">
+            <InputCheckbox id="togglereceivethresholdcreaterecord" @bind-Value="@_input.UpdateReceiveThresholdCreateRecord" />
+            <label for="togglereceivethresholdcreaterecord">Update Receive Threshold (for Create Record)</label>
+        </div>
+        @if (_input.UpdateReceiveThresholdCreateRecord)
+        {
+            <label for="receivethresholdcreaterecord">Threshold</label>
+            <InputNumber id="receivethresholdcreaterecord" @bind-Value="@_input.ReceiveThresholdCreateRecord" placeholder="Receive Threshold (tℏ)" />
+        }
+        <div class="toggle-property">
+            <InputCheckbox id="updateendorsment" @bind-Value="@_input.UpdateEndorsement" />
+            <label for="updateendorsment">Update Endorsment (aka. rotate keys)</label>
+        </div>
+        @if (_input.UpdateEndorsement)
+        {
+            <label for="endorsment">Endorsement</label>
+            <InputEndorsement id="endorsment" @bind-Value="@_input.Endorsement" />
+        }
+        <button type="submit">Update Account</button>
+        <div>Receive @_input.ReceiveThresholdCreateRecord</div>
+        <div>Send @_input.SendThresholdCreateRecord</div>
+    </section>
+    <Network @ref="_network">
+        @if (_output != null)
+        {
+            <div>Updated Account</div>
+            <AddressDisplay Address="@_output.Address" />
+        }
+        else
+        {
+            <div>Waiting for Input</div>
+        }
+    </Network>
+</EditForm>

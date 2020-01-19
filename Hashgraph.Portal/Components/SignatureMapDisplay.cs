@@ -40,11 +40,11 @@ namespace Hashgraph.Portal.Components
             return count;
         }
 
-        private string GetThumbprintHex(SignaturePair signaturePair)
+        private static string GetThumbprintHex(SignaturePair signaturePair)
         {
             return Hex.FromBytes(signaturePair.PubKeyPrefix.ToByteArray());
         }
-        private string GetSignatureHex(SignaturePair signaturePair)
+        private static string GetSignatureHex(SignaturePair signaturePair)
         {
             switch (signaturePair.SignatureCase)
             {
