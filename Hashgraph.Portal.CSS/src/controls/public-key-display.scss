@@ -30,7 +30,7 @@
     &.key-type-rsa3072 {
         &::before {
             content: 'RSA 3072';
-            color: $group-box-header-foreground;    
+            color: $group-box-header-foreground;
             margin-right: px(8);
             font-size: 0.6em;
             padding-top: 0.4em;
@@ -41,17 +41,8 @@
     &.key-type-ecdsa384 {
         &::before {
             content: 'ECDSA 384';
-            color: $group-box-header-foreground;    
-            margin-right: px(8);
-            font-size: 0.6em;
-            padding-top: 0.4em;
-        }
-    }
-
-    &.key-type-contract {
-        &::before {
-            content: 'Contract';
             color: $group-box-header-foreground;
+            margin-right: px(8);
             font-size: 0.6em;
             padding-top: 0.4em;
         }

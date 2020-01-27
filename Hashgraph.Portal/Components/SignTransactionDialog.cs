@@ -115,9 +115,6 @@ namespace Hashgraph.Portal.Components
                         case Proto.SignaturePair.SignatureOneofCase.ECDSA384:
                             _input.Invoice.AddSignature(KeyType.ECDSA384, signature.PubKeyPrefix.ToByteArray(), signature.ECDSA384.ToByteArray());
                             break;
-                        case Proto.SignaturePair.SignatureOneofCase.Contract:
-                            _input.Invoice.AddSignature(KeyType.ContractID, signature.PubKeyPrefix.ToByteArray(), signature.Contract.ToByteArray());
-                            break;
                     }
                 }
                 _input.CountDownTimer?.Dispose();

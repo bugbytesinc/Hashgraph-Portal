@@ -37,14 +37,11 @@
             <InputEndorsement id="endorsment" @bind-Value="@_input.Endorsement" />
         }
         <button type="submit">Update Account</button>
-        <div>Receive @_input.ReceiveThresholdCreateRecord</div>
-        <div>Send @_input.SendThresholdCreateRecord</div>
     </section>
     <Network @ref="_network">
         @if (_output != null)
         {
-            <div>Updated Account</div>
-            <AddressDisplay Address="@_output.Address" />
+            <div>Account Updated Successfully!</div>
         }
         else
         {

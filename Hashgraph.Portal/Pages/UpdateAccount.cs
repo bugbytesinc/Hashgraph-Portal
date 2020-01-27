@@ -16,7 +16,7 @@ namespace Hashgraph.Portal.Pages
         private EditContext _editContext = null;
         private ValidationMessageStore _validationMessages = null;
         private UpdateAccountInput _input = new UpdateAccountInput();
-        private AccountReceipt _output = null;
+        private TransactionReceipt _output = null;
 
         protected override void OnInitialized()
         {
