@@ -12,7 +12,7 @@ namespace Hashgraph.Portal.Pages
 
         private Network _network = null;
         private CreateAccountInput _input = new CreateAccountInput();
-        private AccountReceipt _output = null;
+        private CreateAccountReceipt _output = null;
 
         protected override void OnInitialized()
         {

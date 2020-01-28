@@ -37,7 +37,6 @@ namespace Hashgraph.Portal.Components
                             break;
                         case KeyType.RSA3072:
                         case KeyType.ECDSA384:
-                        case KeyType.ContractID:
                             builder.AddContent(3, Hex.FromBytes(Key.PublicKey));
                             break;
                         case KeyType.List:
@@ -69,7 +68,6 @@ namespace Hashgraph.Portal.Components
                 KeyType.Ed25519 => "key-type-ed25519",
                 KeyType.RSA3072 => "key-type-rsa3072",
                 KeyType.ECDSA384 => "key-type-ecdsa384",
-                KeyType.ContractID => "key-type-contract",
                 KeyType.List => "key-type-list",
                 _ => string.Empty
             };

@@ -71,7 +71,6 @@ namespace Hashgraph.Portal.Components
                         KeyType.Ed25519 => "Ed25519 Public Key Recognized.",
                         KeyType.RSA3072 => "RSA 3072 Key Accepted (note software does not know how to validate key).",
                         KeyType.ECDSA384 => "ECDSA 384 Key Accepted (note software does not know how to validate key).",
-                        KeyType.ContractID => "Contract Key Accepted (note software does not know how to validate key).",
                         _ => "Generic Key Accepted"
                     };
                     return;
