@@ -28,6 +28,18 @@
             <InputNumber id="receivethresholdcreaterecord" @bind-Value="@_input.ReceiveThresholdCreateRecord" placeholder="Receive Threshold (tℏ)" />
         }
         <div class="toggle-property">
+            <InputCheckbox id="togglereceivesignaturerequired" @bind-Value="@_input.UpdateReceiveSignatureRequired" />
+            <label for="togglereceivesignaturerequired">Update Receive Signature Required</label>
+        </div>
+        @if (_input.UpdateReceiveSignatureRequired)
+        {
+            <label for="receivesignaturerequired">Require Signature</label>
+            <div>
+                <InputCheckbox id="receivesignaturerequired" @bind-Value="@_input.ReceiveSignatureRequired" />
+                <label for="receivesignaturerequired">@(_input.ReceiveSignatureRequired ? "Yes, Signature Is Required" : "No Signature Required")</label>
+            </div>
+        }
+        <div class="toggle-property">
             <InputCheckbox id="updateendorsment" @bind-Value="@_input.UpdateEndorsement" />
             <label for="updateendorsment">Update Endorsment (aka. rotate keys)</label>
         </div>

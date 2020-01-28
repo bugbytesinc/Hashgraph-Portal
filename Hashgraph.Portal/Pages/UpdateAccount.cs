@@ -59,6 +59,10 @@ namespace Hashgraph.Portal.Pages
                     AddIfNoOtherErrors(nameof(_input.ReceiveThresholdCreateRecord), "Please enter a Receive Threshold Value (tℏ)");
                 }
             }
+            if( _input.UpdateReceiveSignatureRequired)
+            {
+                somethingIsSelected = true;
+            }
             if (!somethingIsSelected)
             {
                 _validationMessages.Add(new FieldIdentifier(_input, string.Empty), "Nothing has been selected to change.");
@@ -95,6 +99,10 @@ namespace Hashgraph.Portal.Pages
                 {
                     updateParams.ReceiveThresholdCreateRecord = (ulong)_input.ReceiveThresholdCreateRecord.Value;
                 }
+                if (_input.UpdateReceiveSignatureRequired)
+                {
+                    updateParams.RequireReceiveSignature = _input.ReceiveSignatureRequired;
+                }
                 _output = await client.UpdateAccountAsync(updateParams);
             });
         }
@@ -115,5 +123,7 @@ namespace Hashgraph.Portal.Pages
         public bool UpdateReceiveThresholdCreateRecord { get; set; }
         [Range(1, ulong.MaxValue / 2)]
         public long? ReceiveThresholdCreateRecord { get; set; }
+        public bool UpdateReceiveSignatureRequired { get; set; }
+        public bool ReceiveSignatureRequired { get; set; }
     }
 }
