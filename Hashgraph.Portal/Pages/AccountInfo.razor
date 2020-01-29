@@ -29,7 +29,9 @@
             <div>Receive Signature Required</div>
             <div>@(_output.ReceiveSignatureRequired ? "Yes" : "No")</div>
             <div>Auto-Renewal Period</div>
-            <TimespanDisplay TimeSpan="@_output.AutoRenewPeriod"/>
+            <TimespanDisplay TimeSpan="@_output.AutoRenewPeriod" />
+            <div>Expiration</div>
+            <div>@_output.Expiration</div>
             <div>Endorsement</div>
             <EndorsementDisplay Endorsement="_output.Endorsement" />
         }
