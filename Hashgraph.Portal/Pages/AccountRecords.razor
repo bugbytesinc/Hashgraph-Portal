@@ -1,0 +1,66 @@
+﻿@page "/accountrecords"
+<EditForm class="query-page get-account-records" Model="@_input" OnValidSubmit="HandleValidSubmit">
+    <h2>Get Account Transaction Records</h2>
+    <DataAnnotationsValidator />
+    <section class="entry-form">
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <label for="accountNumber">Account Number</label>
+        <InputAddress id="address" @bind-Value="@_input.Address" placeholder="Address (shrd.rlm.num)" />
+        <button type="submit">Get Transaction Recrods</button>
+    </section>
+    <Network @ref="_network">
+        @if (_output == null)
+        {
+            <div>Waiting for Input</div>
+        }
+        else if (_output.Length == 0)
+        {
+            <div>No Records Found</div>
+        }
+        else
+        {
+            if (_output.Length == 1)
+            {
+                <h3>One Transaction Record</h3>
+            }
+            else
+            {
+                <h3>@_output.Length Transaction Records</h3>
+            }
+            @foreach (var record in _output)
+            {
+                <h4><TxIdDisplay TxId="@record.Id" /></h4>
+                <div>Consensus Timestamp</div>
+                <div>@record.Concensus</div>
+                <div>Status</div>
+                <div>@record.Status</div>
+                <div>Hash</div>
+                <HashDisplay Hash="@record.Hash" />
+                <div>Payer</div>
+                <AddressDisplay Address="@record.Id.Address" />
+                <div>Transaction Fee</div>
+                <BalanceDisplay Balance="@record.Fee" />
+                <div>Memo</div>
+                <div>@record.Memo</div>
+                <div>Transfers</div>
+                <div class="transfers">
+                    @foreach (var transfer in record.Transfers)
+                    {
+                        <AddressDisplay Address="@transfer.Key" />
+                        @if (transfer.Value > 0)
+                        {
+                            <BalanceDisplay Balance="@((ulong) transfer.Value)" />
+                        }
+                        else
+                        {
+                            <div>-<BalanceDisplay Balance="@((ulong) -transfer.Value)" /></div>
+                        }
+                    }
+                </div>
+            }
+        }
+    </Network>
+</EditForm>

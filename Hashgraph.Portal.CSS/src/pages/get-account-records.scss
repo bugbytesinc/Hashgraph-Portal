@@ -1,0 +1,13 @@
+.get-account-records
+{
+    .transfers
+    {
+        display: grid;
+        grid-template-columns: max-content max-content;
+        column-gap: 2em;
+        &>*:nth-child(even)
+        {
+            justify-self: end;
+        }
+    }
+}
