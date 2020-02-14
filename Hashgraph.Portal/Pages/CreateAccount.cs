@@ -29,19 +29,19 @@ namespace Hashgraph.Portal.Pages
                 var createParams = new CreateAccountParams
                 {
                     Endorsement = _input.Endorsement,
-                    InitialBalance = (ulong) _input.InitialBalance.GetValueOrDefault(),
+                    InitialBalance = (ulong)_input.InitialBalance.GetValueOrDefault(),
                     RequireReceiveSignature = _input.RequireReceiveSignature,
                     Proxy = _input.Proxy
                 };
                 if (_input.SendThresholdCreateRecord.HasValue)
                 {
-                    createParams.SendThresholdCreateRecord = (ulong) _input.SendThresholdCreateRecord.Value;
+                    createParams.SendThresholdCreateRecord = (ulong)_input.SendThresholdCreateRecord.Value;
                 }
                 if (_input.ReceiveThresholdCreateRecord.HasValue)
                 {
-                    createParams.ReceiveThresholdCreateRecord = (ulong) _input.ReceiveThresholdCreateRecord.Value;
+                    createParams.ReceiveThresholdCreateRecord = (ulong)_input.ReceiveThresholdCreateRecord.Value;
                 }
-                _output = await client.CreateAccountAsync(createParams);
+                _output = await client.CreateAccountAsync(createParams, ctx => ctx.Memo = _input.Memo?.Trim());
             });
         }
     }
@@ -52,7 +52,7 @@ namespace Hashgraph.Portal.Pages
         [Required(ErrorMessage = "Please enter the account that will pay the Transaction Fees.")]
         public Address Payer { get; set; }
         [Required(ErrorMessage = "Please enter an initial balance, this will be taken from the Payer account, it can be zero.")]
-        [Range(0,long.MaxValue, ErrorMessage = "The initial balance must be greater than or equal to zero.")]
+        [Range(0, long.MaxValue, ErrorMessage = "The initial balance must be greater than or equal to zero.")]
         public long? InitialBalance { get; set; }
         [Required] public Endorsement Endorsement { get; set; }
         [Range(0, long.MaxValue, ErrorMessage = "If specified, the Create Record for Send Threshold should be greater than or equal to zero.")]
@@ -61,5 +61,7 @@ namespace Hashgraph.Portal.Pages
         public long? ReceiveThresholdCreateRecord { get; set; }
         public bool RequireReceiveSignature { get; set; }
         public Address Proxy { get; set; }
+        [MaxLength(100, ErrorMessage = "The memo field cannot exceed 100 characters.")]
+        public string Memo { get; set; }
     }
 }

@@ -7,6 +7,8 @@
         <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
         <label for="payer">Payer</label>
         <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <label for="memo">Payment Memo</label>
+        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Query Payment Memo (optional)" />
         <label for="accountNumber">Account Number</label>
         <InputAddress id="address" @bind-Value="@_input.Address" placeholder="Address (shrd.rlm.num)" />
         <button type="submit">Get Info</button>

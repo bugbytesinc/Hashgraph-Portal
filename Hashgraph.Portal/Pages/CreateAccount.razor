@@ -7,6 +7,8 @@
         <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
         <label for="payer">Payer</label>
         <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <label for="memo">Memo</label>
+        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Memo (optional)" />
         <label for="initialbalance">Initial Balance (Xfer from Payer, tℏ)</label>
         <InputNumber id="initialbalance" @bind-Value="@_input.InitialBalance" placeholder="Initial Balance (tℏ)" />
         <label for="sendthresholdcreaterecord">Send Threshold (for Create Record)</label>

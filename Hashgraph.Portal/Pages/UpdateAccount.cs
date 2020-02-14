@@ -59,7 +59,7 @@ namespace Hashgraph.Portal.Pages
                     AddIfNoOtherErrors(nameof(_input.ReceiveThresholdCreateRecord), "Please enter a Receive Threshold Value (tℏ)");
                 }
             }
-            if( _input.UpdateReceiveSignatureRequired)
+            if (_input.UpdateReceiveSignatureRequired)
             {
                 somethingIsSelected = true;
             }
@@ -103,7 +103,7 @@ namespace Hashgraph.Portal.Pages
                 {
                     updateParams.RequireReceiveSignature = _input.ReceiveSignatureRequired;
                 }
-                _output = await client.UpdateAccountAsync(updateParams);
+                _output = await client.UpdateAccountAsync(updateParams, ctx => ctx.Memo = _input?.Memo.Trim());
             });
         }
     }
@@ -125,5 +125,7 @@ namespace Hashgraph.Portal.Pages
         public long? ReceiveThresholdCreateRecord { get; set; }
         public bool UpdateReceiveSignatureRequired { get; set; }
         public bool ReceiveSignatureRequired { get; set; }
+        [MaxLength(100, ErrorMessage = "The memo field cannot exceed 100 characters.")]
+        public string Memo { get; set; }
     }
 }

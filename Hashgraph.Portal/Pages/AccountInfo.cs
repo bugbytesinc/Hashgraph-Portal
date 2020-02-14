@@ -25,7 +25,7 @@ namespace Hashgraph.Portal.Pages
             _output = null;
             await _network.ExecuteAsync(_input.Gateway, _input.Payer, async client =>
             {
-                _output = await client.GetAccountInfoAsync(_input.Address);
+                _output = await client.GetAccountInfoAsync(_input.Address, ctx => ctx.Memo = _input.Memo?.Trim());
             });
         }
     }
@@ -37,5 +37,7 @@ namespace Hashgraph.Portal.Pages
         public Address Payer { get; set; }
         [Required(ErrorMessage = "Please enter the account you wish to Query.")]
         public Address Address { get; set; }
+        [MaxLength(100, ErrorMessage = "The memo field cannot exceed 100 characters.")]
+        public string Memo { get; set; }
     }
 }

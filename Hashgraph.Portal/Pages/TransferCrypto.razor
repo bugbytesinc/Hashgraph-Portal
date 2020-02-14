@@ -7,6 +7,8 @@
         <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
         <label for="payer">Fee Payer</label>
         <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <label for="memo">Memo</label>
+        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Memo (optional)" />
         <InputTransfers id="transfers" @bind-Value="@_input.Transfers" />
         <button type="submit">Transfer</button>
     </section>

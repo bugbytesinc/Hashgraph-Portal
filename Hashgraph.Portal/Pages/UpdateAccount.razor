@@ -7,6 +7,8 @@
         <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
         <label for="payer">Payer</label>
         <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="(shrd.rlm.num)" />
+        <label for="memo">Memo</label>
+        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Memo (optional)" />
         <label for="address">Account to Update</label>
         <InputAddress id="address" @bind-Value="@_input.Address" placeholder="(shrd.rlm.num)" />
         <div class="toggle-property">

@@ -7,6 +7,8 @@
         <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
         <label for="payer">Payer</label>
         <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="(shrd.rlm.num)" />
+        <label for="memo">Memo</label>
+        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Memo (optional)" />
         <label for="deleteaccount">Account to Delete</label>
         <InputAddress id="deleteaccount" @bind-Value="@_input.DeleteAddress" placeholder="(shrd.rlm.num)" />
         <label for="transfertoaccount">Send Remaining Funds To</label>

@@ -26,7 +26,7 @@ namespace Hashgraph.Portal.Pages
             _output = null;
             await _network.ExecuteAsync(_input.Gateway, _input.Payer, async client =>
             {
-                _output = await client.DeleteAccountAsync(_input.DeleteAddress, _input.TransferToAddress);
+                _output = await client.DeleteAccountAsync(_input.DeleteAddress, _input.TransferToAddress, ctx => ctx.Memo = _input?.Memo.Trim());
             });
         }
     }
@@ -40,5 +40,7 @@ namespace Hashgraph.Portal.Pages
         public Address DeleteAddress { get; set; }
         [Required(ErrorMessage = "Please enter the account that will receive the remaining funds from the deleted account.")]
         public Address TransferToAddress { get; set; }
+        [MaxLength(100, ErrorMessage = "The memo field cannot exceed 100 characters.")]
+        public string Memo { get; set; }
     }
 }
