@@ -103,7 +103,7 @@ namespace Hashgraph.Portal.Pages
                 {
                     updateParams.RequireReceiveSignature = _input.ReceiveSignatureRequired;
                 }
-                _output = await client.UpdateAccountAsync(updateParams, ctx => ctx.Memo = _input?.Memo.Trim());
+                _output = await client.UpdateAccountAsync(updateParams, ctx => ctx.Memo = _input.Memo?.Trim());
             });
         }
     }

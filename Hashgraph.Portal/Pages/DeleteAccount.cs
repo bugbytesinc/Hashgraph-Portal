@@ -26,7 +26,7 @@ namespace Hashgraph.Portal.Pages
             _output = null;
             await _network.ExecuteAsync(_input.Gateway, _input.Payer, async client =>
             {
-                _output = await client.DeleteAccountAsync(_input.DeleteAddress, _input.TransferToAddress, ctx => ctx.Memo = _input?.Memo.Trim());
+                _output = await client.DeleteAccountAsync(_input.DeleteAddress, _input.TransferToAddress, ctx => ctx.Memo = _input.Memo?.Trim());
             });
         }
     }
