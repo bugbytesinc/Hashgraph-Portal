@@ -31,6 +31,7 @@ namespace Hashgraph.Portal.Components
         private List<Exception> _errors { get; } = new List<Exception>();
         private bool _isMainNetwork = false;
         private int _txSequenceNo = 0;
+        private bool _isProcessing = false;
 
         private EditContext _previousEditContext;
         private SignTransactionDialog _signTransactionDialog;
@@ -114,6 +115,7 @@ namespace Hashgraph.Portal.Components
             // re-uses this control for the new request, we need to track
             // the individual requests ourselves.
             var txSequenceNo = Interlocked.Increment(ref _txSequenceNo);
+            _isProcessing = true;
             _transactionIds.Clear();
             _logEntries.Clear();
             _errors.Clear();
@@ -169,6 +171,7 @@ namespace Hashgraph.Portal.Components
                         Type = NetworkActivityEventType.WaitingForSignature,
                         Data = JsonSerializer.Serialize(JsonDocument.Parse(JsonFormatter.Default.Format(transactionBody)).RootElement, new JsonSerializerOptions { WriteIndented = true })
                     });
+                    StateHasChanged();
                     await _signTransactionDialog.PromptForSignaturesAsync(invoice);
                     _transactionIds.Add(invoice.TxId);
                 }
@@ -186,6 +189,7 @@ namespace Hashgraph.Portal.Components
             if (txSequenceNo == _txSequenceNo)
             {
                 ShowTab = _errors.Count == 0 ? RESULTS_TAB : ERRORS_TAB;
+                _isProcessing = false;
                 StateHasChanged();
             }
         }
