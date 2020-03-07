@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Hashgraph.Portal.Components
@@ -29,6 +30,7 @@ namespace Hashgraph.Portal.Components
         private List<TxId> _transactionIds { get; } = new List<TxId>();
         private List<Exception> _errors { get; } = new List<Exception>();
         private bool _isMainNetwork = false;
+        private int _txSequenceNo = 0;
 
         private EditContext _previousEditContext;
         private SignTransactionDialog _signTransactionDialog;
@@ -47,7 +49,7 @@ namespace Hashgraph.Portal.Components
         }
         public async Task ExecuteAsync(Gateway gateway, Address payer, Func<Client, Task> executeFunction)
         {
-            OnStartTransaction();
+            int txSequenceNo = OnStartTransaction();
             try
             {
                 if (executeFunction is null)
@@ -59,9 +61,9 @@ namespace Hashgraph.Portal.Components
                 {
                     ctx.Gateway = gateway;
                     ctx.Payer = payer;
-                    ctx.OnSendingRequest = OnSendingRequest;
-                    ctx.OnResponseReceived = OnResponseReceived;
-                    ctx.Signatory = new Signatory(OnSignRequest);
+                    ctx.OnSendingRequest = SetupOnSendingRequest(txSequenceNo);
+                    ctx.OnResponseReceived = SetupOnResponseReceived(txSequenceNo);
+                    ctx.Signatory = SetupOnSignRequest(txSequenceNo);
                 });
                 await executeFunction(client);
                 if (gateway != null)
@@ -75,13 +77,14 @@ namespace Hashgraph.Portal.Components
             }
             catch (Exception ex)
             {
-                OnTransactionError(ex);
+                OnTransactionError(txSequenceNo, ex);
             }
             finally
             {
-                OnTransactionFinished();
+                OnTransactionFinished(txSequenceNo);
             }
         }
+
         protected override void OnParametersSet()
         {
             if (CurrentEditContext != _previousEditContext)
@@ -101,48 +104,90 @@ namespace Hashgraph.Portal.Components
                 ShowTab = ERRORS_TAB;
             }
         }
-        private void OnStartTransaction()
+        private int OnStartTransaction()
         {
+            // We need to track the individual requests, it is possible
+            // to abandon a query on a node if it is mis-behaving and re-
+            // submit it to a different node.  When the errors come back
+            // from the previous request (eventually) we want to ignore them
+            // since the user's focus has moved on.  Since the framework
+            // re-uses this control for the new request, we need to track
+            // the individual requests ourselves.
+            var txSequenceNo = Interlocked.Increment(ref _txSequenceNo);
             _transactionIds.Clear();
             _logEntries.Clear();
             _errors.Clear();
             ShowTab = LOG_TAB;
+            return txSequenceNo;
         }
-        private void OnSendingRequest(IMessage message)
+        private Action<IMessage> SetupOnSendingRequest(int txSequenceNo)
         {
-            _logEntries.Add(new NetworkActivityEvent
+            return OnSendingRequest;
+
+            void OnSendingRequest(IMessage message)
             {
-                Type = NetworkActivityEventType.SendingRequest,
-                Data = JsonSerializer.Serialize(JsonDocument.Parse(JsonFormatter.Default.Format(message)).RootElement, new JsonSerializerOptions { WriteIndented = true })
-            });
+                if (txSequenceNo == _txSequenceNo)
+                {
+                    _logEntries.Add(new NetworkActivityEvent
+                    {
+                        Type = NetworkActivityEventType.SendingRequest,
+                        Data = JsonSerializer.Serialize(JsonDocument.Parse(JsonFormatter.Default.Format(message)).RootElement, new JsonSerializerOptions { WriteIndented = true })
+                    });
+                    StateHasChanged();
+                }
+            }
         }
-        private void OnResponseReceived(int tryNo, IMessage message)
+        private Action<int, IMessage> SetupOnResponseReceived(int txSequenceNo)
         {
-            _logEntries.Add(new NetworkActivityEvent
+            return OnResponseReceived;
+
+            void OnResponseReceived(int tryNo, IMessage message)
             {
-                Type = NetworkActivityEventType.ResponseReceived,
-                TryNo = tryNo,
-                Data = JsonSerializer.Serialize(JsonDocument.Parse(JsonFormatter.Default.Format(message)).RootElement, new JsonSerializerOptions { WriteIndented = true })
-            });
+                if (txSequenceNo == _txSequenceNo)
+                {
+                    _logEntries.Add(new NetworkActivityEvent
+                    {
+                        Type = NetworkActivityEventType.ResponseReceived,
+                        TryNo = tryNo,
+                        Data = JsonSerializer.Serialize(JsonDocument.Parse(JsonFormatter.Default.Format(message)).RootElement, new JsonSerializerOptions { WriteIndented = true })
+                    });
+                    StateHasChanged();
+                }
+            }
         }
-        private async Task OnSignRequest(IInvoice invoice)
+        private Signatory SetupOnSignRequest(int txSequenceNo)
         {
-            var transactionBody = Proto.TransactionBody.Parser.ParseFrom(invoice.TxBytes.ToArray());
-            _logEntries.Add(new NetworkActivityEvent { 
-                Type = NetworkActivityEventType.WaitingForSignature,
-                Data = JsonSerializer.Serialize(JsonDocument.Parse(JsonFormatter.Default.Format(transactionBody)).RootElement, new JsonSerializerOptions { WriteIndented = true })
-            });
-            await _signTransactionDialog.PromptForSignaturesAsync(invoice);
-            _transactionIds.Add(invoice.TxId);
+            return new Signatory(OnSignRequest);
+
+            async Task OnSignRequest(IInvoice invoice)
+            {
+                if (txSequenceNo == _txSequenceNo)
+                {
+                    var transactionBody = Proto.TransactionBody.Parser.ParseFrom(invoice.TxBytes.ToArray());
+                    _logEntries.Add(new NetworkActivityEvent
+                    {
+                        Type = NetworkActivityEventType.WaitingForSignature,
+                        Data = JsonSerializer.Serialize(JsonDocument.Parse(JsonFormatter.Default.Format(transactionBody)).RootElement, new JsonSerializerOptions { WriteIndented = true })
+                    });
+                    await _signTransactionDialog.PromptForSignaturesAsync(invoice);
+                    _transactionIds.Add(invoice.TxId);
+                }
+            }
         }
-        private void OnTransactionError(Exception ex)
+        private void OnTransactionError(int txSequenceNo, Exception ex)
         {
-            _errors.Add(ex);
+            if (txSequenceNo == _txSequenceNo)
+            {
+                _errors.Add(ex);
+            }
         }
-        private void OnTransactionFinished()
+        private void OnTransactionFinished(int txSequenceNo)
         {
-            ShowTab = _errors.Count == 0 ? RESULTS_TAB : ERRORS_TAB;
-            StateHasChanged();
+            if (txSequenceNo == _txSequenceNo)
+            {
+                ShowTab = _errors.Count == 0 ? RESULTS_TAB : ERRORS_TAB;
+                StateHasChanged();
+            }
         }
         private void DetachValidationStateChangedListener()
         {
