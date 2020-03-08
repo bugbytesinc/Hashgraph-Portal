@@ -62,6 +62,8 @@ namespace Hashgraph.Portal.Components
                 {
                     ctx.Gateway = gateway;
                     ctx.Payer = payer;
+                    ctx.FeeLimit = DefaultsService.FeeLimit;
+                    ctx.TransactionDuration = DefaultsService.TransactionDuration;
                     ctx.OnSendingRequest = SetupOnSendingRequest(txSequenceNo);
                     ctx.OnResponseReceived = SetupOnResponseReceived(txSequenceNo);
                     ctx.Signatory = SetupOnSignRequest(txSequenceNo);

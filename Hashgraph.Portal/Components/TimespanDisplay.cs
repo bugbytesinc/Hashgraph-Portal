@@ -28,21 +28,42 @@ namespace Hashgraph.Portal.Components
                     {
                         builder.OpenElement(0, "span");
                         builder.AddAttribute(1, "class", "days");
-                        builder.AddContent(2, $"{TimeSpan.Days} Days ");
+                        if(TimeSpan.Days == 1)
+                        {
+                            builder.AddContent(2, $"1 Day ");
+                        }
+                        else
+                        {
+                            builder.AddContent(2, $"{TimeSpan.Days} Days ");
+                        }
                         builder.CloseElement();
                     }
                     if (TimeSpan.Hours > 0)
                     {
                         builder.OpenElement(0, "span");
                         builder.AddAttribute(1, "class", "hours");
-                        builder.AddContent(2, $"{TimeSpan.Hours} Hours ");
+                        if(TimeSpan.Hours == 1)
+                        {
+                            builder.AddContent(2, $"1 Hour ");
+                        }
+                        else
+                        {
+                            builder.AddContent(2, $"{TimeSpan.Hours} Hours ");
+                        }
                         builder.CloseElement();
                     }
                     if (TimeSpan.Minutes > 0)
                     {
                         builder.OpenElement(0, "span");
                         builder.AddAttribute(1, "class", "minutes");
-                        builder.AddContent(2, $"{TimeSpan.Minutes} Minutes ");
+                        if(TimeSpan.Minutes == 1)
+                        {
+                            builder.AddContent(2, $"1 Minute ");
+                        }
+                        else
+                        {
+                            builder.AddContent(2, $"{TimeSpan.Minutes} Minutes ");
+                        }
                         builder.CloseElement();
                     }
                     if (TimeSpan.Milliseconds > 0)
@@ -56,7 +77,14 @@ namespace Hashgraph.Portal.Components
                     {
                         builder.OpenElement(0, "span");
                         builder.AddAttribute(1, "class", "seconds");
-                        builder.AddContent(2, $"{TimeSpan.Seconds} Seconds ");
+                        if(TimeSpan.Seconds == 1)
+                        {
+                            builder.AddContent(2, $"1 Second ");
+                        }
+                        else
+                        {
+                            builder.AddContent(2, $"{TimeSpan.Seconds} Seconds ");
+                        }
                         builder.CloseElement();
                     }
                     builder.CloseElement();

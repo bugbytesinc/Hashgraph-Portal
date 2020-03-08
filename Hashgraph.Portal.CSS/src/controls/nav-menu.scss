@@ -1,7 +1,8 @@
 ul.navigation-menu {
     margin: 0;
     padding: 0;
-
+    overflow-x: hidden;
+    overflow-y: auto;
     li {
         margin: 0;
         padding: 0;

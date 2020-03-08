@@ -1,0 +1,20 @@
+﻿@if (_input != null)
+{
+    <div class="dialog-mask">
+        <EditForm Model="@_input" class="dialog-container update-global-settings-dialog" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <div class="dialog-title">Update Settings</div>
+            <div class="dialog-content update-global-settings-dialog-content">
+                <label for="feeLimit">Maximum Allowed Transaction Fee (tℏ)</label>
+                <InputNumber id="feeLimit" @bind-Value="@_input.FeeLimit" placeholder="Max Transaction Fee (tℏ)" />
+                <label for="transactionDuration">Valid Transaction Duration (sec)</label>
+                <InputNumber id="transactionDuration" @bind-Value="@_input.TransactionDuration" placeholder="Valid Transaction Duration (sec)" />
+                <div class="status-message"><ValidationSummary /></div>
+            </div>
+            <div class="dialog-footer">
+                <button type="button" @onclick="Close">Cancel</button>
+                <button type="submit">Update Settings</button>
+            </div>
+        </EditForm>
+    </div>
+}

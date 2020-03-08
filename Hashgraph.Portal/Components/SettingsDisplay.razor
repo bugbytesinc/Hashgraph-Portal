@@ -1,0 +1,10 @@
+﻿<section class="global-settings" @onclick="OnClick">
+    <h2>Global Settings</h2>
+    <dl>
+        <dt>Max Tx Fee</dt>
+        <dd><BalanceDisplay Balance="(ulong)DefaultsService.FeeLimit" /></dd>
+        <dt>Tx Duration</dt>
+        <dd><TimespanDisplay TimeSpan="DefaultsService.TransactionDuration" /></dd>
+    </dl>
+</section>
+<UpdateSettingsDialog @ref="UpdateSettingsDialog" />

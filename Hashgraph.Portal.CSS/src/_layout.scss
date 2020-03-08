@@ -34,6 +34,9 @@ body {
         grid-area: aside;
         background: $control-background;
         border-right: px(1) solid $control-border;
+        overflow: hidden;
+        display: grid;
+        grid-template-rows: minmax(px(200),1fr) auto;
     }
 
     &>.main_content {
