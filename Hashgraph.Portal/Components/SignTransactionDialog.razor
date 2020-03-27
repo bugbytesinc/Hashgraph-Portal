@@ -5,7 +5,7 @@
             <div class="dialog-title">Waiting for Signatures</div>
             <div class="dialog-content">
                 <p>
-                    Please use your third party tool to sign the transaction below.  
+                    Please use your third party tool to sign the transaction below.
                     Paste the signature from the clipboard to continue.
                 </p>
                 <label for="transaction">Transaction in Hex</label>
@@ -13,6 +13,11 @@
                 @if (_supportsClipboard)
                 {
                     <button type="button" @onclick="CopyTransactionToClipboard">Copy</button>
+                }
+                @if (_input.ConfirmedSignatureMap != null)
+                {
+                    <label>Confirmed Signatures</label>
+                    <SignatureMapDisplay SignatureMap="@_input.ConfirmedSignatureMap" class="signature-map-display" />
                 }
                 <label for="signatures">Signature(s) in Hex</label>
                 <InputTextArea id="signatures" @bind-Value="_input.SignatureInHex" @oninput="SignatureInHexChanged" />
@@ -22,9 +27,10 @@
                 }
                 <div class="signature-review">
                     <div class="status-message">@_input.StatusMessage</div>
-                    @if (_input.SignatureMap != null)
+                    @if (_input.PendingSignatureMap != null)
                     {
-                        <SignatureMapDisplay SignatureMap="@_input.SignatureMap" class="signature-map-display" />
+                        <SignatureMapDisplay SignatureMap="@_input.PendingSignatureMap" class="signature-map-display" />
+                        <button type="button" @onclick="AddMoreSignatures">Add More<br/>Signatures</button>
                     }
                 </div>
             </div>
