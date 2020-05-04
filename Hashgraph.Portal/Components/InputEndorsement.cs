@@ -12,6 +12,7 @@ namespace Hashgraph.Portal.Components
     public class InputEndorsement : ComponentBase
     {
         [Parameter] public Endorsement Value { get; set; }
+        [Parameter] public string Placeholder { get; set; }
         [Parameter] public EventCallback<Endorsement> ValueChanged { get; set; }
         [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object> AdditionalAttributes { get; set; }
         private InputPublicKeyDialog InputPublicKeyDialog { get; set; }
@@ -28,8 +29,16 @@ namespace Hashgraph.Portal.Components
                     builder.OpenElement(seq++, "button");
                     builder.AddAttribute(seq++, "class", "add-key");
                     builder.AddAttribute(seq++, "title", "Add First Key");
+                    builder.AddAttribute(seq++, "type", "button");
                     builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, () => AddNewKeyToTree(Value)));
                     builder.CloseElement();
+                    if (!string.IsNullOrWhiteSpace(Placeholder))
+                    {
+                        builder.OpenElement(seq++, "span");
+                        builder.AddAttribute(seq++, "class", "placeholder");
+                        builder.AddContent(seq++, Placeholder.Trim());
+                        builder.CloseElement();
+                    }
                     builder.CloseElement();
                 }
                 else

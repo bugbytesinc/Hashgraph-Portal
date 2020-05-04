@@ -77,4 +77,12 @@
         margin-left: px(8);
         @include svg-button(map-merge($icon-params, $to-list-icon));
     }
+
+    span.placeholder {
+        margin-left: px(6);
+        font-size: px(16);
+        padding: px(1) px(3);
+        user-select: none;
+        color: $control-placeholder-color;
+    }
 }

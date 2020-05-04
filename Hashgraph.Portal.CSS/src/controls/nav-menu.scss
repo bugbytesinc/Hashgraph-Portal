@@ -3,10 +3,15 @@ ul.navigation-menu {
     padding: 0;
     overflow-x: hidden;
     overflow-y: auto;
+
     li {
         margin: 0;
         padding: 0;
         list-style: none;
+
+        &.new-section {                
+            border-top: px(1) solid $control-border;
+        }
 
         a {
             display: block;
@@ -18,10 +23,6 @@ ul.navigation-menu {
             &.active {
                 color: $list-selected-foreground;
                 background: $list-selected-background;
-                margin-right: px(-1);
-                border-style: solid;
-                border-color: $list-selected-border;
-                border-width: px(1) px(1) px(1) 0;
             }
 
             &:hover {

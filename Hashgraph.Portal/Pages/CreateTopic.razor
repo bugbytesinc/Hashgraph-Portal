@@ -1,0 +1,33 @@
+﻿@page "/createtopic"
+<EditForm class="query-page get-Topic-balance" Model="@_input" OnValidSubmit="HandleValidSubmit">
+    <h2>Create Consensus Topic</h2>
+    <DataAnnotationsValidator />
+    <section class="entry-form">
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <label for="description">Description</label>
+        <InputText id="description" @bind-Value="@_input.Desciption" placeholder="Short Description of Name of topic" />
+        <label for="administrator">Administrator</label>
+        <InputEndorsement id="administrator" @bind-Value="@_input.Administrator" Placeholder="Administrator (optional)" />
+        <label for="participant">Participant</label>
+        <InputEndorsement id="participant" @bind-Value="@_input.Participant" Placeholder="Submit Protection (optional)" />
+        <label for="renew">Renewal Account</label>
+        <InputAddress id="renew" @bind-Value="@_input.RenewAccount" placeholder="Optional (shrd.rlm.num)" />
+        <label for="memo">Transaction Memo</label>
+        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Transaction Memo (optional)" />
+        <button type="submit">Create Consensus Topic</button>
+    </section>
+    <Network @ref="_network">
+        @if (_output != null)
+        {
+            <div>Created Topic ID</div>
+            <AddressDisplay Address="@_output.Topic" />
+        }
+        else
+        {
+            <div>Waiting for Input</div>
+        }
+    </Network>
+</EditForm>
