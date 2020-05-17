@@ -64,6 +64,8 @@ namespace Hashgraph.Portal.Components
                     ctx.Payer = payer;
                     ctx.FeeLimit = DefaultsService.FeeLimit;
                     ctx.TransactionDuration = DefaultsService.TransactionDuration;
+                    ctx.RetryDelay = Util.ComputeRetryDelay(DefaultsService.ReceiptWaitDuration, DefaultsService.ReceiptRetryCount);
+                    ctx.RetryCount = DefaultsService.ReceiptRetryCount;
                     ctx.OnSendingRequest = SetupOnSendingRequest(txSequenceNo);
                     ctx.OnResponseReceived = SetupOnResponseReceived(txSequenceNo);
                     ctx.Signatory = SetupOnSignRequest(txSequenceNo);

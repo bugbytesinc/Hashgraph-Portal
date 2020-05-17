@@ -19,5 +19,14 @@ namespace Hashgraph.Portal.Services
         {
             return txid == null ? DateTime.MinValue : ToDate(txid.ValidStartSeconds, txid.ValidStartNanos);
         }
+        public static TimeSpan ComputeRetryDelay(TimeSpan totalWaitTime, int maxRetryCount)
+        {
+            if(maxRetryCount < 1)
+            {
+                maxRetryCount = 1;
+            }
+            var result = TimeSpan.FromMilliseconds((2 * totalWaitTime.TotalMilliseconds) / (maxRetryCount * (maxRetryCount + 1)));
+            return result.TotalMilliseconds > 10 ? result : TimeSpan.FromMilliseconds(10);
+        }
     }
 }
