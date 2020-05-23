@@ -1,0 +1,63 @@
+.binary-display {
+    overflow: hidden;
+    position: relative;
+
+    &.empty {
+        color: $control-placeholder-color;
+    }
+
+    .content {
+        font-size: px(16);
+        padding: px(1) px(3);
+        min-height: px(64);
+        max-height: px(256);
+        color: $control-foreground;
+        background-color: $control-content-background;
+        border: 1px solid $control-border;
+        overflow-y: auto;
+
+        &.text {
+            overflow-wrap: break-word;
+        }
+
+        &.hex {
+            font-family: $monospace-font-family;
+            overflow-wrap: break-word;
+        }
+
+        &.base64 {
+            font-family: $monospace-font-family;
+            overflow-wrap: break-word;
+        }
+
+        &.bytes {
+            font-family: $monospace-font-family;
+
+            div {
+                display: inline-block;
+                padding: px(2);
+                margin: px(4);
+                background-color: lighten($control-foreground, 65%);
+            }
+        }
+    }
+
+    .show-as {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) max-content max-content;
+        align-items: baseline;
+
+        label {
+            cursor: pointer;
+            margin-right: px(4);
+        }
+
+        button {
+            font-size: px(12);
+            padding: px(2) px(6);
+            margin-top: px(-1);
+            margin-left: px(4);
+            justify-self: end;
+        }
+    }
+}

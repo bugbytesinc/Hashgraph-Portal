@@ -1,0 +1,29 @@
+﻿@page "/filecontents"
+<EditForm class="query-page get-account-info" Model="@_input" OnValidSubmit="HandleValidSubmit">
+    <h2>Get File Contents</h2>
+    <DataAnnotationsValidator />
+    <section class="entry-form">
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <label for="memo">Payment Memo</label>
+        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Query Payment Memo (optional)" />
+        <label for="fileNumber">File Address</label>
+        <InputAddress id="fileNumber" @bind-Value="@_input.File" placeholder="File (shrd.rlm.num)" />
+        <button type="submit">Get Contents</button>
+    </section>
+    <Network @ref="_network">
+        @if (_output != null)
+        {
+            <div>File Address</div>
+            <AddressDisplay Address="@_output.File" />
+            <div>Contents</div>
+            <BinaryDisplay Data="@_output.Contents" Filename="@($"{_output.File.ShardNum}.{_output.File.RealmNum}.{_output.File.AccountNum}.txt")" />
+        }
+        else
+        {
+            <div>Waiting for Input</div>
+        }
+    </Network>
+</EditForm>
