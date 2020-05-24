@@ -1,0 +1,27 @@
+.create-file-page {
+    &>section {
+        .file-content {
+            display: grid;
+            grid-template-rows: minmax(0, 1fr) max-content;
+
+            textarea {
+                min-height: px(128);
+                resize: none;
+            }
+
+            button {
+                font-size: px(12);
+                padding: px(2) px(6);
+                margin-top: px(-1);
+                margin-left: px(4);
+                justify-self: end;
+            }
+        }
+
+        .encoding-types {
+            label {
+                user-select: none;
+            }
+        }
+    }
+}

@@ -1,7 +1,6 @@
 ﻿#pragma warning disable CA1031
 using Hashgraph.Portal.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using Proto;
 using System;
 using System.Linq;
@@ -12,10 +11,9 @@ namespace Hashgraph.Portal.Components
 {
     public partial class SignTransactionDialog : ComponentBase
     {
-        [Inject] public IJSRuntime Runtime { get; set; }
+        [Inject] public ClipboardService ClipboardService { get; set; }
         private SigningInput _input = null;
         private TaskCompletionSource<bool> _taskCompletionSource = null;
-        private bool _supportsClipboard = true;
         public Task<bool> PromptForSignaturesAsync(IInvoice invoice)
         {
             if (invoice is null)
@@ -33,18 +31,13 @@ namespace Hashgraph.Portal.Components
             StateHasChanged();
             return _taskCompletionSource.Task;
         }
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            _supportsClipboard = await Runtime.InvokeAsync<bool>("window.hashgraph.supportsClipboard");
-            await base.OnAfterRenderAsync(firstRender);
-        }
         private async Task CopyTransactionToClipboard()
         {
-            await Runtime.InvokeVoidAsync("navigator.clipboard.writeText", _input.TransactionInHex);
+            await ClipboardService.WriteToClipboard(_input.TransactionInHex);
         }
         private async Task PasteSignaturesFromClipboard()
         {
-            _input.SignatureInHex = await Runtime.InvokeAsync<string>("navigator.clipboard.readText");
+            _input.SignatureInHex = await ClipboardService.ReadFromClipboard();
             TryParseSignature();
         }
         private async Task SignatureInHexChanged(ChangeEventArgs evt)

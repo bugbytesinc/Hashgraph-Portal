@@ -1,12 +1,11 @@
 ﻿#pragma warning disable CA1308 // Normalize strings to uppercase
+using Hashgraph.Portal.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,9 +16,8 @@ namespace Hashgraph.Portal.Components
     {
         private BinaryDisplayEncoding _encoding = BinaryDisplayEncoding.Text;
         private ReadOnlyMemory<byte> _data;
-        private bool _supportsClipboard = true;
 
-        [Inject] public IJSRuntime Runtime { get; set; }
+        [Inject] public ClipboardService ClipboardService { get; set; }
 
         [Parameter] public string Filename { get; set; }
 
@@ -130,7 +128,7 @@ namespace Hashgraph.Portal.Components
                         builder.CloseElement();
                     }
 
-                    if (_supportsClipboard)
+                    if (ClipboardService.Enabled)
                     {
                         builder.OpenElement(seq++, "button");
                         builder.AddAttribute(seq++, "type", "button");
@@ -144,15 +142,9 @@ namespace Hashgraph.Portal.Components
             }
         }
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            _supportsClipboard = await Runtime.InvokeAsync<bool>("window.hashgraph.supportsClipboard");
-            await base.OnAfterRenderAsync(firstRender);
-        }
-
         private async Task CopyDataToClipboard()
         {
-            await Runtime.InvokeVoidAsync("navigator.clipboard.writeText", Encoding.Default.GetString(_data.Span));
+            await ClipboardService.WriteToClipboard(Encoding.Default.GetString(_data.Span));
         }
 
         private string GetBaseClassAttributes()

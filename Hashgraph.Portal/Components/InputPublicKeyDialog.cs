@@ -1,6 +1,6 @@
 ﻿#pragma warning disable CA1031
+using Hashgraph.Portal.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using System;
 using System.Threading.Tasks;
 
@@ -8,10 +8,9 @@ namespace Hashgraph.Portal.Components
 {
     public partial class InputPublicKeyDialog : ComponentBase
     {
-        [Inject] public IJSRuntime Runtime { get; set; }
+        [Inject] public ClipboardService ClipboardService { get; set; }
         private PublicKeyInput _input = null;
         private TaskCompletionSource<Endorsement> _taskCompletionSource = null;
-        private bool _supportsClipboard = true;
         public Task<Endorsement> PromptForPublicKey()
         {
             _input = new PublicKeyInput()
@@ -23,14 +22,9 @@ namespace Hashgraph.Portal.Components
             StateHasChanged();
             return _taskCompletionSource.Task;
         }
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            _supportsClipboard = await Runtime.InvokeAsync<bool>("window.hashgraph.supportsClipboard");
-            await base.OnAfterRenderAsync(firstRender);
-        }
         private async Task PastePublicKeyFromClipboard()
         {
-            _input.KeyInHex = await Runtime.InvokeAsync<string>("navigator.clipboard.readText");
+            _input.KeyInHex = await ClipboardService.ReadFromClipboard();
             TryParseKey();
         }
         private async Task KeyInHexChanged(ChangeEventArgs evt)

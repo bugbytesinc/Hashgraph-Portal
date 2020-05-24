@@ -1,0 +1,21 @@
+.input-endorsement-list {
+    overflow-x: hidden;
+    position: relative;
+
+    $icon-params: (fill: $control-foreground, fill-hover: $glyph-hover, width: px(24), height: px(24));
+
+    button.add-key {
+        background: none;
+        border: none;
+        margin-left: px(8);
+        @include svg-button(map-merge($icon-params, $key-icon));
+    }
+    
+    span.placeholder {
+        margin-left: px(6);
+        font-size: px(16);
+        padding: px(1) px(3);
+        user-select: none;
+        color: $control-placeholder-color;
+    }
+}

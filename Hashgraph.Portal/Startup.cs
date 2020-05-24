@@ -23,9 +23,10 @@ namespace Hashgraph.Portal
             services.AddServerSideBlazor();
             services.AddSingleton<GatewayListService>();
             services.AddScoped<DefaultsService>();
+            services.AddScoped<ClipboardService>();
         }
 
- // Mark members as static
+        // Mark members as static
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
