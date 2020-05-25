@@ -1,5 +1,5 @@
 ﻿@page "/createfile"
-<EditForm class="query-page create-file-page" EditContext="@_editContext" OnValidSubmit="HandleValidSubmit">
+<EditForm class="query-page create-file-page" Model="@_input" OnValidSubmit="HandleValidSubmit">
     <h2>Create File</h2>
     <DataAnnotationsValidator />
     <section class="entry-form">
@@ -8,24 +8,12 @@
         <label for="payer">Payer</label>
         <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
         <label for="content">Content</label>
-        <div class="file-content">
-            <InputTextArea id="content" @bind-Value="_input.Content" />
-            @if (ClipboardService.Enabled)
-            {
-                <button type="button" @onclick="PasteContentFromClipboard">Paste</button>
-            }
-        </div>
-        <label for="encoding">Encoding</label>
-        <div class="encoding-types">
-            <label><input type="radio" name="contentEncoding" value="@FileInputEncoding.Text" checked="@(_input.ContentEncoding == FileInputEncoding.Text)" @onchange="@(()=> _input.ContentEncoding = FileInputEncoding.Text)" /> Text</label>
-            <label><input type="radio" id="encodeAsHex" name="contentEncoding" value="@FileInputEncoding.Text" checked="@(_input.ContentEncoding == FileInputEncoding.Hex)" @onchange="@(()=> _input.ContentEncoding = FileInputEncoding.Hex)" /> Hex</label>
-            <label><input type="radio" id="encodeAsBase64" name="contentEncoding" value="@FileInputEncoding.Base64" checked="@(_input.ContentEncoding == FileInputEncoding.Base64)" @onchange="@(()=> _input.ContentEncoding = FileInputEncoding.Base64)" /> Base 64</label>
-        </div>
+        <InputBinary @bind-Value="@_input.Content"/>
         <label for="endorsements">Administrators</label>
         <InputEndorsementList @bind-Value="@_input.Endorsements" Placeholder="Administrator Keys (optional)" />
         <label for="memo">Transaction Memo</label>
         <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Transaction Memo (optional)" />
-        <button type="submit">Create Consensus File</button>
+        <button type="submit">Create File</button>
     </section>
     <Network @ref="_network">
         @if (_output != null)

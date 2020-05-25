@@ -24,7 +24,7 @@ namespace Hashgraph.Portal.Components
         }
         private async Task PastePublicKeyFromClipboard()
         {
-            _input.KeyInHex = await ClipboardService.ReadFromClipboard();
+            _input.KeyInHex = await ClipboardService.ReadFromClipboardAsync();
             TryParseKey();
         }
         private async Task KeyInHexChanged(ChangeEventArgs evt)

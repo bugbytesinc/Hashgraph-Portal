@@ -1,0 +1,14 @@
+﻿<div class="input-binary @_otherCssClasses @_fieldCssClasses">
+    <InputTextArea Value="@_text" ValueChanged="OnTextChanged" ValueExpression="@(()=>_text)" />
+    <div>
+        <div>
+            <span>Encoding</span>
+            <label><input type="radio" name="contentEncoding" value="@BinaryInputEncoding.Text" checked="@(_encoding == BinaryInputEncoding.Text)" @onchange="@(()=> OnEncodingChanged(BinaryInputEncoding.Text))" /> Text</label>
+            <label><input type="radio" name="contentEncoding" value="@BinaryInputEncoding.Text" checked="@(_encoding == BinaryInputEncoding.Hex)" @onchange="@(()=> OnEncodingChanged(BinaryInputEncoding.Hex))" /> Hex</label>
+            <label><input type="radio" name="contentEncoding" value="@BinaryInputEncoding.Base64" checked="@(_encoding == BinaryInputEncoding.Base64)" @onchange="@(()=> OnEncodingChanged(BinaryInputEncoding.Base64))" /> Base 64</label>
+        </div>
+        <button type="button" @onclick="OnUploadFile">Upload</button>
+        <button type="button" @onclick="OnPasteContentFromClipboard">Paste</button>
+    </div>    
+</div>
+<UploadFileDialog @ref="_uploadFileDialog" />

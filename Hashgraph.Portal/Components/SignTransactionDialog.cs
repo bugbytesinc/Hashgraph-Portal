@@ -33,11 +33,11 @@ namespace Hashgraph.Portal.Components
         }
         private async Task CopyTransactionToClipboard()
         {
-            await ClipboardService.WriteToClipboard(_input.TransactionInHex);
+            await ClipboardService.WriteToClipboardAsync(_input.TransactionInHex);
         }
         private async Task PasteSignaturesFromClipboard()
         {
-            _input.SignatureInHex = await ClipboardService.ReadFromClipboard();
+            _input.SignatureInHex = await ClipboardService.ReadFromClipboardAsync();
             TryParseSignature();
         }
         private async Task SignatureInHexChanged(ChangeEventArgs evt)

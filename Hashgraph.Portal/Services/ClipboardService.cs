@@ -19,7 +19,7 @@ namespace Hashgraph.Portal.Services
             Enabled = await _runtime.InvokeAsync<bool>("window.hashgraph.supportsClipboard");
         }
 
-        public async Task WriteToClipboard(string data)
+        public async Task WriteToClipboardAsync(string data)
         {
             if (Enabled)
             {
@@ -27,7 +27,7 @@ namespace Hashgraph.Portal.Services
             }
         }
 
-        public async Task<string> ReadFromClipboard()
+        public async Task<string> ReadFromClipboardAsync()
         {
             if (Enabled)
             {

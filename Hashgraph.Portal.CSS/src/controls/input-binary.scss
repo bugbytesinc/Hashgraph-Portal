@@ -1,0 +1,47 @@
+.input-binary {
+    overflow: hidden;
+    position: relative;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) max-content;
+
+    &>textarea
+    {
+        font-size: px(16);        
+        padding: px(1) px(3);
+        min-height: px(64);
+        max-height: px(256);
+        color: $control-foreground;
+        background-color: $control-content-background;
+        border: 1px solid $control-border;
+        resize: none;
+    }
+    &>div
+    {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) max-content max-content;
+        align-items: baseline;
+        &>div
+        {
+            margin-right: px(12);
+        }
+
+        label {
+            cursor: pointer;
+            margin-right: px(4);
+        }
+
+        button {
+            font-size: px(12);
+            padding: px(2) px(6);
+            margin-top: px(-1);
+            margin-left: px(-1);
+            justify-self: end;
+            align-self: start;
+        }
+    }
+    &.invalid {
+        &>textarea {
+            border-color: $control-invalid-border-color;
+        }
+    }
+}

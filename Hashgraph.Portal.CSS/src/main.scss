@@ -23,6 +23,8 @@
 @import 'controls/global-settings';
 @import 'controls/update-global-settings-dialog';
 @import 'controls/binary-display';
+@import 'controls/input-binary';
+@import 'controls/upload-file-dialog';
 
 @import 'pages/home';
 @import 'pages/query';
@@ -31,4 +33,3 @@
 @import 'pages/get-account-records';
 @import 'pages/update-topic-page';
 @import 'pages/send-message-page';
-@import 'pages/create-file-page';
