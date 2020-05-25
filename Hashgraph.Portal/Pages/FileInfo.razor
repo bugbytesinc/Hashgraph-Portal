@@ -1,0 +1,51 @@
+﻿@page "/fileinfo"
+<EditForm class="query-page get-file-info" Model="@_input" OnValidSubmit="HandleValidSubmit">
+    <h2>Get File Info</h2>
+    <DataAnnotationsValidator />
+    <section class="entry-form">
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <label for="memo">Payment Memo</label>
+        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Query Payment Memo (optional)" />
+        <label for="file">File</label>
+        <InputAddress id="file" @bind-Value="@_input.File" placeholder="File (shrd.rlm.num)" />
+        <button type="submit">Get File Info</button>
+    </section>
+    <Network @ref="_network">
+        @if (_output != null)
+        {
+            <div>File Address</div>
+            <AddressDisplay Address="@_input.File" />
+            <div>Size (bytes)</div>
+            <div>@_output.Size</div>
+            <div>Expiration</div>
+            <div>@_output.Expiration</div>
+            @if (_output.Endorsements == null || _output.Endorsements.Length == 0)
+            {
+                <div>Administrator</div>
+                <div>None</div>
+            }
+            else if (_output.Endorsements.Length == 1)
+            {
+                <div>Administrator</div>
+                <EndorsementDisplay Endorsement="_output.Endorsements[0]" />
+            }
+            else
+            {
+                <div>Administrators</div>
+                <div>
+                    @foreach (var admin in _output.Endorsements)
+                    {
+                        <EndorsementDisplay Endorsement="admin" />
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <div>Waiting for Input</div>
+        }
+    </Network>
+</EditForm>
