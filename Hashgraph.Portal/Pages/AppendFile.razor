@@ -1,0 +1,28 @@
+﻿@page "/appendfile"
+<EditForm class="query-page create-file-page" Model="@_input" OnValidSubmit="HandleValidSubmit">
+    <h2>Create File</h2>
+    <DataAnnotationsValidator />
+    <section class="entry-form">
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <label for="file">File</label>
+        <InputAddress id="file" @bind-Value="@_input.File" placeholder="File (shrd.rlm.num)" />
+        <label for="content">Content</label>
+        <InputBinary @bind-Value="@_input.Content" />
+        <label for="memo">Transaction Memo</label>
+        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Transaction Memo (optional)" />
+        <button type="submit">Append Content to File</button>
+    </section>
+    <Network @ref="_network">
+        @if (_output != null)
+        {
+            <div>Success, file content appended.</div>
+        }
+        else
+        {
+            <div>Waiting for Input</div>
+        }
+    </Network>
+</EditForm>

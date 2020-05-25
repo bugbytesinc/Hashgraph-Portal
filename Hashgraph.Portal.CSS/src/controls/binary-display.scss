@@ -17,6 +17,7 @@
         overflow-y: auto;
 
         &.text {
+            white-space: pre-wrap;
             overflow-wrap: break-word;
         }
 
