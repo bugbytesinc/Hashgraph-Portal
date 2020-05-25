@@ -1,0 +1,10 @@
+.update-file-page
+{
+    &>section
+    {
+        &>.toggle-property
+        {
+            grid-column: 1/3;
+        }
+    }
+}

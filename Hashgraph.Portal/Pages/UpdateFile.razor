@@ -1,0 +1,44 @@
+﻿@page "/updatefile"
+<EditForm class="query-page update-file-page" EditContext="@_editContext" OnValidSubmit="HandleValidSubmit">
+    <h2>Update Consensus File</h2>
+    <DataAnnotationsValidator />
+    <section class="entry-form">
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="(shrd.rlm.num)" />
+        <label for="memo">Memo</label>
+        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Transaction Memo (optional)" />
+        <label for="File">File to Update</label>
+        <InputAddress id="File" @bind-Value="@_input.File" placeholder="(shrd.rlm.num)" />
+        <div class="toggle-property">
+            <InputCheckbox id="updateadministrator" @bind-Value="@_input.UpdateAdministrators" />
+            <label for="updateadministrator">Update Administrators (aka. rotate keys)</label>
+        </div>
+        @if (_input.UpdateAdministrators)
+        {
+            <label for="administrator">Administrators</label>
+            <InputEndorsementList id="administrator" @bind-Value="@_input.Administrators" Placeholder="None (make imutable)" />
+        }
+        <div class="toggle-property">
+            <InputCheckbox id="updatecontents" @bind-Value="@_input.UpdateContents" />
+            <label for="updatecontents">Replace Contents</label>
+        </div>
+        @if (_input.UpdateContents)
+        {
+            <label for="contents">New Contents</label>
+            <InputBinary id="contents" @bind-Value="@_input.Contents" />
+        }
+        <button type="submit">Update File</button>
+    </section>
+    <Network @ref="_network">
+        @if (_output != null)
+        {
+            <div>File Updated Successfully!</div>
+        }
+        else
+        {
+            <div>Waiting for Input</div>
+        }
+    </Network>
+</EditForm>
