@@ -1,0 +1,8 @@
+.input-arguments {
+    overflow-x: hidden;
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    row-gap: px(6);
+    column-gap: px(6);
+}

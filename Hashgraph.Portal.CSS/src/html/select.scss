@@ -1,0 +1,20 @@
+select
+{
+    font-size: px(16);
+    padding: px(1) px(3);
+    color: $control-foreground;
+    background-color: $control-content-background;
+    border: 1px solid $control-border;
+    &::placeholder
+    {
+        color: $control-placeholder-color;
+    }
+    &::selection{
+        color: $control-highlight-foreground;
+        background-color: $control-highlight-background;
+    }
+    &.invalid
+    {
+        border-color: $control-invalid-border-color;
+    }
+}
