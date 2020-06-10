@@ -144,7 +144,14 @@ namespace Hashgraph.Portal.Components
 
         private async Task CopyDataToClipboard()
         {
-            await ClipboardService.WriteToClipboardAsync(Encoding.Default.GetString(_data.Span));
+            if (_data.ToArray().Any(b => b < 9 || b > 126 || (b > 13 && b < 32)))
+            {
+                await ClipboardService.WriteToClipboardAsync(Hex.FromBytes(_data));
+            }
+            else
+            {
+                await ClipboardService.WriteToClipboardAsync(Encoding.Default.GetString(_data.Span));
+            }
         }
 
         private string GetBaseClassAttributes()

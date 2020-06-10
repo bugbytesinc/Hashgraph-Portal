@@ -1,6 +1,6 @@
-﻿@page "/callcontract"
-<EditForm class="query-page call-contract-page" Model="@_input" OnValidSubmit="HandleValidSubmit">
-    <h2>Call Contract</h2>
+﻿@page "/querycontract"
+<EditForm class="query-page query-contract-page" Model="@_input" OnValidSubmit="HandleValidSubmit">
+    <h2>Query Contract</h2>
     <DataAnnotationsValidator />
     <section class="entry-form">
         <label for="gateway">Gateway Node</label>
@@ -11,46 +11,46 @@
         <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Transaction Memo (optional)" />
         <label for="contract">Contract</label>
         <InputAddress id="contract" @bind-Value="@_input.Contract" placeholder="Contract (shrd.rlm.num)" />
-        <label for="payable">Payable Amount (Xfer from Payer, tℏ)</label>
-        <InputNumber id="payable" @bind-Value="@_input.Amount" placeholder="Payable Amount (tℏ)" />
         <label for="maxgas">Max Gas (Xfer from Payer, tℏ)</label>
         <InputNumber id="maxgas" @bind-Value="@_input.Gas" placeholder="Max. Allowed Gas (tℏ)" />
+        <label for="bytecharge">Returned Bytes Charge (Xfer from Payer, tℏ)</label>
+        <InputNumber id="bytecharge" @bind-Value="@_input.ReturnValueCharge" placeholder="Fee for Bytes Ret. (tℏ)" />
+        <label for="maxsize">Maximum Return Size (bytes)</label>
+        <InputNumber id="maxsize" @bind-Value="@_input.MaxAllowedReturnSize" placeholder="Max Ret. Size (bytes)" />
         <label for="functionname">Function Name</label>
         <InputText id="functionname" @bind-Value="@_input.FunctionName" Placeholder="Function Name" />
         <label for="arguments">Arguments</label>
         <InputArguments id="arguments" @bind-Value="@_input.Arguments" />
-        <p class="note"><b>NOTE:</b> Calling a contract and retrieving the results requires two transactions.  If you do not wish to retrieve the results returned from the contract, you may cancel the second transaction signing request.</p>
-        <button type="submit">Call Contract</button>
+        <button type="submit">Query Contract</button>
     </section>
     <Network @ref="_network">
         @if (_output != null)
         {
-            var result = _output.CallResult;
-            @if (!string.IsNullOrWhiteSpace(result.Error))
+            @if (!string.IsNullOrWhiteSpace(_output.Error))
             {
                 <div>Error</div>
-                <div>@result.Error</div>
+                <div>@_output.Error</div>
             }
             <div>Result</div>
-            <BinaryDisplay Data="@result.Result.Data" />
+            <BinaryDisplay Data="@_output.Result.Data" />
             <div>Bloom</div>
-            <BinaryDisplay Data="@result.Bloom" />
+            <BinaryDisplay Data="@_output.Bloom" />
             <div>Gas</div>
-            <BalanceDisplay Balance="@result.Gas" />
-            @if (result.CreatedContracts.Length > 0)
+            <BalanceDisplay Balance="@_output.Gas" />
+            @if (_output.CreatedContracts.Length > 0)
             {
                 <div>Created Contracts</div>
                 <div>
-                    @foreach (var contract in result.CreatedContracts)
+                    @foreach (var contract in _output.CreatedContracts)
                     {
                         <div><AddressDisplay Address="@contract" /></div>
                     }
                 </div>
             }
-            if (result.Events.Length > 0)
+            if (_output.Events.Length > 0)
             {
                 <h4>Events</h4>
-                @foreach (var evt in result.Events)
+                @foreach (var evt in _output.Events)
                 {
                     <div>Emitting Contract</div>
                     <AddressDisplay Address="@evt.Contract" />
@@ -67,11 +67,9 @@
                         </div>
                     }
                     <div>Result</div>
-                    <BinaryDisplay Data="@result.Result.Data" />
+                    <BinaryDisplay Data="@_output.Result.Data" />
                 }
             }
-            <h4>Record</h4>
-            <RecordDisplay Record="@_output" />
         }
         else
         {
