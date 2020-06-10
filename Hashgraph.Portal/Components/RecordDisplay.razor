@@ -1,0 +1,32 @@
+﻿@code {
+    [Parameter] public TransactionRecord Record { get; set; }
+}
+<div>Id</div>
+<TxIdDisplay TxId="@Record.Id" />
+<div>Consensus Timestamp</div>
+<div>@Record.Concensus</div>
+<div>Status</div>
+<div>@Record.Status</div>
+<div>Hash</div>
+<div><HashDisplay Hash="@Record.Hash" /></div>
+<div>Payer</div>
+<AddressDisplay Address="@Record.Id.Address" />
+<div>Transaction Fee</div>
+<BalanceDisplay Balance="@Record.Fee" />
+<div>Memo</div>
+<div>@Record.Memo</div>
+<div>Transfers</div>
+<div class="transfers">
+    @foreach (var transfer in Record.Transfers)
+    {
+        <AddressDisplay Address="@transfer.Key" />
+        @if (transfer.Value > 0)
+        {
+            <BalanceDisplay Balance="@((ulong) transfer.Value)" />
+        }
+        else
+        {
+            <div>-<BalanceDisplay Balance="@((ulong) -transfer.Value)" /></div>
+        }
+    }
+</div>

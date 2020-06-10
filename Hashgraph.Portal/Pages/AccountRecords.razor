@@ -34,34 +34,8 @@
             }
             @foreach (var record in _output)
             {
-                <h4><TxIdDisplay TxId="@record.Id" /></h4>
-                <div>Consensus Timestamp</div>
-                <div>@record.Concensus</div>
-                <div>Status</div>
-                <div>@record.Status</div>
-                <div>Hash</div>
-                <HashDisplay Hash="@record.Hash" />
-                <div>Payer</div>
-                <AddressDisplay Address="@record.Id.Address" />
-                <div>Transaction Fee</div>
-                <BalanceDisplay Balance="@record.Fee" />
-                <div>Memo</div>
-                <div>@record.Memo</div>
-                <div>Transfers</div>
-                <div class="transfers">
-                    @foreach (var transfer in record.Transfers)
-                    {
-                        <AddressDisplay Address="@transfer.Key" />
-                        @if (transfer.Value > 0)
-                        {
-                            <BalanceDisplay Balance="@((ulong) transfer.Value)" />
-                        }
-                        else
-                        {
-                            <div>-<BalanceDisplay Balance="@((ulong) -transfer.Value)" /></div>
-                        }
-                    }
-                </div>
+                <h4>Record</h4>
+                <RecordDisplay Record="@record"/>
             }
         }
     </Network>
