@@ -1,0 +1,51 @@
+﻿@page "/Contractinfo"
+<EditForm class="query-page get-Contract-info" Model="@_input" OnValidSubmit="HandleValidSubmit">
+    <h2>Get Contract Info</h2>
+    <DataAnnotationsValidator />
+    <section class="entry-form">
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <label for="memo">Payment Memo</label>
+        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Query Payment Memo (optional)" />
+        <label for="contract">Contract</label>
+        <InputAddress id="contract" @bind-Value="@_input.Contract" placeholder="Contract (shrd.rlm.num)" />
+        <button type="submit">Get Contract Info</button>
+    </section>
+    <Network @ref="_network">
+        @if (_output != null)
+        {
+            <div>Contract Address</div>
+            <AddressDisplay Address="@_output.Contract" />
+            <div>Crypto Account Address</div>
+            <AddressDisplay Address="@_output.Address" />
+            <div>Smart Contract Address</div>
+            <div>@_output.SmartContractId</div>
+            @if (_output.Administrator == null)
+            {
+                <div>Administrator</div>
+                <div>None</div>
+            }
+            else
+            {
+                <div>Administrator</div>
+                <EndorsementDisplay Endorsement="_output.Administrator" />
+            }
+            <div>Expiration</div>
+            <div>@_output.Expiration</div>
+            <div>Auto-Renewal Period</div>
+            <TimespanDisplay TimeSpan="@_output.RenewPeriod" />
+            <div>Size (bytes)</div>
+            <div>@_output.Size</div>
+            <div>Memo</div>
+            <div>@_output.Memo</div>
+            <div>Balance</div>
+            <BalanceDisplay Balance="@_output.Balance" />
+        }
+        else
+        {
+            <div>Waiting for Input</div>
+        }
+    </Network>
+</EditForm>
