@@ -28,6 +28,10 @@ namespace Hashgraph.Portal.Components
                 builder.AddAttribute(6, "value", FormatValueAsString(KeyType.RSA3072));
                 builder.AddContent(7, "RSA 3072");
                 builder.CloseElement();
+                builder.OpenElement(5, "option");
+                builder.AddAttribute(6, "value", FormatValueAsString(KeyType.Contract));
+                builder.AddContent(7, "CONTRACT");
+                builder.CloseElement();
                 builder.CloseElement();
             }
         }
@@ -43,6 +47,7 @@ namespace Hashgraph.Portal.Components
                         case KeyType.Ed25519:
                         case KeyType.ECDSA384:
                         case KeyType.RSA3072:
+                        case KeyType.Contract:
                             result = keyType;
                             validationErrorMessage = null;
                             return true;

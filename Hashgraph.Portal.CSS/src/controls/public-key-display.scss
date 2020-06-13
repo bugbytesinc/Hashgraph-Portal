@@ -47,4 +47,14 @@
             padding-top: 0.4em;
         }
     }
+
+    &.key-type-contract {
+        &::before {
+            content: 'CONTRACT';
+            color: $group-box-header-foreground;
+            margin-right: px(8);
+            font-size: 0.6em;
+            padding-top: 0.4em;
+        }
+    }
 }

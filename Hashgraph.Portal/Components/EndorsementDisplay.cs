@@ -29,6 +29,7 @@ namespace Hashgraph.Portal.Components
                         case KeyType.Ed25519:
                         case KeyType.RSA3072:
                         case KeyType.ECDSA384:
+                        case KeyType.Contract:
                             builder.OpenComponent<PublicKeyDisplay>(0);
                             builder.AddMultipleAttributes(1, AdditionalAttributes);
                             builder.AddAttribute(2, "class", GetBaseClassAttributes());

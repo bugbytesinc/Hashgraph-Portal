@@ -80,6 +80,7 @@ namespace Hashgraph.Portal.Components
                             case SignaturePair.SignatureOneofCase.Ed25519:
                             case SignaturePair.SignatureOneofCase.RSA3072:
                             case SignaturePair.SignatureOneofCase.ECDSA384:
+                            case SignaturePair.SignatureOneofCase.Contract:
                                 continue;
                             default:
                                 _input.PendingSignatureMap = null;
@@ -209,6 +210,9 @@ namespace Hashgraph.Portal.Components
                     break;
                 case Proto.SignaturePair.SignatureOneofCase.ECDSA384:
                     _input.Invoice.AddSignature(KeyType.ECDSA384, signature.PubKeyPrefix.ToByteArray(), signature.ECDSA384.ToByteArray());
+                    break;
+                case Proto.SignaturePair.SignatureOneofCase.Contract:
+                    _input.Invoice.AddSignature(KeyType.Contract, signature.PubKeyPrefix.ToByteArray(), signature.Contract.ToByteArray());
                     break;
             }
         }
