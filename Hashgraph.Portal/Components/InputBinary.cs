@@ -16,7 +16,7 @@ namespace Hashgraph.Portal.Components
         private BinaryInputEncoding _encoding = BinaryInputEncoding.Text;
         private ReadOnlyMemory<byte> _data;
         private string _text;
-        private string _textParsingError = null;
+        private string _textParsingError;
         private FieldIdentifier _fieldIdentifier;
         private string _fieldCssClasses => _editContext?.FieldCssClass(_fieldIdentifier) ?? string.Empty;
         private string _otherCssClasses = string.Empty;

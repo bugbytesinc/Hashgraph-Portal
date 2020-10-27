@@ -9,9 +9,9 @@ namespace Hashgraph.Portal.Components
     public class InputGateway : InputBase<Gateway>
     {
         private SelectGatewayDialog SelectGatewayDialog { get; set; }
-        private void OnShowDialog()
+        private async Task OnShowDialogAsync()
         {
-            SelectGatewayDialog.Show(Value);
+            await SelectGatewayDialog.ShowAsync(Value);
         }
         private async Task OnGatewaySelected(Gateway gateway)
         {
@@ -27,7 +27,7 @@ namespace Hashgraph.Portal.Components
                 builder.OpenElement(0, "div");
                 builder.AddMultipleAttributes(1, AdditionalAttributes);
                 builder.AddAttribute(2, "class", $"gateway-node-selector {CssClass}");
-                builder.AddAttribute(3, "onclick", EventCallback.Factory.Create<Microsoft.AspNetCore.Components.Web.MouseEventArgs>(this, OnShowDialog));
+                builder.AddAttribute(3, "onclick", EventCallback.Factory.Create<Microsoft.AspNetCore.Components.Web.MouseEventArgs>(this, OnShowDialogAsync));
                 if (Value == null)
                 {
                     builder.OpenElement(4, "span");

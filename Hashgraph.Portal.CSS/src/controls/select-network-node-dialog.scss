@@ -1,9 +1,20 @@
 .select-network-node-dialog {
     .dialog-content {
         &>div{
-            font-weight: bold;
             margin: px(16) 0;
-            border-bottom: px(1) solid $control-border;
+            padding: px(8) 0;
+            display: grid;
+            overflow: hidden;
+            grid-template-columns: min-content 1fr;
+            font-weight: bold;
+            border-bottom: px(1) solid $control-border;  
+            align-items: baseline;      
+            &>select
+            {
+                margin-left: px(10);
+                font-weight: bold;
+                border: none;
+            }
         }
         table
         {

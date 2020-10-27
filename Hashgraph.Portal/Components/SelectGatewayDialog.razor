@@ -4,34 +4,25 @@
         <EditForm Model="@_input" class="dialog-container select-network-node-dialog">
             <div class="dialog-title">Please Select a Network Node</div>
             <div class="dialog-content">
-                @if (GatewayListService.MainNet.Count > 0)
-                {
-                    <div>Main Network</div>
-                    <table>
-                        @foreach (var node in GatewayListService.MainNet)
+                <div>
+                    <label for="selectnetwork">Network</label>
+                    <InputSelect id="selectnetwork" Value="@_input.SelectedNetwork" ValueExpression="@(()=>_input.SelectedNetwork)" ValueChanged="@((string value)=>NetworkChanged(value))">
+                        @foreach (var network in _input.Networks)
                         {
-                            <tr @onclick="@(()=>Select(node))" class="@(node == _selected ? "selected" : "")">
-                                <td>@node.ShardNum.@node.RealmNum.@node.AccountNum</td>
-                                <td> at </td>
-                                <td>@node.Url</td>
-                            </tr>
+                            <option value="@network">@network</option>
                         }
-                    </table>
-                }
-                @if (GatewayListService.TestNet.Count > 0)
-                {
-                    <div>Test Network</div>
-                    <table>
-                        @foreach (var node in GatewayListService.TestNet)
-                        {
-                            <tr @onclick="@(()=>Select(node))" class="@(node == _selected ? "selected" : "")">
-                                <td>@node.ShardNum.@node.RealmNum.@node.AccountNum</td>
-                                <td> at </td>
-                                <td>@node.Url</td>
-                            </tr>
-                        }
-                    </table>
-                }
+                    </InputSelect>
+                </div>
+                <table>
+                    @foreach (var node in _input.Gateways)
+                    {
+                        <tr @onclick="@(()=>Select(node))" class="@(node == _input.SelectedGateway ? "selected" : "")">
+                            <td>@node.ShardNum.@node.RealmNum.@node.AccountNum</td>
+                            <td> at </td>
+                            <td>@node.Url</td>
+                        </tr>
+                    }
+                </table>
             </div>
             <div class="dialog-footer">
                 <button type="button" @onclick="Close">Close</button>

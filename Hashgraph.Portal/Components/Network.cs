@@ -57,7 +57,7 @@ namespace Hashgraph.Portal.Components
                 {
                     throw new ArgumentNullException(nameof(executeFunction));
                 }
-                _isMainNetwork = GatewayListService.MainNet.Contains(gateway);
+                _isMainNetwork = GatewayListService.IsMainNetwork(gateway);
                 await using var client = DefaultsService.RootClient.Clone(ctx =>
                 {
                     ctx.Gateway = gateway;
