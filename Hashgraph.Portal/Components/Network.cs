@@ -18,6 +18,7 @@ namespace Hashgraph.Portal.Components
     {
         [Parameter] public RenderFragment ChildContent { get; set; }
         [CascadingParameter] public EditContext CurrentEditContext { get; set; }
+        [Inject] public RootClientService RootClientService { get; set; }
         [Inject] public DefaultsService DefaultsService { get; set; }
         [Inject] public GatewayListService GatewayListService { get; set; }
 
@@ -58,7 +59,7 @@ namespace Hashgraph.Portal.Components
                     throw new ArgumentNullException(nameof(executeFunction));
                 }
                 _isMainNetwork = GatewayListService.IsMainNetwork(gateway);
-                await using var client = DefaultsService.RootClient.Clone(ctx =>
+                await using var client = RootClientService.RootClient.Clone(ctx =>
                 {
                     ctx.Gateway = gateway;
                     ctx.Payer = payer;

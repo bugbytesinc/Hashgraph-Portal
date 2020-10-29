@@ -1,5 +1,4 @@
 #pragma warning disable CA1822
-using Blazored.LocalStorage;
 using Hashgraph.Portal.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,8 +21,8 @@ namespace Hashgraph.Portal
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddBlazoredLocalStorage();
-            services.AddScoped<GatewayListService>();
+            services.AddSingleton<RootClientService>();
+            services.AddSingleton<GatewayListService>();
             services.AddScoped<DefaultsService>();
             services.AddScoped<ClipboardService>();
         }

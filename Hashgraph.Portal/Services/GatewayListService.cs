@@ -60,20 +60,20 @@ namespace Hashgraph.Portal.Services
                         "Test",
                         new []
                         {
-                            new Gateway("0.testnet.hedera.com:50211", 0, 0, 3),
-                            new Gateway("1.testnet.hedera.com:50211", 0, 0, 4),
-                            new Gateway("2.testnet.hedera.com:50211", 0, 0, 5),
-                            new Gateway("3.testnet.hedera.com:50211", 0, 0, 6)
+                            new Gateway("34.94.106.61:50211", 0, 0, 3),
+                            new Gateway("35.237.119.55:50211", 0, 0, 4),
+                            new Gateway("35.245.27.193:50211", 0, 0, 5),
+                            new Gateway("34.83.112.116:50211", 0, 0, 6)
                         }
                     },
                     {
                         "Preview",
                         new []
                         {
-                            new Gateway("0.previewnet.hedera.com:50211", 0, 0, 3),
-                            new Gateway("1.previewnet.hedera.com:50211", 0, 0, 4),
-                            new Gateway("2.previewnet.hedera.com:50211", 0, 0, 5),
-                            new Gateway("3.previewnet.hedera.com:50211", 0, 0, 6)
+                            new Gateway("35.231.208.148:50211", 0, 0, 3),
+                            new Gateway("35.199.15.177:50211", 0, 0, 4),
+                            new Gateway("35.225.201.195:50211", 0, 0, 5),
+                            new Gateway("35.247.109.135:50211", 0, 0, 6)
                         }
                     }
                 };
