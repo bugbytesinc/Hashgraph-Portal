@@ -72,15 +72,15 @@ namespace Hashgraph.Portal.Pages
                 }
                 if (_input.UpdateAdministrator)
                 {
-                    updateParams.Administrator = _input.Administrator == null ? Endorsement.None : _input.Administrator;
+                    updateParams.Administrator = _input.Administrator ?? Endorsement.None;
                 }
                 if (_input.UpdateParticipant)
                 {
-                    updateParams.Participant = _input.Participant == null ? Endorsement.None : _input.Participant;
+                    updateParams.Participant = _input.Participant ?? Endorsement.None;
                 }
                 if (_input.UpdateRenewAccount)
                 {
-                    updateParams.RenewAccount = _input.RenewAccount == null ? Address.None : _input.RenewAccount;
+                    updateParams.RenewAccount = _input.RenewAccount ?? Address.None;
                 }
                 _output = await client.UpdateTopicAsync(updateParams, ctx => ctx.Memo = _input.Memo?.Trim());
             });

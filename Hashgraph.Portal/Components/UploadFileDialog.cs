@@ -1,6 +1,6 @@
 ﻿#pragma warning disable CA1031
-using BlazorInputFile;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.IO;
 using System.Linq;
@@ -10,6 +10,7 @@ namespace Hashgraph.Portal.Components
 {
     public partial class UploadFileDialog : ComponentBase
     {
+        private const int MAX_FILESIZE = 5120;
         private UploadFileInput _input = null;
         private TaskCompletionSource<ReadOnlyMemory<byte>> _taskCompletionSource = null;
         public Task<ReadOnlyMemory<byte>> PromptToUploadFile()
@@ -19,14 +20,23 @@ namespace Hashgraph.Portal.Components
             StateHasChanged();
             return _taskCompletionSource.Task;
         }
-        private async Task OnFileInputChanged(IFileListEntry[] files)
+        private async Task OnFileInputChanged(InputFileChangeEventArgs evt)
         {
-            // Todo check for 4K
-            var file = files.FirstOrDefault();
-            if (file != null)
+            var file = evt.File;
+            if( file is null)
+            {
+                _input.Contents = ReadOnlyMemory<byte>.Empty;
+                _input.StatusMessage = "Please select a file to upload...";
+            }
+            else if (file.Size > MAX_FILESIZE)
+            {
+                _input.Contents = ReadOnlyMemory<byte>.Empty;
+                _input.StatusMessage = "File is too big...";
+            }
+            else
             {
                 await using var ms = new MemoryStream();
-                await file.Data.CopyToAsync(ms);
+                await file.OpenReadStream(MAX_FILESIZE).CopyToAsync(ms);
                 _input.Contents = ms.ToArray();
                 if(_input.Contents.IsEmpty)
                 {
@@ -36,11 +46,6 @@ namespace Hashgraph.Portal.Components
                 {
                     _input.StatusMessage = $"Loaded {file.Size} bytes from {file.Name}";
                 }
-            }
-            else
-            {
-                _input.Contents = ReadOnlyMemory<byte>.Empty;
-                _input.StatusMessage = "Please select a file to upload...";
             }
         }
         private void Submit()

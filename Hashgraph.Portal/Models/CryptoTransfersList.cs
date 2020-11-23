@@ -7,8 +7,8 @@ namespace Hashgraph.Portal.Models
 {
     public sealed class CryptoTransferList : IEquatable<CryptoTransferList>
     {
-        public List<CryptoTransfer> From { get; } = new List<CryptoTransfer>();
-        public List<CryptoTransfer> To { get; } = new List<CryptoTransfer>();
+        public List<CryptoTransfer> From { get; } = new List<CryptoTransfer>(new []{new CryptoTransfer()});
+        public List<CryptoTransfer> To { get; } = new List<CryptoTransfer>(new[] { new CryptoTransfer() });
         public bool Equals(CryptoTransferList other)
         {
             if (other is null || From.Count != other.From.Count || To.Count != other.To.Count)

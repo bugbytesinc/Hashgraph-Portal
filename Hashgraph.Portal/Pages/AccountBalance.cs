@@ -12,7 +12,7 @@ namespace Hashgraph.Portal.Pages
 
         private Network _network = null;
         private AccountBalanceInput _input = new AccountBalanceInput();
-        private ulong? _output = null;
+        private AccountBalances _output = null;
 
         protected override void OnInitialized()
         {
@@ -25,7 +25,7 @@ namespace Hashgraph.Portal.Pages
             _output = null;
             await _network.ExecuteAsync(_input.Gateway, null, async client =>
             {
-                _output = await client.GetAccountBalanceAsync(_input.Address);
+                _output = await client.GetAccountBalancesAsync(_input.Address);
             });
         }
     }

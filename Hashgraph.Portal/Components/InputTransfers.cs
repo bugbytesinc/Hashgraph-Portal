@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace Hashgraph.Portal.Components
 {
-    public partial class InputTransfers : ComponentBase
+    public partial class InputTransfers : ComponentBase, IDisposable
     {
         private bool _simpleMode = true;
         private FieldIdentifier _fieldIdentifier;
@@ -18,6 +18,8 @@ namespace Hashgraph.Portal.Components
         private ValidationMessageStore _validationMessages;
         [CascadingParameter] private EditContext _editContext { get; set; }
 
+        [Parameter] public string Unit { get; set; }
+        [Parameter] public string TransferLabel { get; set; }
         [Parameter] public CryptoTransferList Value { get; set; }
         [Parameter] public EventCallback<CryptoTransferList> ValueChanged { get; set; }
         [Parameter] public Expression<Func<CryptoTransferList>> ValueExpression { get; set; }
@@ -44,7 +46,7 @@ namespace Hashgraph.Portal.Components
                 string.Empty;
             _simpleMode = Value != null && Value.From.Count == 1 && Value.To.Count == 1 && Value.From[0] == Value.To[0];
             _validationMessages = new ValidationMessageStore(_editContext);
-            _editContext.OnValidationRequested += (o, e) => UpdateValidationMessages();
+            _editContext.OnValidationRequested += OnValidationRequested;
             _editContext.OnFieldChanged += CheckForChildFieldChanges;
         }
 
@@ -117,6 +119,10 @@ namespace Hashgraph.Portal.Components
             _ = ValueChanged.InvokeAsync(Value);
             _editContext?.NotifyFieldChanged(_fieldIdentifier);
         }
+        private void OnValidationRequested(object sender, ValidationRequestedEventArgs e)
+        {
+            UpdateValidationMessages();
+        }
         private void UpdateValidationMessages()
         {
             if (_validationMessages != null)
@@ -128,19 +134,19 @@ namespace Hashgraph.Portal.Components
                     var (invalidFromAddress, invalidFromAmount, sumFrom) = ValidateList(Value.From);
                     if (invalidToAddress || invalidFromAddress)
                     {
-                        _validationMessages.Add(_fieldIdentifier, "Not all Transfer Addresses are Valid.");
+                        _validationMessages.Add(_fieldIdentifier, $"Not all {TransferLabel} Transfer Addresses are Valid.");
                     }
                     else if (invalidToAmount || invalidFromAmount)
                     {
-                        _validationMessages.Add(_fieldIdentifier, "Not all Transfer Amounts are Valid.");
+                        _validationMessages.Add(_fieldIdentifier, $"Not all {TransferLabel} Transfer Amounts are Valid.");
                     }
                     else if (sumTo != sumFrom)
                     {
-                        _validationMessages.Add(_fieldIdentifier, "The sum of Transfers From and To do not match.");
+                        _validationMessages.Add(_fieldIdentifier, $"The sum of {TransferLabel} Transfers From and To do not match.");
                     }
                     else if (Value.ToTransferDictionary().Any(pair => pair.Value == 0))
                     {
-                        _validationMessages.Add(_fieldIdentifier, "The net sum of transfers is zero for one or more accounts.");
+                        _validationMessages.Add(_fieldIdentifier, $"The net sum of {TransferLabel} Transfers is zero for one or more accounts.");
                     }
                 }
                 _editContext.NotifyValidationStateChanged();
@@ -158,6 +164,26 @@ namespace Hashgraph.Portal.Components
                 sum = sum + xfer.Amount;
             }
             return (invalidAddress, invalidAmount, sum);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _editContext.OnValidationRequested -= OnValidationRequested;
+                _editContext.OnFieldChanged -= CheckForChildFieldChanges;
+                if (_validationMessages != null)
+                {
+                    _validationMessages.Clear();
+                }
+                InvokeAsync(() => _editContext.NotifyValidationStateChanged());
+            }
         }
     }
 }
