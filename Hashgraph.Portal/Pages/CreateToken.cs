@@ -42,7 +42,7 @@ namespace Hashgraph.Portal.Pages
                     SupplyEndorsement = _input.SupplyEndorsement != Endorsement.None ? _input.SupplyEndorsement : null,
                     InitializeSuspended = _input.InitializeSuspended,
                     Expiration = DateTime.UtcNow.AddDays(90),
-                    RenewPeriod = hasRenewalAccount ? TimeSpan.FromDays(90) : TimeSpan.Zero,
+                    RenewPeriod = hasRenewalAccount ? TimeSpan.FromDays(90) : null,
                     RenewAccount = hasRenewalAccount ? _input.RenewAccount : null
                 };
                 _output = await client.CreateTokenAsync(createParams, ctx => ctx.Memo = _input.Memo?.Trim());
