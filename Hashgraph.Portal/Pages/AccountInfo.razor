@@ -18,16 +18,12 @@
         {
             <div>Account Address</div>
             <AddressDisplay Address="@_output.Address" />
-            <div>Balance</div>
+            <div>Crypto Balance</div>
             <BalanceDisplay Balance="@_output.Balance" />
             <div>Smart Contract ID</div>
             <div>@_output.SmartContractId</div>
             <div>Proxy Address</div>
             <AddressDisplay Address="@_output.Proxy" />
-            <div>Send Create Record Threshold</div>
-            <BalanceDisplay Balance="@_output.SendThresholdCreateRecord" />
-            <div>Receive Create Record Threshold</div>
-            <BalanceDisplay Balance="@_output.ReceiveThresholdCreateRecord" />
             <div>Receive Signature Required</div>
             <div>@(_output.ReceiveSignatureRequired ? "Yes" : "No")</div>
             <div>Auto-Renewal Period</div>
@@ -36,6 +32,41 @@
             <div>@_output.Expiration</div>
             <div>Endorsement</div>
             <EndorsementDisplay Endorsement="_output.Endorsement" />
+            @if (_output.Tokens.Count > 0)
+            {
+                <h3>Tokens</h3>
+                <div class="token-balances">
+                    <b>ID</b>
+                    <b>Symbol</b>
+                    <b>Balance</b>
+                    <b>Status</b>
+                    @foreach (var record in _output.Tokens)
+                    {
+                        var statuses = new List<String>(2);
+                        if(record.KycStatus == TokenKycStatus.Revoked)
+                        {
+                            statuses.Add("KYC Pending");
+                        }
+                        if(record.TradableStatus == TokenTradableStatus.Suspended)
+                        {
+                            statuses.Add("Suspended");
+                        }
+                        if(statuses.Count == 0)
+                        {
+                            statuses.Add("OK");
+                        }
+                        <AddressDisplay Address="@record.Token" />
+                        <div>@record.Symbol</div>
+                        <div>@record.Balance</div>
+                        <div>@(string.Join(", ",statuses.ToArray()))</div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div>Tokens</div>
+                <div>No Token Associations Found</div>
+            }
         }
         else
         {

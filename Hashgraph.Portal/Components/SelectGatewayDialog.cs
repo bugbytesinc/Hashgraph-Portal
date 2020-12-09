@@ -59,7 +59,7 @@ namespace Hashgraph.Portal.Components
                     return pair.Key;
                 }
             }
-            return "Main";
+            return _gateways.Keys.FirstOrDefault() ?? "Main";
         }
 
         private Gateway[] FindGatewayList(string network)

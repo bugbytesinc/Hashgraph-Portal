@@ -12,24 +12,6 @@
         <label for="address">Account to Update</label>
         <InputAddress id="address" @bind-Value="@_input.Address" placeholder="(shrd.rlm.num)" />
         <div class="toggle-property">
-            <InputCheckbox id="togglesendthresholdcreaterecord" @bind-Value="@_input.UpdateSendThresholdCreateRecord" />
-            <label for="togglesendthresholdcreaterecord">Update Send Threshold (for Create Record)</label>
-        </div>
-        @if (_input.UpdateSendThresholdCreateRecord)
-        {
-            <label for="Sendthresholdcreaterecord">Threshold</label>
-            <InputNumber id="Sendthresholdcreaterecord" @bind-Value="@_input.SendThresholdCreateRecord" placeholder="Send Threshold (tℏ)" />
-        }
-        <div class="toggle-property">
-            <InputCheckbox id="togglereceivethresholdcreaterecord" @bind-Value="@_input.UpdateReceiveThresholdCreateRecord" />
-            <label for="togglereceivethresholdcreaterecord">Update Receive Threshold (for Create Record)</label>
-        </div>
-        @if (_input.UpdateReceiveThresholdCreateRecord)
-        {
-            <label for="receivethresholdcreaterecord">Threshold</label>
-            <InputNumber id="receivethresholdcreaterecord" @bind-Value="@_input.ReceiveThresholdCreateRecord" placeholder="Receive Threshold (tℏ)" />
-        }
-        <div class="toggle-property">
             <InputCheckbox id="togglereceivesignaturerequired" @bind-Value="@_input.UpdateReceiveSignatureRequired" />
             <label for="togglereceivesignaturerequired">Update Receive Signature Required</label>
         </div>

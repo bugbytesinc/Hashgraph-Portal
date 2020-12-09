@@ -1,0 +1,52 @@
+﻿@page "/createtoken"
+<EditForm class="query-page create-token" Model="@_input" OnValidSubmit="HandleValidSubmit">
+    <h2>Create Token</h2>
+    <DataAnnotationsValidator />
+    <section class="entry-form">
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <label for="name">Token Name</label>
+        <InputText id="name" @bind-Value="@_input.Name" placeholder="Token Name" />
+        <label for="symbol">Token Symbol</label>
+        <InputText id="symbol" @bind-Value="@_input.Symbol" placeholder="Symbol (A-Z Uppercase)" />
+        <label for="circulation">Initial Circulation</label>
+        <InputNumber id="circulation" @bind-Value="@_input.Circulation" placeholder="Circulation (in smallest unit)" />
+        <label for="decimals">Decimal Places</label>
+        <InputNumber id="decimals" @bind-Value="@_input.Decimals" placeholder="Decimal Places" />
+        <label for="treasury">Treasury Account</label>
+        <InputAddress id="treasury" @bind-Value="@_input.Treasury" placeholder="Treasury (shrd.rlm.num)" />
+        <label for="administrator">Administrator</label>
+        <InputEndorsement id="administrator" @bind-Value="@_input.Administrator" Placeholder="Endorsement (optional)" />
+        <label for="grantkyc">Grant KYC</label>
+        <InputEndorsement id="grantkyc" @bind-Value="@_input.GrantKycEndorsement" Placeholder="Endorsement (optional)" />
+        <label for="suspend">Suspend</label>
+        <InputEndorsement id="suspend" @bind-Value="@_input.SuspendEndorsement" Placeholder="Endorsement (optional)" />
+        <label for="confiscate">Confiscate</label>
+        <InputEndorsement id="confiscate" @bind-Value="@_input.ConfiscateEndorsement" Placeholder="Endorsement (optional)" />
+        <label for="supply">Supply</label>
+        <InputEndorsement id="supply" @bind-Value="@_input.SupplyEndorsement" Placeholder="Endorsement (optional)" />
+        <label for="initializesuspended">Defualt Suspended</label>
+        <div class="toggle-property">
+            <InputCheckbox id="initializesuspended" @bind-Value="@_input.InitializeSuspended">Default Associations are Suspended</InputCheckbox>
+            <label for="initializesuspended">Associations Start in Suspended State</label>
+        </div>
+        <label for="renew">Renewal Account</label>
+        <InputAddress id="renew" @bind-Value="@_input.RenewAccount" placeholder="Optional (shrd.rlm.num)" />
+        <label for="memo">Transaction Memo</label>
+        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Transaction Memo (optional)" />
+        <button type="submit">Create Token</button>
+    </section>
+    <Network @ref="_network">
+        @if (_output != null)
+        {
+            <div>Created Token ID</div>
+            <AddressDisplay Address="@_output.Token" />
+        }
+        else
+        {
+            <div>Waiting for Input</div>
+        }
+    </Network>
+</EditForm>

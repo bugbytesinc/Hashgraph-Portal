@@ -48,7 +48,8 @@
             overflow-x: hidden;
             overflow-y: auto;
             &>h3,
-            &>h4
+            &>h4,
+            &>.span
             {
                 grid-column: 1/3;
             }

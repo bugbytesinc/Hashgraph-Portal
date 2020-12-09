@@ -1,0 +1,66 @@
+﻿@page "/tokeninfo"
+<EditForm class="query-page get-token-info" Model="@_input" OnValidSubmit="HandleValidSubmit">
+    <h2>Get Token Info</h2>
+    <DataAnnotationsValidator />
+    <section class="entry-form">
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <label for="memo">Payment Memo</label>
+        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Query Payment Memo (optional)" />
+        <label for="token">Token Number</label>
+        <InputAddress id="token" @bind-Value="@_input.Token" placeholder="Token (shrd.rlm.num)" />
+        <button type="submit">Get Token Info</button>
+    </section>
+    <Network @ref="_network">
+        @if (_output != null)
+        {
+            <div>Token Address</div>
+            <AddressDisplay Address="@_input.Token" />
+            <div>Symbol</div>
+            <div>@_output.Symbol</div>
+            <div>Name</div>
+            <div>@_output.Name</div>
+            <div>Circulation</div>
+            <div>@_output.Circulation</div>
+            <div>Treasury</div>
+            <AddressDisplay Address="@_output.Treasury" />
+            <div>Decimals</div>
+            <div>@_output.Decimals</div>
+            <div>KYC Status</div>
+            <div>@_output.KycStatus</div>
+            <div>Tradable Status</div>
+            <div>@_output.TradableStatus</div>
+            <div>Expiration</div>
+            <div>@_output.Expiration</div>
+            <div>Renewal Account</div>
+            @if (_output.RenewAccount == null)
+            {
+                <div>None</div>
+            }
+            else
+            {
+                <AddressDisplay Address="@_output.RenewAccount" />
+            }
+            <div>Auto-Renewal Period</div>
+            <TimespanDisplay TimeSpan="@_output.RenewPeriod.GetValueOrDefault()" />
+            <div>Administrator Endorsement</div>
+            <EndorsementDisplay Endorsement="_output.Administrator" />
+            <div>Supply Endorsement</div>
+            <EndorsementDisplay Endorsement="_output.SupplyEndorsement" />
+            <div>Confiscate Endorsement</div>
+            <EndorsementDisplay Endorsement="_output.ConfiscateEndorsement" />
+            <div>Suspend Endorsement</div>
+            <EndorsementDisplay Endorsement="_output.SuspendEndorsement" />
+            <div>Grant KYC Endorsement</div>
+            <EndorsementDisplay Endorsement="_output.GrantKycEndorsement" />
+            <div>Deleted</div>
+            <div>@(_output.Deleted ? "Yes": "No")</div>
+        }
+        else
+        {
+            <div>Waiting for Input</div>
+        }
+    </Network>
+</EditForm>

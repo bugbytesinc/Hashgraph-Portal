@@ -39,26 +39,6 @@ namespace Hashgraph.Portal.Pages
                     AddIfNoOtherErrors(nameof(_input.Endorsement), "Please enter a a new Endorsement.");
                 }
             }
-            if (_input.UpdateSendThresholdCreateRecord)
-            {
-                somethingIsSelected = true;
-                if (!_input.SendThresholdCreateRecord.HasValue)
-                {
-                    AddIfNoOtherErrors(nameof(_input.SendThresholdCreateRecord), "Please enter a Send Threshold Value (tℏ)");
-                }
-            }
-            else
-            {
-                _input.SendThresholdCreateRecord = null;
-            }
-            if (_input.UpdateReceiveThresholdCreateRecord)
-            {
-                somethingIsSelected = true;
-                if (!_input.ReceiveThresholdCreateRecord.HasValue)
-                {
-                    AddIfNoOtherErrors(nameof(_input.ReceiveThresholdCreateRecord), "Please enter a Receive Threshold Value (tℏ)");
-                }
-            }
             if (_input.UpdateReceiveSignatureRequired)
             {
                 somethingIsSelected = true;
@@ -91,14 +71,6 @@ namespace Hashgraph.Portal.Pages
                 {
                     updateParams.Endorsement = _input.Endorsement;
                 }
-                if (_input.UpdateSendThresholdCreateRecord)
-                {
-                    updateParams.SendThresholdCreateRecord = (ulong)_input.SendThresholdCreateRecord.Value;
-                }
-                if (_input.UpdateReceiveThresholdCreateRecord)
-                {
-                    updateParams.ReceiveThresholdCreateRecord = (ulong)_input.ReceiveThresholdCreateRecord.Value;
-                }
                 if (_input.UpdateReceiveSignatureRequired)
                 {
                     updateParams.RequireReceiveSignature = _input.ReceiveSignatureRequired;
@@ -117,12 +89,6 @@ namespace Hashgraph.Portal.Pages
         public Address Address { get; set; }
         public bool UpdateEndorsement { get; set; }
         public Endorsement Endorsement { get; set; }
-        public bool UpdateSendThresholdCreateRecord { get; set; }
-        [Range(1, ulong.MaxValue / 2)]
-        public long? SendThresholdCreateRecord { get; set; }
-        public bool UpdateReceiveThresholdCreateRecord { get; set; }
-        [Range(1, ulong.MaxValue / 2)]
-        public long? ReceiveThresholdCreateRecord { get; set; }
         public bool UpdateReceiveSignatureRequired { get; set; }
         public bool ReceiveSignatureRequired { get; set; }
         [MaxLength(100, ErrorMessage = "The memo field cannot exceed 100 characters.")]

@@ -1,0 +1,29 @@
+﻿@page "/dissociatetoken"
+<EditForm class="query-page associate-token-page" Model="@_input" OnValidSubmit="HandleValidSubmit">
+    <h2>Dissociate Token</h2>
+    <DataAnnotationsValidator />
+    <section class="entry-form">
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="(shrd.rlm.num)" />
+        <label for="memo">Memo</label>
+        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Memo (optional)" />
+        <label for="token">Token</label>
+        <InputAddress id="token" @bind-Value="@_input.Token" placeholder="(shrd.rlm.num)" />
+        <label for="account">Account</label>
+        <InputAddress id="account" @bind-Value="@_input.Account" placeholder="(shrd.rlm.num)" />
+        <button type="submit">Dissociate Token</button>
+    </section>
+    <Network @ref="_network">
+        @if (_output != null)
+        {
+            <div>Accepted, Status:</div>
+            <div>@_output.Status</div>
+        }
+        else
+        {
+            <div>Waiting for Input</div>
+        }
+    </Network>
+</EditForm>

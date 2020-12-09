@@ -1,0 +1,29 @@
+﻿@page "/burntoken"
+<EditForm class="query-page burn-token-page" Model="@_input" OnValidSubmit="HandleValidSubmit">
+    <h2>Burn Token</h2>
+    <DataAnnotationsValidator />
+    <section class="entry-form">
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="(shrd.rlm.num)" />
+        <label for="memo">Memo</label>
+        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Memo (optional)" />
+        <label for="token">Token</label>
+        <InputAddress id="token" @bind-Value="@_input.Token" placeholder="(shrd.rlm.num)" />
+        <label for="amount">Amount to Destroy</label>
+        <InputNumber id="amount" @bind-Value="@_input.Amount" placeholder="(smallest denomination)" />
+        <button type="submit">Burn Tokens</button>
+    </section>
+    <Network @ref="_network">
+        @if (_output != null)
+        {
+            <div>Accepted, Status:</div>
+            <div>@_output.Status</div>
+        }
+        else
+        {
+            <div>Waiting for Input</div>
+        }
+    </Network>
+</EditForm>

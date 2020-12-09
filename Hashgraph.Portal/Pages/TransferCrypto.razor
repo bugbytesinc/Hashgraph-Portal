@@ -1,7 +1,7 @@
 ﻿@page "/transfercrypto"
-<EditForm class="query-page transfer-crypto-page" Model="@_input" OnValidSubmit="HandleValidSubmit">
-    <h2>Transfer Crypto</h2>
-    <DataAnnotationsValidator />
+<EditForm class="query-page transfer-crypto-page" EditContext="@_editContext" OnValidSubmit="HandleValidSubmit">
+    <h2>Transfer Crypto and/or Tokens</h2>
+    <DataAnnotationsValidator />    
     <section class="entry-form">
         <label for="gateway">Gateway Node</label>
         <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
@@ -9,9 +9,34 @@
         <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
         <label for="memo">Memo</label>
         <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Memo (optional)" />
-        <InputTransfers id="transfers" @bind-Value="@_input.Transfers" />
+        @if (_input.CryptoTransfers is not null)
+        {
+            <div class="token-spacer"></div>
+            <div class="crypto-header">
+                <div>Crypto</div>
+                <button type="button" class="delete-transfer" @onclick="RemoveCryptoTransfers"></button>
+            </div>
+            <InputTransfers id="transfers" @bind-Value="@_input.CryptoTransfers" Unit="tℏ" TransferLabel="Crypto" />
+        }
+        @foreach (var tokenGroup in _input.TokenTransfers)
+        {
+            <div class="token-spacer"></div>
+            <label>Token</label>
+            <div class="token-header">
+                <InputAddress @bind-Value="@tokenGroup.Token" placeholder="(shrd.rlm.num)" />
+                <button type="button" class="delete-transfer" @onclick="()=>RemoveTokenTransferGroup(tokenGroup)"></button>
+            </div>
+            <InputTransfers @bind-Value="@tokenGroup.Transfers" TransferLabel="@(tokenGroup.Token is null ? "Token": $"Token {tokenGroup.Token.ShardNum}.{tokenGroup.Token.RealmNum}.{tokenGroup.Token.AccountNum}")" />
+        }
+        <div class="add-transfers">
+            @if (_input.CryptoTransfers is null)
+            {
+                <a class="add-transfer" @onclick="AddCryptoTransfer">Add Crypto Transfer</a>
+            }
+            <a class="add-transfer" @onclick="AddTokenTransferGroup">Add Token Transfer</a>
+        </div>
         <button type="submit">Transfer</button>
-    </section>
+    </section>    
     <Network @ref="_network">
         @if (_output != null)
         {
