@@ -20,9 +20,9 @@ steps:
     customCommand: 'run build'
 
 - task: DotNetCoreInstaller@0
-  displayName: 'Ensure .Net Core 3.1'  
+  displayName: 'Ensure .Net Core 5.1'  
   inputs:
-    version: '3.1.100' # Need .net core 3.1 or greater to support protobuf
+    version: '5.0.101'
 
 - task: DotNetCoreCLI@2
   displayName: Restore Dependencies  
