@@ -1,0 +1,37 @@
+﻿@page "/assetinfo"
+<EditForm Model=@_input OnValidSubmit=@HandleValidSubmit>
+    <h2>Get Asset (NFT) Info</h2>
+    <DataAnnotationsValidator />
+    <fieldset>
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="Payer (shrd.rlm.num)" />
+        <label for="memo">Payment Memo</label>
+        <InputText id="memo" @bind-Value=@_input.Memo placeholder="Query Payment Memo (optional)" />
+        <label for="token">Token</label>
+        <InputAddress id="token" @bind-Value=@_input.Token placeholder="Token (shrd.rlm.num)" />
+        <label for="serialnumber">Serial Number</label>
+        <InputNumber id="serialnumber" @bind-Value=@_input.SerialNumber placeholder="Asset Serial Number" />
+        <button type="submit">Get Token Info</button>
+    </fieldset>
+    <Network @ref="_network">
+        @if (_output != null)
+        {
+            <div>Asset</div>
+            <AssetDisplay Value=@_output.Asset />
+            <div>Ledger</div>
+            <LedgerDisplay Value=@_output.Ledger />
+            <div>Owner</div>
+            <AddressDisplay Value=@_output.Owner />
+            <div>Created</div>
+            <div>@_output.Created</div>
+            <div>Metadata</div>
+            <BinaryDisplay Value=@_output.Metadata />
+        }
+        else
+        {
+            <div>Waiting for Input</div>
+        }
+    </Network>
+</EditForm>

@@ -1,29 +1,38 @@
 ﻿@page "/createfile"
-<EditForm class="query-page create-file-page" Model="@_input" OnValidSubmit="HandleValidSubmit">
+<EditForm class="query-page create-file-page" Model=@_input OnValidSubmit=@HandleValidSubmit>
     <h2>Create File</h2>
     <DataAnnotationsValidator />
-    <section class="entry-form">
+    <fieldset>
         <label for="gateway">Gateway Node</label>
-        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
         <label for="payer">Payer</label>
-        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="Payer (shrd.rlm.num)" />
+        <label for="txmemo">Transaction Memo</label>
+        <InputText id="txmemo" @bind-Value=@_input.TransactionMemo placeholder="Transaction Memo (optional)" />
         <label for="content">Content</label>
-        <InputBinary @bind-Value="@_input.Content"/>
+        <InputBinary @bind-Value=@_input.Content />
         <label for="endorsements">Administrators</label>
-        <InputEndorsementList @bind-Value="@_input.Endorsements" Placeholder="Administrator Keys (optional)" />
-        <label for="memo">Transaction Memo</label>
-        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Transaction Memo (optional)" />
+        <InputEndorsementList @bind-Value=@_input.Endorsements Placeholder="Administrator Keys (optional)" />
+        <label for="filememo">File Memo</label>
+        <InputText id="filememo" @bind-Value=@_input.FileMemo placeholder="File Memo (optional)" />
         <button type="submit">Create File</button>
-    </section>
-    <Network @ref="_network">
-        @if (_output != null)
+    </fieldset>
+    <Network @ref=@_network>
+        @if (_output is null)
         {
+            <div>Waiting for Input</div>
+        }
+        else if (_record is null)
+        {
+            <h3>Success</h3>
             <div>Created File ID</div>
-            <AddressDisplay Address="@_output.File" />
+            <AddressDisplay Value=@_output.File />
+            <button hg-get-record-button type="button" @onclick=@GetRecord>Get Record</button>
         }
         else
         {
-            <div>Waiting for Input</div>
+            <h3>Record</h3>
+            <RecordDisplay Value=@_record />
         }
     </Network>
 </EditForm>

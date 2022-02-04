@@ -1,0 +1,29 @@
+﻿.royalty-spacer {
+    grid-column: 1 / 3;
+    grid-column: 1 / 3;
+    margin-top: 1.125rem;
+    border-top: 1px solid var(--hg-nl-300);
+    padding-top: 0.75rem;
+}
+
+[hg-remove-button] {
+    grid-column: unset;
+}
+
+.add-royalty {
+    margin-top: 1.125rem;
+    border-top: 1px solid var(--hg-nl-300);
+    grid-column: 1 / 3;
+}
+
+    .add-royalty a {
+        cursor: pointer;
+        color: #646769;
+        font-size: 0.75rem;
+        margin-right: 1.5rem;
+    }
+
+        .add-royalty a:hover {
+            color: #8632A4;
+            text-decoration: underline;
+        }

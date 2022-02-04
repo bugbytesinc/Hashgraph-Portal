@@ -1,18 +1,18 @@
-﻿<section class="network-results-display">
+﻿<section hg-network-panel>
     <ul>
-        <li @onclick="@(()=>ShowTab=RESULTS_TAB)" class="@(ShowTab == RESULTS_TAB ? "active" : "")">Results</li>
-        <li @onclick="@(()=>ShowTab=LOG_TAB)" class="@(ShowTab == LOG_TAB ? "active" : "")">Log</li>
-        <li @onclick="@(()=>ShowTab=TXID_TAB)" class="@(ShowTab == TXID_TAB ? "active" : "")">Tx</li>
-        <li @onclick="@(()=>ShowTab=ERRORS_TAB)" class="@(ShowTab == ERRORS_TAB ? "active" : "")">Errors</li>
+        <li @onclick=@(()=>ShowTab=RESULTS_TAB) class=@(ShowTab == RESULTS_TAB ? "active" : "")>Results</li>
+        <li @onclick=@(()=>ShowTab=LOG_TAB) class=@(ShowTab == LOG_TAB ? "active" : "")>Log</li>
+        <li @onclick=@(()=>ShowTab=TXID_TAB) class=@(ShowTab == TXID_TAB ? "active" : "")>Tx</li>
+        <li @onclick=@(()=>ShowTab=ERRORS_TAB) class=@(ShowTab == ERRORS_TAB ? "active" : "")>Errors</li>
     </ul>
     @switch (ShowTab)
     {
         case RESULTS_TAB:
-            <div class="network-results-tab results">@ChildContent</div>
+            <div hg-network-panel-results>@ChildContent</div>
             break;
         case LOG_TAB:
             var logEntries = _logEntries.ToArray();
-            <div class="network-results-tab logs">
+            <div hg-network-panel-logs>
                 @if (logEntries.Length == 0)
                 {
                     <div>No Network Activity.</div>
@@ -56,7 +56,7 @@
             break;
         case TXID_TAB:
             var txIds = _transactionIds.ToArray();
-            <div class="network-results-tab txid">
+            <div hg-network-panel-txid>
                 @if (txIds.Length == 0)
                 {
                     <div>No Transactions Created.</div>
@@ -65,19 +65,19 @@
                 {
                     @foreach (var txid in txIds)
                     {
-                        <h3>@Hashgraph.Portal.Services.Util.ToDate(txid).ToString("dddd, dd MMMM yyyy HH:mm:ss.fffffff") by <AddressDisplay Address="txid.Address" /></h3>
+                        <h3>@Hashgraph.Portal.Services.Util.ToDate(txid).ToString("dddd, dd MMMM yyyy HH:mm:ss.fffffff") by <AddressDisplay Value=@txid.Address /></h3>
                         @if (_isMainNetwork)
                         {
                             <ul>
-                                <li><a href="@($"https://app.dragonglass.me/hedera/transactions/{txid.Address.ShardNum}{txid.Address.RealmNum}{txid.Address.AccountNum}{txid.ValidStartSeconds}{txid.ValidStartNanos}")" target="_blank">app.dragonglass.me</a></li>
-                                <li><a href="@($"https://www.hasharc.com/tx/{txid.Address.ShardNum}.{txid.Address.RealmNum}.{txid.Address.AccountNum}-{txid.ValidStartSeconds}-{txid.ValidStartNanos}")" target="_blank">www.hasharc.com</a></li>
-                                <li><a href="@($"https://explorer.kabuto.sh/search?q={txid.Address.ShardNum}.{txid.Address.RealmNum}.{txid.Address.AccountNum}@{txid.ValidStartSeconds}.{txid.ValidStartNanos}")" target="_blank">explorer.kabuto.sh</a></li>
+                                <li><a href=@($"https://app.dragonglass.me/hedera/transactions/{txid.Address.ShardNum}{txid.Address.RealmNum}{txid.Address.AccountNum}{txid.ValidStartSeconds}{txid.ValidStartNanos}") target="_blank">app.dragonglass.me</a></li>
+                                <li><a href=@($"https://www.hasharc.com/tx/{txid.Address.ShardNum}.{txid.Address.RealmNum}.{txid.Address.AccountNum}-{txid.ValidStartSeconds}-{txid.ValidStartNanos}") target="_blank">www.hasharc.com</a></li>
+                                <li><a href=@($"https://explorer.kabuto.sh/search?q={txid.Address.ShardNum}.{txid.Address.RealmNum}.{txid.Address.AccountNum}@{txid.ValidStartSeconds}.{txid.ValidStartNanos}") target="_blank">explorer.kabuto.sh</a></li>
                             </ul>
                         }
                         else
                         {
                             <ul>
-                                <li><a href="@($"https://testnet.dragonglass.me/hedera/transactions/{txid.Address.ShardNum}{txid.Address.RealmNum}{txid.Address.AccountNum}{txid.ValidStartSeconds}{txid.ValidStartNanos}")" target="_blank">testnet.dragonglass.me</a></li>
+                                <li><a href=@($"https://testnet.dragonglass.me/hedera/transactions/{txid.Address.ShardNum}{txid.Address.RealmNum}{txid.Address.AccountNum}{txid.ValidStartSeconds}{txid.ValidStartNanos}") target="_blank">testnet.dragonglass.me</a></li>
                             </ul>
                         }
                     }
@@ -87,7 +87,7 @@
         case ERRORS_TAB:
             var inputErrors = GetValidationErrors();
             var networkErrors = _errors.ToArray();
-            <div class="network-results-tab errors">
+            <div hg-network-panel-errors>
                 @if (inputErrors.Length == 0 && networkErrors.Length == 0)
                 {
                     <div>No Errors Reported.</div>

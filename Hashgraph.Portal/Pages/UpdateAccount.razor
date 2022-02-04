@@ -1,47 +1,64 @@
 ﻿@page "/updateaccount"
-<EditForm class="query-page update-account-page" EditContext="@_editContext"  OnValidSubmit="HandleValidSubmit">
+<EditForm EditContext=@_editContext OnValidSubmit=@HandleValidSubmit>
     <h2>Update Account</h2>
     <DataAnnotationsValidator />
-    <section class="entry-form">
+    <fieldset>
         <label for="gateway">Gateway Node</label>
-        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
         <label for="payer">Payer</label>
-        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="(shrd.rlm.num)" />
-        <label for="memo">Memo</label>
-        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Memo (optional)" />
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="(shrd.rlm.num)" />
+        <label for="memo">Transaction Memo</label>
+        <InputText id="memo" @bind-Value=@_input.TransactionMemo placeholder="Transaction Memo (optional)" />
         <label for="address">Account to Update</label>
-        <InputAddress id="address" @bind-Value="@_input.Address" placeholder="(shrd.rlm.num)" />
+        <InputAddress id="address" @bind-Value=@_input.Address placeholder="(shrd.rlm.num)" />
+        <label for="accountmemo">Account Memo</label>
+        <InputText id="accountmemo" @bind-Value=@_input.AccountMemo placeholder="Account Memo (enter to update)" />
         <div class="toggle-property">
-            <InputCheckbox id="togglereceivesignaturerequired" @bind-Value="@_input.UpdateReceiveSignatureRequired" />
+            <InputCheckbox id="togglereceivesignaturerequired" @bind-Value=@_input.UpdateReceiveSignatureRequired />
             <label for="togglereceivesignaturerequired">Update Receive Signature Required</label>
         </div>
         @if (_input.UpdateReceiveSignatureRequired)
         {
-            <label for="receivesignaturerequired">Require Signature</label>
-            <div>
-                <InputCheckbox id="receivesignaturerequired" @bind-Value="@_input.ReceiveSignatureRequired" />
-                <label for="receivesignaturerequired">@(_input.ReceiveSignatureRequired ? "Yes, Signature Is Required" : "No Signature Required")</label>
-            </div>
+                <label for="receivesignaturerequired">Require Signature</label>
+                <div>
+                    <InputCheckbox id="receivesignaturerequired" @bind-Value=@_input.ReceiveSignatureRequired />
+                    <label for="receivesignaturerequired">@(_input.ReceiveSignatureRequired ? "Yes, Signature Is Required" : "No Signature Required")</label>
+                </div>
         }
         <div class="toggle-property">
-            <InputCheckbox id="updateendorsment" @bind-Value="@_input.UpdateEndorsement" />
+            <InputCheckbox id="updateautoassociate" @bind-Value=@_input.UpdateAutoAssociationLimit/>
+            <label for="updateautoassociate">Update Auto Association Limit</label>
+        </div>
+        @if (_input.UpdateAutoAssociationLimit)
+        {
+                <label for="autoassociation">Auto Association Limit</label>
+                <InputNumber id="autoassociation" @bind-Value=@_input.AutoAssociationLimit placeholder="Update Auto Association Limit" />
+        }
+        <div class="toggle-property">
+            <InputCheckbox id="updateendorsment" @bind-Value=@_input.UpdateEndorsement />
             <label for="updateendorsment">Update Endorsment (aka. rotate keys)</label>
         </div>
         @if (_input.UpdateEndorsement)
         {
-            <label for="endorsment">Endorsement</label>
-            <InputEndorsement id="endorsment" @bind-Value="@_input.Endorsement" />
+                <label for="endorsment">Endorsement</label>
+                <InputEndorsement id="endorsment" @bind-Value=@_input.Endorsement />
         }
         <button type="submit">Update Account</button>
-    </section>
+    </fieldset>
     <Network @ref="_network">
-        @if (_output != null)
+        @if (_output is null)
         {
-            <div>Account Updated Successfully!</div>
+            <div>Waiting for Input</div>
+        }
+        else if (_record is null)
+        {
+            <h3>Success</h3>
+            <button hg-get-record-button type="button" @onclick=@GetRecord>Get Record</button>
         }
         else
         {
-            <div>Waiting for Input</div>
+            <h3>Record</h3>
+            <RecordDisplay Value=@_record />
         }
     </Network>
 </EditForm>

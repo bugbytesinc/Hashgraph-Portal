@@ -1,60 +1,87 @@
 ﻿@page "/tokeninfo"
-<EditForm class="query-page get-token-info" Model="@_input" OnValidSubmit="HandleValidSubmit">
+<EditForm Model=@_input OnValidSubmit=@HandleValidSubmit>
     <h2>Get Token Info</h2>
     <DataAnnotationsValidator />
-    <section class="entry-form">
+    <fieldset>
         <label for="gateway">Gateway Node</label>
-        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
         <label for="payer">Payer</label>
-        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="Payer (shrd.rlm.num)" />
         <label for="memo">Payment Memo</label>
-        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Query Payment Memo (optional)" />
+        <InputText id="memo" @bind-Value=@_input.Memo placeholder="Query Payment Memo (optional)" />
         <label for="token">Token Number</label>
-        <InputAddress id="token" @bind-Value="@_input.Token" placeholder="Token (shrd.rlm.num)" />
+        <InputAddress id="token" @bind-Value=@_input.Token placeholder="Token (shrd.rlm.num)" />
         <button type="submit">Get Token Info</button>
-    </section>
+    </fieldset>
     <Network @ref="_network">
         @if (_output != null)
         {
             <div>Token Address</div>
-            <AddressDisplay Address="@_input.Token" />
+            <AddressDisplay Value=@_output.Token />
+            <div>Ledger</div>
+            <LedgerDisplay Value=@_output.Ledger />
+            <div>Token Type</div>
+            <div>@(_output.Type == TokenType.Fungible ? "Token (Fungible)" : "Asset (NFT)")</div>
             <div>Symbol</div>
             <div>@_output.Symbol</div>
             <div>Name</div>
             <div>@_output.Name</div>
+            <div>Memo</div>
+            <div>@_output.Memo</div>
             <div>Circulation</div>
-            <div>@_output.Circulation</div>
+            <div>@FormatWithDecimals(_output.Circulation, _output.Decimals)</div>
             <div>Treasury</div>
-            <AddressDisplay Address="@_output.Treasury" />
-            <div>Decimals</div>
-            <div>@_output.Decimals</div>
+            <AddressOrAliasDisplay Value=@_output.Treasury />
+            @if (_output.Type == TokenType.Fungible)
+            {
+                <div>Decimals</div>
+                <div>@_output.Decimals</div>
+            }
+            <div>Ceiling</div>
+            if (@_output.Ceiling > 0)
+            {
+                <div>@FormatWithDecimals((ulong)_output.Ceiling, _output.Decimals)</div>
+            }
+            else
+            {
+                <div hg-none>Unbounded</div>
+            }
             <div>KYC Status</div>
             <div>@_output.KycStatus</div>
             <div>Tradable Status</div>
             <div>@_output.TradableStatus</div>
+            <div>Paused Status</div>
+            <div>@_output.PauseStatus</div>
             <div>Expiration</div>
             <div>@_output.Expiration</div>
             <div>Renewal Account</div>
-            @if (_output.RenewAccount == null)
-            {
-                <div>None</div>
-            }
-            else
-            {
-                <AddressDisplay Address="@_output.RenewAccount" />
-            }
+            <AddressDisplay Value=@_output.RenewAccount />
             <div>Auto-Renewal Period</div>
-            <TimespanDisplay TimeSpan="@_output.RenewPeriod.GetValueOrDefault()" />
+            <TimespanDisplay Value=@_output.RenewPeriod.GetValueOrDefault() />
             <div>Administrator Endorsement</div>
-            <EndorsementDisplay Endorsement="_output.Administrator" />
+            <EndorsementDisplay Value=@_output.Administrator />
             <div>Supply Endorsement</div>
-            <EndorsementDisplay Endorsement="_output.SupplyEndorsement" />
+            <EndorsementDisplay Value=@_output.SupplyEndorsement />
             <div>Confiscate Endorsement</div>
-            <EndorsementDisplay Endorsement="_output.ConfiscateEndorsement" />
+            <EndorsementDisplay Value=@_output.ConfiscateEndorsement />
             <div>Suspend Endorsement</div>
-            <EndorsementDisplay Endorsement="_output.SuspendEndorsement" />
+            <EndorsementDisplay Value=@_output.SuspendEndorsement />
             <div>Grant KYC Endorsement</div>
-            <EndorsementDisplay Endorsement="_output.GrantKycEndorsement" />
+            <EndorsementDisplay Value=@_output.GrantKycEndorsement />
+            <div>Pause Endorsement</div>
+            <EndorsementDisplay Value=@_output.PauseEndorsement />
+            <div>Royalties Endorsement</div>
+            <EndorsementDisplay Value=@_output.RoyaltiesEndorsement />
+            @if (_output.Royalties.Count > 0)
+            {
+                <div>Royalties</div>
+                <div>
+                    @foreach (var royalty in _output.Royalties)
+                    {
+                        <div><RoyaltyDisplay Value=@royalty /></div>
+                    }
+                </div>
+            }
             <div>Deleted</div>
             <div>@(_output.Deleted ? "Yes": "No")</div>
         }

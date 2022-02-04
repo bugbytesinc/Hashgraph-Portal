@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@namespace Hashgraph.Components
+@if (_input != null)
+{
+    <div hg-dialog-mask>
+        <EditForm Model=@_input hg-dialog-container hg-input-public-key-dialog>
+            <div hg-dialog-title>Add Public Key</div>
+            <div hg-dialog-content>
+                <label for="keytype">Key Type</label>
+                <InputKeyType id="keytype" @bind-Value=@_input.Type />
+                <label for="publickey">Public Key in Hex (or shard.realm.num for contract key)</label>
+                <InputTextArea id="publickey" @bind-Value=@_input.KeyInHex @oninput=@KeyInHexChanged />
+                @if (ClipboardService.Enabled)
+                {
+                    <button hg-paste-button type="button" @onclick=@PastePublicKeyFromClipboard>Paste</button>
+                }
+                <div class="status-message">@_input.StatusMessage</div>
+            </div>
+            <div hg-dialog-footer>
+                <button type="button" @onclick=@Close>Cancel</button>
+                <button @onclick=@Submit>Add Key</button>
+            </div>
+        </EditForm>
+    </div>
+}

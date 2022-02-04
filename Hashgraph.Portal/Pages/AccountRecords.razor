@@ -1,41 +1,41 @@
 ﻿@page "/accountrecords"
-<EditForm class="query-page get-account-records" Model="@_input" OnValidSubmit="HandleValidSubmit">
+<EditForm hg-get-account-records Model=@_input OnValidSubmit=@HandleValidSubmit>
     <h2>Get Account Transaction Records</h2>
     <DataAnnotationsValidator />
-    <section class="entry-form">
+    <fieldset>
         <label for="gateway">Gateway Node</label>
-        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
         <label for="payer">Payer</label>
-        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="Payer (shrd.rlm.num)" />
         <label for="memo">Payment Memo</label>
-        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Query Payment Memo (optional)" />
+        <InputText id="memo" @bind-Value=@_input.Memo placeholder="Query Payment Memo (optional)" />
         <label for="accountNumber">Account Number</label>
-        <InputAddress id="address" @bind-Value="@_input.Address" placeholder="Address (shrd.rlm.num)" />
+        <InputAddress id="address" @bind-Value=@_input.Address placeholder="Address (shrd.rlm.num)" />
         <button type="submit">Get Transaction Recrods</button>
-    </section>
+    </fieldset>
     <Network @ref="_network">
         @if (_output == null)
         {
-            <div>Waiting for Input</div>
+                <div>Waiting for Input</div>
         }
         else if (_output.Length == 0)
         {
-            <div>No Records Found</div>
+                <div>No Records Found</div>
         }
         else
         {
             if (_output.Length == 1)
             {
-                <h3>One Transaction Record</h3>
+                        <h3>One Transaction Record</h3>
             }
             else
             {
-                <h3>@_output.Length Transaction Records</h3>
+                        <h3>@_output.Length Transaction Records</h3>
             }
             @foreach (var record in _output)
             {
-                <h4>Record</h4>
-                <RecordDisplay Record="@record"/>
+                        <h4>Record</h4>
+                        <RecordDisplay Value=@record/>
             }
         }
     </Network>

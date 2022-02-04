@@ -1,35 +1,42 @@
 ﻿@page "/createcontract"
-<EditForm class="query-page create-contract-page" Model="@_input" OnValidSubmit="HandleValidSubmit">
+<EditForm Model=@_input OnValidSubmit=@HandleValidSubmit>
     <h2>Create Contract</h2>
     <DataAnnotationsValidator />
-    <section class="entry-form">
+    <fieldset>
         <label for="gateway">Gateway Node</label>
-        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
         <label for="payer">Payer</label>
-        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="Payer (shrd.rlm.num)" />
         <label for="memo">Transaction Memo</label>
-        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Transaction Memo (optional)" />
+        <InputText id="memo" @bind-Value=@_input.TransactionMemo placeholder="Transaction Memo (optional)" />
         <label for="file">Source File</label>
-        <InputAddress id="file" @bind-Value="@_input.File" placeholder="Source File (shrd.rlm.num)" />
+        <InputAddress id="file" @bind-Value=@_input.File placeholder="Source File (shrd.rlm.num)" />
+        <label for="contractmemo">Contract Memo</label>
+        <InputText id="contractmemo" @bind-Value=@_input.ContractMemo placeholder="Transaction Memo (optional)" />
         <label for="administrator">Administrator</label>
-        <InputEndorsement id="administrator" @bind-Value="@_input.Administrator" Placeholder="Administrator (optional)" />
+        <InputEndorsement id="administrator" @bind-Value=@_input.Administrator Placeholder="Administrator (optional)" />
         <label for="initialbalance">Initial Balance (Xfer from Payer, tℏ)</label>
-        <InputNumber id="initialbalance" @bind-Value="@_input.InitialBalance" placeholder="Initial Balance (tℏ)" />
+        <InputNumber id="initialbalance" @bind-Value=@_input.InitialBalance placeholder="Initial Balance (tℏ)" />
         <label for="maxgas">Max Gas (Xfer from Payer, tℏ)</label>
-        <InputNumber id="maxgas" @bind-Value="@_input.Gas" placeholder="Max. Allowed Gas (tℏ)" />
+        <InputNumber id="maxgas" @bind-Value=@_input.Gas placeholder="Max. Allowed Gas (tℏ)" />
         <label for="arguments">Arguments</label>
-        <InputArguments id="arguments" @bind-Value="@_input.Arguments" />
+        <InputAbi id="arguments" @bind-Value=@_input.Arguments />
         <button type="submit">Create Contract</button>
-    </section>
-    <Network @ref="_network">
-        @if (_output != null)
+    </fieldset>
+    <Network @ref=@_network>
+        @if (_output is null)
         {
-            <div>Created Contract ID</div>
-            <AddressDisplay Address="@_output.Contract" />
+            <div>Waiting for Input</div>
+        }
+        else if (_record is null)
+        {
+            <h3>Success</h3>
+            <button hg-get-record-button type="button" @onclick=@GetRecord>Get Record</button>
         }
         else
         {
-            <div>Waiting for Input</div>
+            <h3>Record</h3>
+            <RecordDisplay Value=@_record />
         }
     </Network>
 </EditForm>

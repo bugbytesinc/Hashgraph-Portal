@@ -1,29 +1,34 @@
 ﻿@page "/associatetoken"
-<EditForm class="query-page associate-token-page" Model="@_input" OnValidSubmit="HandleValidSubmit">
+<EditForm Model=@_input OnValidSubmit=@HandleValidSubmit>
     <h2>Associate Token</h2>
     <DataAnnotationsValidator />
-    <section class="entry-form">
+    <fieldset>
         <label for="gateway">Gateway Node</label>
-        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
         <label for="payer">Payer</label>
-        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="(shrd.rlm.num)" />
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="(shrd.rlm.num)" />
         <label for="memo">Memo</label>
-        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Memo (optional)" />
+        <InputText id="memo" @bind-Value=@_input.Memo placeholder="Memo (optional)" />
         <label for="token">Token</label>
-        <InputAddress id="token" @bind-Value="@_input.Token" placeholder="(shrd.rlm.num)" />
+        <InputAddress id="token" @bind-Value=@_input.Token placeholder="(shrd.rlm.num)" />
         <label for="account">Account</label>
-        <InputAddress id="account" @bind-Value="@_input.Account" placeholder="(shrd.rlm.num)" />
+        <InputAddress id="account" @bind-Value=@_input.Account placeholder="(shrd.rlm.num)" />
         <button type="submit">Associate Token</button>
-    </section>
-    <Network @ref="_network">
-        @if (_output != null)
+    </fieldset>
+    <Network @ref=@_network>
+        @if (_output is null)
         {
-            <div>Accepted, Status:</div>
-            <div>@_output.Status</div>
+            <div>Waiting for Input</div>
+        }
+        else if (_record is null)
+        {
+            <h3>Success</h3>
+            <button hg-get-record-button type="button" @onclick=@GetRecord>Get Record</button>
         }
         else
         {
-            <div>Waiting for Input</div>
+            <h3>Record</h3>
+            <RecordDisplay Value=@_record />
         }
     </Network>
 </EditForm>

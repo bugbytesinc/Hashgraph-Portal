@@ -1,0 +1,32 @@
+﻿@page "/continuetoken"
+<EditForm Model=@_input OnValidSubmit=@HandleValidSubmit>
+    <h2>Resume All Token Trading</h2>
+    <DataAnnotationsValidator />
+    <fieldset>
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="(shrd.rlm.num)" />
+        <label for="memo">Memo</label>
+        <InputText id="memo" @bind-Value=@_input.Memo placeholder="Memo (optional)" />
+        <label for="token">Token</label>
+        <InputAddress id="token" @bind-Value=@_input.Token placeholder="(shrd.rlm.num)" />
+        <button type="submit">Continue All Trading</button>
+    </fieldset>
+    <Network @ref=@_network>
+        @if (_output is null)
+        {
+            <div>Waiting for Input</div>
+        }
+        else if (_record is null)
+        {
+            <h3>Success</h3>
+            <button hg-get-record-button type="button" @onclick=@GetRecord>Get Record</button>
+        }
+        else
+        {
+            <h3>Record</h3>
+            <RecordDisplay Value=@_record />
+        }
+    </Network>
+</EditForm>

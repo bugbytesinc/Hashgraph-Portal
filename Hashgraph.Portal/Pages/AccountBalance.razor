@@ -1,29 +1,29 @@
 ﻿@page "/accountbalance"
-<EditForm class="query-page get-account-balance" Model="@_input" OnValidSubmit="HandleValidSubmit">
+<EditForm Model=@_input OnValidSubmit=@HandleValidSubmit>
     <h2>Get Account Crypto and Token Balances</h2>
     <DataAnnotationsValidator />
-    <section class="entry-form">
+    <fieldset>
         <label for="gateway">Gateway Node</label>
-        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
         <label for="accountNumber">Account Number</label>
-        <InputAddress id="address" @bind-Value="@_input.Address" placeholder="Address (shrd.rlm.num)" />
+        <InputAddress id="address" @bind-Value=@_input.Address placeholder="Address (shrd.rlm.num)" />
         <button type="submit">Get Balance</button>
-    </section>
+    </fieldset>
     <Network @ref="_network">
-        @if (_output != null)
+        @if (_output is not null)
         {
             <div>Account</div>
-            <AddressDisplay Address="@_input.Address" />
+            <AddressDisplay Value=@_input.Address />
             <h3>Crypto</h3>
             <div>Balance</div>
-            <BalanceDisplay Balance="@_output.Crypto" />
+            <HbarDisplay Value=@_output.Crypto />
             <h3>Tokens</h3>
             @if (_output.Tokens.Count > 0)
             {
                 @foreach (var pair in _output.Tokens)
                 {
-                    <AddressDisplay Address="@pair.Key" />
-                    <div>@pair.Value</div>
+                    <AddressDisplay Value=@pair.Key />
+                    <CryptoBalanceDisplay Value=@pair.Value/>                    
                 }
             }
             else

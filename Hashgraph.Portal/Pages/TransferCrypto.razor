@@ -1,51 +1,67 @@
 ﻿@page "/transfercrypto"
-<EditForm class="query-page transfer-crypto-page" EditContext="@_editContext" OnValidSubmit="HandleValidSubmit">
+<EditForm EditContext=@_editContext OnValidSubmit=@HandleValidSubmit>
     <h2>Transfer Crypto and/or Tokens</h2>
-    <DataAnnotationsValidator />    
-    <section class="entry-form">
+    <DataAnnotationsValidator />
+    <fieldset>
         <label for="gateway">Gateway Node</label>
-        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
         <label for="payer">Fee Payer</label>
-        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="Payer (shrd.rlm.num)" />
         <label for="memo">Memo</label>
-        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Memo (optional)" />
+        <InputText id="memo" @bind-Value=@_input.Memo placeholder="Memo (optional)" />
         @if (_input.CryptoTransfers is not null)
         {
             <div class="token-spacer"></div>
             <div class="crypto-header">
                 <div>Crypto</div>
-                <button type="button" class="delete-transfer" @onclick="RemoveCryptoTransfers"></button>
+                <button hg-remove-button type="button" @onclick=@RemoveCryptoTransfers></button>
             </div>
-            <InputTransfers id="transfers" @bind-Value="@_input.CryptoTransfers" Unit="tℏ" TransferLabel="Crypto" />
+            <InputTransfers id="transfers" @bind-Value=@_input.CryptoTransfers Unit="tℏ" TransferLabel="Crypto" />
         }
         @foreach (var tokenGroup in _input.TokenTransfers)
         {
             <div class="token-spacer"></div>
-            <label>Token</label>
+            <label>Fungible Token</label>
             <div class="token-header">
-                <InputAddress @bind-Value="@tokenGroup.Token" placeholder="(shrd.rlm.num)" />
-                <button type="button" class="delete-transfer" @onclick="()=>RemoveTokenTransferGroup(tokenGroup)"></button>
+                <InputAddress @bind-Value=@tokenGroup.Token placeholder="(shrd.rlm.num)" />
+                <button hg-remove-button type="button" @onclick="()=>RemoveTokenTransferGroup(tokenGroup)"></button>
             </div>
-            <InputTransfers @bind-Value="@tokenGroup.Transfers" TransferLabel="@(tokenGroup.Token is null ? "Token": $"Token {tokenGroup.Token.ShardNum}.{tokenGroup.Token.RealmNum}.{tokenGroup.Token.AccountNum}")" />
+            <InputTransfers @bind-Value=@tokenGroup.Transfers TransferLabel="@(tokenGroup.Token is null ? "Token": $"Token {tokenGroup.Token.ShardNum}.{tokenGroup.Token.RealmNum}.{tokenGroup.Token.AccountNum}")" />
+        }
+        @foreach (var group in _input.AssetTransfers)
+        {
+            var assetGroup = group;
+            <div class="token-spacer"></div>
+            <div class="crypto-header">
+                <div>Asset (NFT)</div>
+                <button hg-remove-button type="button" @onclick="()=>RemoveAssetTransferGroup(assetGroup)"></button>
+            </div>
+            <InputAssetTransfers @bind-Value=@assetGroup />
         }
         <div class="add-transfers">
             @if (_input.CryptoTransfers is null)
             {
-                <a class="add-transfer" @onclick="AddCryptoTransfer">Add Crypto Transfer</a>
+                <a class="add-transfer" @onclick=@AddCryptoTransfer>Add Crypto Transfer</a>
             }
-            <a class="add-transfer" @onclick="AddTokenTransferGroup">Add Token Transfer</a>
+            <a class="add-transfer" @onclick=@AddTokenTransferGroup>Add Token Transfer</a>
+            <a class="add-transfer" @onclick=@AddAssetTransferGroup>Add Asset Transfer</a>
         </div>
         <button type="submit">Transfer</button>
-    </section>    
+    </fieldset>
     <Network @ref="_network">
-        @if (_output != null)
+        @if (_output is null)
         {
-            <div>Accepted, Status:</div>
-            <div>@_output.Status</div>
+            <div>Waiting for Input</div>
+        }
+        else if (_record is null)
+        {
+            <h3>Success</h3>
+            <button hg-get-record-button type="button" @onclick=@GetRecord>Get Record</button>
         }
         else
         {
-            <div>Waiting for Input</div>
+            <h3>Record</h3>
+            <RecordDisplay Value=@_record />
         }
     </Network>
 </EditForm>

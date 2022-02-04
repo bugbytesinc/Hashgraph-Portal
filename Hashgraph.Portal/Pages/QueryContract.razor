@@ -1,75 +1,30 @@
 ﻿@page "/querycontract"
-<EditForm class="query-page query-contract-page" Model="@_input" OnValidSubmit="HandleValidSubmit">
+<EditForm Model=@_input OnValidSubmit=@HandleValidSubmit>
     <h2>Query Contract</h2>
     <DataAnnotationsValidator />
-    <section class="entry-form">
+    <fieldset>
         <label for="gateway">Gateway Node</label>
-        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
         <label for="payer">Payer</label>
-        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="Payer (shrd.rlm.num)" />
         <label for="memo">Transaction Memo</label>
-        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Transaction Memo (optional)" />
+        <InputText id="memo" @bind-Value=@_input.Memo placeholder="Transaction Memo (optional)" />
         <label for="contract">Contract</label>
-        <InputAddress id="contract" @bind-Value="@_input.Contract" placeholder="Contract (shrd.rlm.num)" />
+        <InputAddress id="contract" @bind-Value=@_input.Contract placeholder="Contract (shrd.rlm.num)" />
         <label for="maxgas">Max Gas (Xfer from Payer, tℏ)</label>
-        <InputNumber id="maxgas" @bind-Value="@_input.Gas" placeholder="Max. Allowed Gas (tℏ)" />
+        <InputNumber id="maxgas" @bind-Value=@_input.Gas placeholder="Max. Allowed Gas (tℏ)" />
         <label for="bytecharge">Returned Bytes Charge (Xfer from Payer, tℏ)</label>
-        <InputNumber id="bytecharge" @bind-Value="@_input.ReturnValueCharge" placeholder="Fee for Bytes Ret. (tℏ)" />
-        <label for="maxsize">Maximum Return Size (bytes)</label>
-        <InputNumber id="maxsize" @bind-Value="@_input.MaxAllowedReturnSize" placeholder="Max Ret. Size (bytes)" />
+        <InputNumber id="bytecharge" @bind-Value=@_input.ReturnValueCharge placeholder="Fee for Bytes Ret. (tℏ)" />
         <label for="functionname">Function Name</label>
-        <InputText id="functionname" @bind-Value="@_input.FunctionName" Placeholder="Function Name" />
+        <InputText id="functionname" @bind-Value=@_input.FunctionName Placeholder="Function Name" />
         <label for="arguments">Arguments</label>
-        <InputArguments id="arguments" @bind-Value="@_input.Arguments" />
+        <InputAbi id="arguments" @bind-Value=@_input.Arguments />
         <button type="submit">Query Contract</button>
-    </section>
-    <Network @ref="_network">
+    </fieldset>
+    <Network @ref=@_network>
         @if (_output != null)
         {
-            @if (!string.IsNullOrWhiteSpace(_output.Error))
-            {
-                <div>Error</div>
-                <div>@_output.Error</div>
-            }
-            <div>Result</div>
-            <BinaryDisplay Data="@_output.Result.Data" />
-            <div>Bloom</div>
-            <BinaryDisplay Data="@_output.Bloom" />
-            <div>Gas</div>
-            <BalanceDisplay Balance="@_output.Gas" />
-            @if (_output.CreatedContracts.Length > 0)
-            {
-                <div>Created Contracts</div>
-                <div>
-                    @foreach (var contract in _output.CreatedContracts)
-                    {
-                        <div><AddressDisplay Address="@contract" /></div>
-                    }
-                </div>
-            }
-            if (_output.Events.Length > 0)
-            {
-                <h4>Events</h4>
-                @foreach (var evt in _output.Events)
-                {
-                    <div>Emitting Contract</div>
-                    <AddressDisplay Address="@evt.Contract" />
-                    <div>Bloom</div>
-                    <div><HashDisplay Hash="@evt.Bloom" /></div>
-                    @if (evt.Topic.Length > 0)
-                    {
-                        <div>Topics</div>
-                        <div>
-                            @foreach (var topic in evt.Topic)
-                            {
-                                <div><HashDisplay Hash="topic" /></div>
-                            }
-                        </div>
-                    }
-                    <div>Result</div>
-                    <BinaryDisplay Data="@_output.Result.Data" />
-                }
-            }
+            <ContractCallResultDisplay Value=@_output />
         }
         else
         {

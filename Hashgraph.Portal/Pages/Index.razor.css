@@ -1,0 +1,32 @@
+﻿section {
+    user-select: text;
+    padding: 0.5rem 1rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-size: 1.125rem;
+}
+
+p {
+    margin: 1rem 0;
+    max-width: 7.5in;
+    line-height: 1.4;
+}
+
+img {
+    margin: 1rem 0;
+    max-width: min(7.5in, 100%);
+}
+
+h2 {
+    margin: 1rem 0;
+    font-size: 1.6rem;
+    color: #8632A4;
+    max-width: 7.5in;
+}
+
+h3 {
+    margin: 1rem 0;
+    font-size: 1.4rem;
+    color: #8632A4;
+    max-width: 7.5in;
+}

@@ -1,0 +1,15 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@namespace Hashgraph.Components
+<div hg-input-asset-transfers>
+    @if (Value is not null)
+    {
+        <label for="token">Token</label>
+        <InputAddress id="token" @bind-Value=@Value.Token placeholder="(shrd.rlm.num)" />
+        <label for="fromaccount">From Address</label>
+        <InputAddress id="fromaccount" @bind-Value=@Value.From placeholder="(shrd.rlm.num)" />
+        <label for="toaccount">To Address</label>
+        <InputAddress id="toaccount" @bind-Value=@Value.To placeholder="(shrd.rlm.num)" />
+        <label for="serialnumbers">Serial Numbers</label>
+        <InputText id="serialnumbers" @bind-Value=@Value.SerialNumbers placeholder="(comma seperated)" />
+    }
+</div>

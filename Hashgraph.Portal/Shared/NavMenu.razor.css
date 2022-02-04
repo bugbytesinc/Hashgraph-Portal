@@ -1,0 +1,35 @@
+ul {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+    li.new-section {
+        border-top: 0.0625rem solid var(--hg-nd-200);
+    }
+
+::deep li > a {
+    display: block;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: var(--hg-nd-500);
+    background: var(--hg-nl-0);
+}
+
+    ::deep li > a.active {
+        color: var(--hg-nl-0);
+        background: var(--hg-cp-300);
+    }
+
+    ::deep li > a:hover {
+        color: var(--hg-nl-0);
+        background: var(--hg-cp-500);
+        border-color: var(--hg-cp-700);
+    }

@@ -1,0 +1,5 @@
+﻿.text-or-hex {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    column-gap: 0.125rem;
+}

@@ -5,24 +5,10 @@
 
 steps:
 
-- task: Npm@1
-  displayName: 'Install NPM Packages for SCSS Project'
-  inputs:
-    workingDir: Hashgraph.Portal.CSS
-    verbose: false
-
-- task: Npm@1
-  displayName: 'Build CSS from SCSS Files'
-  inputs:
-    command: custom
-    workingDir: Hashgraph.Portal.CSS
-    verbose: false
-    customCommand: 'run build'
-
 - task: DotNetCoreInstaller@0
-  displayName: 'Ensure .Net Core 5.1'  
+  displayName: 'Ensure .Net Core 6.0'  
   inputs:
-    version: '5.0.101'
+    version: '6.0.101'
 
 - task: DotNetCoreCLI@2
   displayName: Restore Dependencies  

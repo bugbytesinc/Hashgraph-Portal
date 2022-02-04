@@ -1,0 +1,38 @@
+﻿@page "/confiscateasset"
+<EditForm EditContext=@_editContext OnValidSubmit=@HandleValidSubmit>
+    <h2>Confiscate Assets (NFTs)</h2>
+    <DataAnnotationsValidator />
+    <fieldset>
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="(shrd.rlm.num)" />
+        <label for="memo">Memo</label>
+        <InputText id="memo" @bind-Value=@_input.Memo placeholder="Memo (optional)" />
+        <label for="token">Token</label>
+        <InputAddress id="token" @bind-Value=@_input.Token placeholder="(shrd.rlm.num)" />
+        <label for="account">Holding Account</label>
+        <InputAddress id="account" @bind-Value=@_input.Account placeholder="(shrd.rlm.num)" />
+        <label for="serialnumbers">Serial Numbers</label>
+        <InputText id="serialnumbers" @bind-Value=@_input.SerialNumbers placeholder="Serial Numbers (comma seperated)" />
+        <button type="submit">Confiscate Assets</button>
+    </fieldset>
+    <Network @ref=@_network>
+        @if (_output is null)
+        {
+            <div>Waiting for Input</div>
+        }
+        else if (_record is null)
+        {
+            <h3>Success</h3>
+            <div>Remaining Circulation:</div>
+            <div>@_output.Circulation</div>
+            <button hg-get-record-button type="button" @onclick=@GetRecord>Get Record</button>
+        }
+        else
+        {
+            <h3>Record</h3>
+            <RecordDisplay Value=@_record />
+        }
+    </Network>
+</EditForm>

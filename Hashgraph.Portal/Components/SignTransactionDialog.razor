@@ -1,40 +1,40 @@
 ﻿@if (_input != null)
 {
-    <div class="dialog-mask">
-        <EditForm Model="@_input" class="dialog-container sign-transaction-dialog">
-            <div class="dialog-title">Waiting for Signatures</div>
-            <div class="dialog-content">
+    <div hg-dialog-mask>
+        <EditForm Model=@_input hg-dialog-container>
+            <div hg-dialog-title>Waiting for Signatures</div>
+            <div hg-dialog-content>
                 <p>
                     Please use your third party tool to sign the transaction below.
                     Paste the signature from the clipboard to continue.
                 </p>
                 <label for="transaction">Transaction in Hex</label>
-                <InputTextArea id="transaction" @bind-Value="_input.TransactionInHex" readonly="readonly" />
+                <InputTextArea id="transaction" @bind-Value=@_input.TransactionInHex readonly="readonly" />
                 @if (ClipboardService.Enabled)
                 {
-                    <button type="button" @onclick="CopyTransactionToClipboard">Copy</button>
+                    <button type="button" @onclick=@CopyTransactionToClipboard>Copy</button>
                 }
                 @if (_input.ConfirmedSignatureMap != null)
                 {
                     <label>Confirmed Signatures</label>
-                    <SignatureMapDisplay SignatureMap="@_input.ConfirmedSignatureMap" class="signature-map-display" />
+                    <SignatureMapDisplay Value=@_input.ConfirmedSignatureMap />
                 }
                 <label for="signatures">Signature(s) in Hex</label>
-                <InputTextArea id="signatures" @bind-Value="_input.SignatureInHex" @oninput="SignatureInHexChanged" />
+                <InputTextArea id="signatures" @bind-Value=@_input.SignatureInHex @oninput=@SignatureInHexChanged />
                 @if (ClipboardService.Enabled)
                 {
-                    <button type="button" @onclick="PasteSignaturesFromClipboard">Paste</button>
+                    <button type="button" @onclick=@PasteSignaturesFromClipboard>Paste</button>
                 }
                 <div class="signature-review">
                     <div class="status-message">@_input.StatusMessage</div>
                     @if (_input.PendingSignatureMap != null)
                     {
-                        <SignatureMapDisplay SignatureMap="@_input.PendingSignatureMap" class="signature-map-display" />
-                        <button type="button" @onclick="AddMoreSignatures">Add More<br />Signatures</button>
+                        <SignatureMapDisplay Value=@_input.PendingSignatureMap />
+                        <button type="button" @onclick=@AddMoreSignatures>Add More<br />Signatures</button>
                     }
                 </div>
             </div>
-            <div class="dialog-footer">
+            <div hg-dialog-footer>
 
                 @switch (_input.RemainingSeconds)
                 {
@@ -48,8 +48,8 @@
                         <div class="countdown">Transaction expires in <span>@_input.RemainingSeconds</span> seconds...</div>
                         break;
                 }
-                <button type="button" @onclick="Close">Cancel</button>
-                <button @onclick="SubmitToNetwork">Submit to Network</button>
+                <button type="button" @onclick=@Close>Cancel</button>
+                <button @onclick=@SubmitToNetwork>Submit to Network</button>
             </div>
         </EditForm>
     </div>

@@ -1,27 +1,32 @@
 ﻿@page "/deletetopic"
-<EditForm class="query-page delete-topic-page" Model="@_input" OnValidSubmit="HandleValidSubmit">
+<EditForm class="query-page delete-topic-page" Model=@_input OnValidSubmit=@HandleValidSubmit>
     <h2>Delete Consensus Topic</h2>
     <DataAnnotationsValidator />
-    <section class="entry-form">
+    <fieldset>
         <label for="gateway">Gateway Node</label>
-        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
         <label for="payer">Payer</label>
-        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="(shrd.rlm.num)" />
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="(shrd.rlm.num)" />
         <label for="memo">Memo</label>
-        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Transaction Memo (optional)" />
+        <InputText id="memo" @bind-Value=@_input.Memo placeholder="Transaction Memo (optional)" />
         <label for="deletetopic">Topic to Delete</label>
-        <InputAddress id="deletetopic" @bind-Value="@_input.Topic" placeholder="(shrd.rlm.num)" />
+        <InputAddress id="deletetopic" @bind-Value=@_input.Topic placeholder="(shrd.rlm.num)" />
         <button type="submit">Delete Consensus Topic</button>
-    </section>
-    <Network @ref="_network">
-        @if (_output != null)
+    </fieldset>
+    <Network @ref=@_network>
+        @if (_output is null)
         {
-            <div>Accepted, Status:</div>
-            <div>@_output.Status</div>
+            <div>Waiting for Input</div>
+        }
+        else if (_record is null)
+        {
+            <h3>Success</h3>
+            <button hg-get-record-button type="button" @onclick=@GetRecord>Get Record</button>
         }
         else
         {
-            <div>Waiting for Input</div>
+            <h3>Record</h3>
+            <RecordDisplay Value=@_record />
         }
     </Network>
 </EditForm>

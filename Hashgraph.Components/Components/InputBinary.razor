@@ -1,0 +1,16 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@namespace Hashgraph.Components
+<div hg-binary-input @attributes="AdditionalAttributes" class="@_otherCssClasses @_fieldCssClasses">
+    <InputTextArea Value=@_text ValueChanged="OnTextChanged" ValueExpression="@(()=>_text)" />
+    <div>
+        <div>
+            <span>Encoding</span>
+            <label><input type="radio" value=@InputBinaryEncoding.Text checked=@(_encoding == InputBinaryEncoding.Text) @onchange=@(()=> OnEncodingChanged(InputBinaryEncoding.Text)) /> Text</label>
+            <label><input type="radio" value=@InputBinaryEncoding.Text checked=@(_encoding == InputBinaryEncoding.Hex) @onchange=@(()=> OnEncodingChanged(InputBinaryEncoding.Hex)) /> Hex</label>
+            <label><input type="radio" value=@InputBinaryEncoding.Base64 checked=@(_encoding == InputBinaryEncoding.Base64) @onchange=@(()=> OnEncodingChanged(InputBinaryEncoding.Base64)) /> Base 64</label>
+        </div>
+        <button type="button" @onclick="OnUploadFile">Upload</button>
+        <button type="button" @onclick="OnPasteContentFromClipboard">Paste</button>
+    </div>    
+</div>
+<UploadFileDialog @ref="_uploadFileDialog" />

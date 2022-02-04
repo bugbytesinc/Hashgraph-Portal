@@ -1,44 +1,59 @@
 ﻿@page "/updatefile"
-<EditForm class="query-page update-file-page" EditContext="@_editContext" OnValidSubmit="HandleValidSubmit">
+<EditForm class="query-page update-file-page" EditContext=@_editContext OnValidSubmit=@HandleValidSubmit>
     <h2>Update Consensus File</h2>
     <DataAnnotationsValidator />
-    <section class="entry-form">
+    <fieldset>
         <label for="gateway">Gateway Node</label>
-        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
         <label for="payer">Payer</label>
-        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="(shrd.rlm.num)" />
-        <label for="memo">Memo</label>
-        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Transaction Memo (optional)" />
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="(shrd.rlm.num)" />
+        <label for="memo">Transaction Memo</label>
+        <InputText id="memo" @bind-Value=@_input.TransactionMemo placeholder="Transaction Memo (optional)" />
         <label for="File">File to Update</label>
-        <InputAddress id="File" @bind-Value="@_input.File" placeholder="(shrd.rlm.num)" />
+        <InputAddress id="File" @bind-Value=@_input.File placeholder="(shrd.rlm.num)" />
         <div class="toggle-property">
-            <InputCheckbox id="updateadministrator" @bind-Value="@_input.UpdateAdministrators" />
+            <InputCheckbox id="updateadministrator" @bind-Value=@_input.UpdateAdministrators />
             <label for="updateadministrator">Update Administrators (aka. rotate keys)</label>
         </div>
         @if (_input.UpdateAdministrators)
         {
             <label for="administrator">Administrators</label>
-            <InputEndorsementList id="administrator" @bind-Value="@_input.Administrators" Placeholder="None (make imutable)" />
+            <InputEndorsementList id="administrator" @bind-Value=@_input.Administrators Placeholder="None (make imutable)" />
         }
         <div class="toggle-property">
-            <InputCheckbox id="updatecontents" @bind-Value="@_input.UpdateContents" />
+            <InputCheckbox id="updatecontents" @bind-Value=@_input.UpdateContents />
             <label for="updatecontents">Replace Contents</label>
         </div>
         @if (_input.UpdateContents)
         {
             <label for="contents">New Contents</label>
-            <InputBinary id="contents" @bind-Value="@_input.Contents" />
+            <InputBinary id="contents" @bind-Value=@_input.Contents />
+        }
+        <div class="toggle-property">
+            <InputCheckbox id="togglememo" @bind-Value=@_input.UpdateMemo />
+            <label for="togglememo">Update File Memo</label>
+        </div>
+        @if (_input.UpdateMemo)
+        {
+            <label for="filememo">New File Memo</label>
+            <InputText id="filememo" @bind-Value=@_input.FileMemo placeholder="File Memo" />
         }
         <button type="submit">Update File</button>
-    </section>
-    <Network @ref="_network">
-        @if (_output != null)
+    </fieldset>
+    <Network @ref=@_network>
+        @if (_output is null)
         {
-            <div>File Updated Successfully!</div>
+            <div>Waiting for Input</div>
+        }
+        else if (_record is null)
+        {
+            <h3>Success</h3>
+            <button hg-get-record-button type="button" @onclick=@GetRecord>Get Record</button>
         }
         else
         {
-            <div>Waiting for Input</div>
+            <h3>Record</h3>
+            <RecordDisplay Value=@_record />
         }
     </Network>
 </EditForm>

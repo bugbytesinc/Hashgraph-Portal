@@ -1,33 +1,44 @@
 ﻿@page "/createaccount"
-<EditForm class="query-page get-account-balance" Model="@_input" OnValidSubmit="HandleValidSubmit">
+<EditForm Model=@_input OnValidSubmit=@HandleValidSubmit>
     <h2>Create Account</h2>
     <DataAnnotationsValidator />
-    <section class="entry-form">
+    <fieldset>
         <label for="gateway">Gateway Node</label>
-        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
         <label for="payer">Payer</label>
-        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
-        <label for="memo">Memo</label>
-        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Memo (optional)" />
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="Payer (shrd.rlm.num)" />
+        <label for="txmemo">Transaction Memo</label>
+        <InputText id="txmemo" @bind-Value=@_input.TransactionMemo placeholder="Tx Memo (optional)" />
         <label for="initialbalance">Initial Balance (Xfer from Payer, tℏ)</label>
-        <InputNumber id="initialbalance" @bind-Value="@_input.InitialBalance" placeholder="Initial Balance (tℏ)" />
+        <InputNumber id="initialbalance" @bind-Value=@_input.InitialBalance placeholder="Initial Balance (tℏ)" />
         <label for="requirereceiverignature">Require Signature to Receive Funds</label>
-        <InputCheckbox id="requirereceiverignature" @bind-Value="@_input.RequireReceiveSignature" />
+        <InputCheckbox id="requirereceiverignature" @bind-Value=@_input.RequireReceiveSignature />
+        <label for="autoassociate">Number of Auto-Associations</label>
+        <InputNumber id="autoassociate" @bind-Value=@_input.AutoAssociationLimit placeholder="Count (optional)" />
         <label for="proxy">Proxy Address</label>
-        <InputAddress id="proxy" @bind-Value="@_input.Proxy" placeholder="Optional Proxy (shrd.rlm.num)" />
+        <InputAddress id="proxy" @bind-Value=@_input.Proxy placeholder="Proxy (optional, shrd.rlm.num)" />
+        <label for="accountmemo">Account Memo</label>
+        <InputText id="accountmemo" @bind-Value=@_input.AccountMemo placeholder="Account Memo (optional)" />
         <label for="endorsment">Endorsement</label>
-        <InputEndorsement id="endorsment" @bind-Value="@_input.Endorsement" />
+        <InputEndorsement id="endorsment" @bind-Value=@_input.Endorsement />
         <button type="submit">Create Account</button>
-    </section>
+    </fieldset>
     <Network @ref="_network">
-        @if (_output != null)
+        @if (_output is null)
         {
+            <div>Waiting for Input</div>
+        }
+        else if (_record is null)
+        {
+            <h3>Success</h3>
             <div>Created Account ID</div>
-            <AddressDisplay Address="@_output.Address" />
+            <AddressDisplay Value=@_output.Address />
+            <button hg-get-record-button type="button" @onclick=@GetRecord>Get Record</button>
         }
         else
         {
-            <div>Waiting for Input</div>
+            <h3>Record</h3>
+            <RecordDisplay Value=@_record />
         }
     </Network>
 </EditForm>

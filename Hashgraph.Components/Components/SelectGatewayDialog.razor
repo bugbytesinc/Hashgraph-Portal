@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@namespace Hashgraph.Components
+@if (_input != null)
+{
+    <div hg-dialog-mask>
+        <EditForm Model=@_input hg-dialog-container>
+            <div hg-dialog-title>Please Select a Network Node</div>
+            <div hg-dialog-content hg-select-network-node>
+                <div>
+                    <label for="selectnetwork">Network</label>
+                    <InputSelect id="selectnetwork" Value=@_input.SelectedNetwork ValueExpression=@(()=>_input.SelectedNetwork) ValueChanged=@((string value)=>NetworkChanged(value))>
+                        @foreach (var network in _input.Networks)
+                    {
+                        <option value=@network>@network</option>
+                    }
+                </InputSelect>
+            </div>
+            <table>
+                @foreach (var node in _input.Gateways)
+                    {
+                        <tr @onclick=@(()=>Select(node)) class=@(node == _input.SelectedGateway ? "selected" : "")>
+                            <td>@node.ShardNum.@node.RealmNum.@node.AccountNum</td>
+                            <td> at </td>
+                            <td>@node.Url</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div hg-dialog-footer>
+                <button type="button" @onclick=@Close>Close</button>
+            </div>
+        </EditForm>
+    </div>
+}

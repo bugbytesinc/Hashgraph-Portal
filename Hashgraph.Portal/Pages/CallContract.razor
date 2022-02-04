@@ -1,77 +1,40 @@
 ﻿@page "/callcontract"
-<EditForm class="query-page call-contract-page" Model="@_input" OnValidSubmit="HandleValidSubmit">
+<EditForm Model=@_input OnValidSubmit=@HandleValidSubmit>
     <h2>Call Contract</h2>
     <DataAnnotationsValidator />
-    <section class="entry-form">
+    <fieldset>
         <label for="gateway">Gateway Node</label>
-        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
         <label for="payer">Payer</label>
-        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="Payer (shrd.rlm.num)" />
         <label for="memo">Transaction Memo</label>
-        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Transaction Memo (optional)" />
+        <InputText id="memo" @bind-Value=@_input.Memo placeholder="Transaction Memo (optional)" />
         <label for="contract">Contract</label>
-        <InputAddress id="contract" @bind-Value="@_input.Contract" placeholder="Contract (shrd.rlm.num)" />
+        <InputAddress id="contract" @bind-Value=@_input.Contract placeholder="Contract (shrd.rlm.num)" />
         <label for="payable">Payable Amount (Xfer from Payer, tℏ)</label>
-        <InputNumber id="payable" @bind-Value="@_input.Amount" placeholder="Payable Amount (tℏ)" />
+        <InputNumber id="payable" @bind-Value=@_input.Amount placeholder="Payable Amount (tℏ)" />
         <label for="maxgas">Max Gas (Xfer from Payer, tℏ)</label>
-        <InputNumber id="maxgas" @bind-Value="@_input.Gas" placeholder="Max. Allowed Gas (tℏ)" />
+        <InputNumber id="maxgas" @bind-Value=@_input.Gas placeholder="Max. Allowed Gas (tℏ)" />
         <label for="functionname">Function Name</label>
-        <InputText id="functionname" @bind-Value="@_input.FunctionName" Placeholder="Function Name" />
+        <InputText id="functionname" @bind-Value=@_input.FunctionName Placeholder="Function Name" />
         <label for="arguments">Arguments</label>
-        <InputArguments id="arguments" @bind-Value="@_input.Arguments" />
-        <p class="note"><b>NOTE:</b> Calling a contract and retrieving the results requires two transactions.  If you do not wish to retrieve the results returned from the contract, you may cancel the second transaction signing request.</p>
+        <InputAbi id="arguments" @bind-Value=@_input.Arguments />
+        <p class="note"><b>NOTE:</b> The receipt returned from the network does not contain any results generated from the contract call.  If you wish to see results returned from the call, please click on the <i>Get Record</i> button in the results tab below.</p>
         <button type="submit">Call Contract</button>
-    </section>
+    </fieldset>
     <Network @ref="_network">
         @if (_output != null)
         {
-            var result = _output.CallResult;
-            @if (!string.IsNullOrWhiteSpace(result.Error))
+            @if(@_record is null)
             {
-                <div>Error</div>
-                <div>@result.Error</div>
+                <h3>Success</h3>
+                <button hg-get-record-button type="button" @onclick=@GetRecord>Get Record</button>
             }
-            <div>Result</div>
-            <BinaryDisplay Data="@result.Result.Data" />
-            <div>Bloom</div>
-            <BinaryDisplay Data="@result.Bloom" />
-            <div>Gas</div>
-            <BalanceDisplay Balance="@result.Gas" />
-            @if (result.CreatedContracts.Length > 0)
+            else
             {
-                <div>Created Contracts</div>
-                <div>
-                    @foreach (var contract in result.CreatedContracts)
-                    {
-                        <div><AddressDisplay Address="@contract" /></div>
-                    }
-                </div>
+                <h3>Record</h3>
+                <RecordDisplay Value=@_record />
             }
-            if (result.Events.Length > 0)
-            {
-                <h4>Events</h4>
-                @foreach (var evt in result.Events)
-                {
-                    <div>Emitting Contract</div>
-                    <AddressDisplay Address="@evt.Contract" />
-                    <div>Bloom</div>
-                    <div><HashDisplay Hash="@evt.Bloom" /></div>
-                    @if (evt.Topic.Length > 0)
-                    {
-                        <div>Topics</div>
-                        <div>
-                            @foreach (var topic in evt.Topic)
-                            {
-                                <div><HashDisplay Hash="topic" /></div>
-                            }
-                        </div>
-                    }
-                    <div>Result</div>
-                    <BinaryDisplay Data="@result.Result.Data" />
-                }
-            }
-            <h4>Record</h4>
-            <RecordDisplay Record="@_output" />
         }
         else
         {

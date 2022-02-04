@@ -1,33 +1,40 @@
 ﻿@page "/createtopic"
-<EditForm class="query-page get-Topic-balance" Model="@_input" OnValidSubmit="HandleValidSubmit">
+<EditForm class="query-page get-Topic-balance" Model=@_input OnValidSubmit=@HandleValidSubmit>
     <h2>Create Consensus Topic</h2>
     <DataAnnotationsValidator />
-    <section class="entry-form">
+    <fieldset>
         <label for="gateway">Gateway Node</label>
-        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
         <label for="payer">Payer</label>
-        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
-        <label for="description">Description</label>
-        <InputText id="description" @bind-Value="@_input.Desciption" placeholder="Short Description of Name of topic" />
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="Payer (shrd.rlm.num)" />
+        <label for="description">Topic Memo</label>
+        <InputText id="description" @bind-Value=@_input.Desciption placeholder="Topic Memo" />
         <label for="administrator">Administrator</label>
-        <InputEndorsement id="administrator" @bind-Value="@_input.Administrator" Placeholder="Administrator (optional)" />
+        <InputEndorsement id="administrator" @bind-Value=@_input.Administrator Placeholder="Administrator (optional)" />
         <label for="participant">Participant</label>
-        <InputEndorsement id="participant" @bind-Value="@_input.Participant" Placeholder="Submit Protection (optional)" />
+        <InputEndorsement id="participant" @bind-Value=@_input.Participant Placeholder="Submit Protection (optional)" />
         <label for="renew">Renewal Account</label>
-        <InputAddress id="renew" @bind-Value="@_input.RenewAccount" placeholder="Optional (shrd.rlm.num)" />
+        <InputAddress id="renew" @bind-Value=@_input.RenewAccount placeholder="Optional (shrd.rlm.num)" />
         <label for="memo">Transaction Memo</label>
-        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Transaction Memo (optional)" />
+        <InputText id="memo" @bind-Value=@_input.Memo placeholder="Transaction Memo (optional)" />
         <button type="submit">Create Consensus Topic</button>
-    </section>
-    <Network @ref="_network">
-        @if (_output != null)
+    </fieldset>
+    <Network @ref=@_network>
+        @if (_output is null)
         {
+            <div>Waiting for Input</div>
+        }
+        else if (_record is null)
+        {
+            <h3>Success</h3>
             <div>Created Topic ID</div>
-            <AddressDisplay Address="@_output.Topic" />
+            <AddressDisplay Value=@_output.Topic />
+            <button hg-get-record-button type="button" @onclick=@GetRecord>Get Record</button>
         }
         else
         {
-            <div>Waiting for Input</div>
+            <h3>Record</h3>
+            <RecordDisplay Value=@_record />
         }
     </Network>
 </EditForm>

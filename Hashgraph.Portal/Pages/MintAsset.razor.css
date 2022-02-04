@@ -1,0 +1,26 @@
+﻿[hg-remove-button] {
+    justify-self: end;
+}
+
+.metadata {
+    display: grid;
+    grid-template-rows: min-content 1fr;
+}
+
+.add-metadata {
+    margin-top: 1.125rem;
+    border-top: 1px solid var(--hg-nl-300);
+    grid-column: 1 / 3;
+}
+
+    .add-metadata a {
+        cursor: pointer;
+        color: #646769;
+        font-size: 0.75rem;
+        margin-right: 1.5rem;
+    }
+
+        .add-metadata a:hover {
+            color: #8632A4;
+            text-decoration: underline;
+        }

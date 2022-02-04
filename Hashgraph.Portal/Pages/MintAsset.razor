@@ -1,0 +1,51 @@
+﻿@page "/mintasset"
+<EditForm EditContext=@_editContext OnValidSubmit=@HandleValidSubmit>
+    <h2>Mint Assets (NFTs)</h2>
+    <DataAnnotationsValidator />
+    <fieldset>
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="(shrd.rlm.num)" />
+        <label for="memo">Memo</label>
+        <InputText id="memo" @bind-Value=@_input.Memo placeholder="Memo (optional)" />
+        <label for="token">Token</label>
+        <InputAddress id="token" @bind-Value=@_input.Token placeholder="(shrd.rlm.num)" />
+        @for (int i = 0; i < _input.Metadata.Length; i++)
+        {
+            var item = _input.Metadata[i];
+            <label>Asset @(i+1) Metadata </label>
+            <div class="metadata">
+                @if (_input.Metadata.Length > 1)
+                {
+                    <button hg-remove-button type="button" title="Remove Asset Metadata" @onclick="()=>RemoveMetadata(item.id)"></button>
+                }
+                <InputBinary @key=@item.id @bind-Value=@item.Data />
+            </div>
+        }
+        <div class="add-metadata">
+            <a @onclick=@AddMetadata>Add Additional Asset Metadata</a>
+        </div>
+        <button type="submit">Mint Assets</button>
+    </fieldset>
+    <Network @ref="_network">
+        @if (_output is null)
+        {
+            <div>Waiting for Input</div>
+        }
+        else if (_record is null)
+        {
+            <h3>Success</h3>
+            <div>Serial Numbers</div>
+            <div>@string.Join(", ",_output.SerialNumbers.Select(s => s.ToString()))</div>
+            <div>New Circulation:</div>
+            <div>@_output.Circulation</div>
+            <button hg-get-record-button type="button" @onclick=@GetRecord>Get Record</button>
+        }
+        else
+        {
+            <h3>Record</h3>
+            <RecordDisplay Value=@_record />
+        }
+    </Network>
+</EditForm>

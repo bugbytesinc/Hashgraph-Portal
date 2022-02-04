@@ -1,52 +1,88 @@
 ﻿@page "/createtoken"
-<EditForm class="query-page create-token" Model="@_input" OnValidSubmit="HandleValidSubmit">
+<EditForm EditContext=@_editContext OnValidSubmit=@HandleValidSubmit>
     <h2>Create Token</h2>
     <DataAnnotationsValidator />
-    <section class="entry-form">
+    <fieldset>
         <label for="gateway">Gateway Node</label>
-        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
         <label for="payer">Payer</label>
-        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="Payer (shrd.rlm.num)" />
+        <label for="tokentype">Type</label>
+        <div hg-vertical-group>
+            <InputRadioGroup @bind-Value=@_input.TokenType>
+                <label><InputRadio Value=@TokenType.Fungible /> Token (Fungible)</label>
+                <label><InputRadio Value=@TokenType.Asset /> Asset (Non Fungible)</label>
+            </InputRadioGroup>
+        </div>
         <label for="name">Token Name</label>
-        <InputText id="name" @bind-Value="@_input.Name" placeholder="Token Name" />
+        <InputText id="name" @bind-Value=@_input.Name placeholder="Token Name" />
         <label for="symbol">Token Symbol</label>
-        <InputText id="symbol" @bind-Value="@_input.Symbol" placeholder="Symbol (A-Z Uppercase)" />
-        <label for="circulation">Initial Circulation</label>
-        <InputNumber id="circulation" @bind-Value="@_input.Circulation" placeholder="Circulation (in smallest unit)" />
-        <label for="decimals">Decimal Places</label>
-        <InputNumber id="decimals" @bind-Value="@_input.Decimals" placeholder="Decimal Places" />
+        <InputText id="symbol" @bind-Value=@_input.Symbol placeholder="Symbol (A-Z Uppercase)" />
+        <label for="tokmemo">Token Memo</label>
+        <InputText id="tokmemo" @bind-Value=@_input.TokenMemo placeholder="Token Memo (optional)" />
+        @if (_input.TokenType == TokenType.Fungible)
+        {
+            <label for="circulation">Initial Circulation</label>
+            <InputNumber id="circulation" @bind-Value=@_input.Circulation placeholder="Circulation (in smallest unit)" />
+            <label for="decimals">Decimal Places</label>
+            <InputNumber id="decimals" @bind-Value=@_input.Decimals placeholder="Decimal Places" />
+        }
+        <label for="ceiling">Maxium Circulation</label>
+        <InputNumber id="ceiling" @bind-Value=@_input.Ceiling placeholder="Max Circulation (default unbounded)" />
         <label for="treasury">Treasury Account</label>
-        <InputAddress id="treasury" @bind-Value="@_input.Treasury" placeholder="Treasury (shrd.rlm.num)" />
+        <InputAddress id="treasury" @bind-Value=@_input.Treasury placeholder="Treasury (shrd.rlm.num)" />
         <label for="administrator">Administrator</label>
-        <InputEndorsement id="administrator" @bind-Value="@_input.Administrator" Placeholder="Endorsement (optional)" />
+        <InputEndorsement id="administrator" @bind-Value=@_input.Administrator Placeholder="Endorsement (optional)" />
         <label for="grantkyc">Grant KYC</label>
-        <InputEndorsement id="grantkyc" @bind-Value="@_input.GrantKycEndorsement" Placeholder="Endorsement (optional)" />
+        <InputEndorsement id="grantkyc" @bind-Value=@_input.GrantKycEndorsement Placeholder="Endorsement (optional)" />
         <label for="suspend">Suspend</label>
-        <InputEndorsement id="suspend" @bind-Value="@_input.SuspendEndorsement" Placeholder="Endorsement (optional)" />
+        <InputEndorsement id="suspend" @bind-Value=@_input.SuspendEndorsement Placeholder="Endorsement (optional)" />
+        <label for="pause">Pause</label>
+        <InputEndorsement id="pause" @bind-Value=@_input.PauseEndorsement Placeholder="Endorsement (optional)" />
         <label for="confiscate">Confiscate</label>
-        <InputEndorsement id="confiscate" @bind-Value="@_input.ConfiscateEndorsement" Placeholder="Endorsement (optional)" />
+        <InputEndorsement id="confiscate" @bind-Value=@_input.ConfiscateEndorsement Placeholder="Endorsement (optional)" />
         <label for="supply">Supply</label>
-        <InputEndorsement id="supply" @bind-Value="@_input.SupplyEndorsement" Placeholder="Endorsement (optional)" />
-        <label for="initializesuspended">Defualt Suspended</label>
+        <InputEndorsement id="supply" @bind-Value=@_input.SupplyEndorsement Placeholder="Endorsement (optional)" />
+        <label for="royalty">Royalty</label>
+        <InputEndorsement id="royalty" @bind-Value=@_input.RoyaltyEndorsement Placeholder="Endorsement (optional)" />
+        <label for="initializesuspended">Default Suspended</label>
         <div class="toggle-property">
-            <InputCheckbox id="initializesuspended" @bind-Value="@_input.InitializeSuspended">Default Associations are Suspended</InputCheckbox>
+            <InputCheckbox id="initializesuspended" @bind-Value=@_input.InitializeSuspended>Default Associations are Suspended</InputCheckbox>
             <label for="initializesuspended">Associations Start in Suspended State</label>
         </div>
         <label for="renew">Renewal Account</label>
-        <InputAddress id="renew" @bind-Value="@_input.RenewAccount" placeholder="Optional (shrd.rlm.num)" />
-        <label for="memo">Transaction Memo</label>
-        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Transaction Memo (optional)" />
-        <button type="submit">Create Token</button>
-    </section>
-    <Network @ref="_network">
-        @if (_output != null)
+        <InputAddress id="renew" @bind-Value=@_input.RenewAccount placeholder="Optional (shrd.rlm.num)" />
+        <label for="txmemo">Transaction Memo</label>
+        <InputText id="txmemo" @bind-Value=@_input.TransactionMemo placeholder="Transaction Memo (optional)" />
+        @for (int i = 0; i < _input.Royalties.Count; i++)
         {
+            var royalty = _input.Royalties[i];
+            <div class="royalty-spacer"></div>
+            <label>Royalty</label>
+            <button hg-remove-button type="button" @onclick=@(()=>RemoveRoyalty(royalty))></button>
+            <InputRoyalty @bind-Value=@royalty />
+        }
+        <div class="add-royalty">
+            <a class="add-transfer" @onclick=@AddRoyalty>Add Royalty</a>
+        </div>
+        <button type="submit">Create Token</button>
+    </fieldset>
+    <Network @ref=@_network>
+        @if (_output is null)
+        {
+            <div>Waiting for Input</div>
+        }
+        else if (_record is null)
+        {
+            <h3>Success</h3>
             <div>Created Token ID</div>
-            <AddressDisplay Address="@_output.Token" />
+            <AddressDisplay Value=@_output.Token />
+            <button hg-get-record-button type="button" @onclick=@GetRecord>Get Record</button>
         }
         else
         {
-            <div>Waiting for Input</div>
+            <h3>Record</h3>
+            <RecordDisplay Value=@_record />
         }
     </Network>
 </EditForm>

@@ -1,0 +1,57 @@
+﻿@page "/updateroyalties"
+<EditForm Model=@_input OnValidSubmit=@HandleValidSubmit>
+    <h2>Update Token Royalties</h2>
+    <DataAnnotationsValidator />
+    <fieldset>
+        <label for="gateway">Gateway Node</label>
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
+        <label for="payer">Payer</label>
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="Payer (shrd.rlm.num)" />
+        <label for="txmemo">Transaction Memo</label>
+        <InputText id="txmemo" @bind-Value=@_input.TransactionMemo placeholder="Transaction Memo (optional)" />
+        <label for="token">Token</label>
+        <InputAddress id="token" @bind-Value=@_input.Token placeholder="Payer (shrd.rlm.num)" />
+        @if(_input.Royalties.Count == 0)
+        {
+            <label>Royalties</label>
+            <div class="no-royalties">
+                <h4>None</h4>
+                <p>If submitted with an empty list, this action will clear all existing royalties for this token.</p>
+                <p>Please click on the 'Add Royalty' link below to add royalties to this list.</p>
+                <p>This list will wholy replace the prevous list of royalties for this token.</p>                
+            </div>
+        }
+        else
+        {
+            <div></div>
+        }
+        @for (int i = 0; i < _input.Royalties.Count; i++)
+        {
+            var royalty = _input.Royalties[i];
+            <div class="royalty-spacer"></div>
+            <label>Royalty</label>
+            <button hg-remove-button type="button" @onclick=@(()=>RemoveRoyalty(royalty))></button>
+            <InputRoyalty @bind-Value=@royalty />
+        }
+        <div class="add-royalty">
+            <a class="add-transfer" @onclick=@AddRoyalty>Add Royalty</a>
+        </div>
+        <button type="submit">Update Token Royalties</button>
+    </fieldset>
+    <Network @ref=@_network>
+        @if (_output is null)
+        {
+            <div>Waiting for Input</div>
+        }
+        else if (_record is null)
+        {
+            <h3>Success</h3>
+            <button hg-get-record-button type="button" @onclick=@GetRecord>Get Record</button>
+        }
+        else
+        {
+            <h3>Record</h3>
+            <RecordDisplay Value=@_record />
+        }
+    </Network>
+</EditForm>

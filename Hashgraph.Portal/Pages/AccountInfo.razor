@@ -1,71 +1,96 @@
 ﻿@page "/accountinfo"
-<EditForm class="query-page get-account-info" Model="@_input" OnValidSubmit="HandleValidSubmit">
+<EditForm Model=@_input OnValidSubmit=@HandleValidSubmit>
     <h2>Get Account Info</h2>
     <DataAnnotationsValidator />
-    <section class="entry-form">
+    <fieldset>
         <label for="gateway">Gateway Node</label>
-        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
         <label for="payer">Payer</label>
-        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="Payer (shrd.rlm.num)" />
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="Payer (shrd.rlm.num)" />
         <label for="memo">Payment Memo</label>
-        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Query Payment Memo (optional)" />
+        <InputText id="memo" @bind-Value=@_input.Memo placeholder="Query Payment Memo (optional)" />
         <label for="accountNumber">Account Number</label>
-        <InputAddress id="address" @bind-Value="@_input.Address" placeholder="Address (shrd.rlm.num)" />
+        <InputAddress id="address" @bind-Value=@_input.Address placeholder="Address (shrd.rlm.num)" />
         <button type="submit">Get Info</button>
-    </section>
+    </fieldset>
     <Network @ref="_network">
         @if (_output != null)
         {
-            <div>Account Address</div>
-            <AddressDisplay Address="@_output.Address" />
-            <div>Crypto Balance</div>
-            <BalanceDisplay Balance="@_output.Balance" />
-            <div>Smart Contract ID</div>
-            <div>@_output.SmartContractId</div>
-            <div>Proxy Address</div>
-            <AddressDisplay Address="@_output.Proxy" />
-            <div>Receive Signature Required</div>
-            <div>@(_output.ReceiveSignatureRequired ? "Yes" : "No")</div>
-            <div>Auto-Renewal Period</div>
-            <TimespanDisplay TimeSpan="@_output.AutoRenewPeriod" />
-            <div>Expiration</div>
-            <div>@_output.Expiration</div>
-            <div>Endorsement</div>
-            <EndorsementDisplay Endorsement="_output.Endorsement" />
+                <div>Account Address</div>
+                <AddressDisplay Value=@_output.Address />
+                <div>Account Alias</div>
+                <AliasDisplay Value=@_output.Alias />
+                <div>Ledger</div>
+                <LedgerDisplay Value=@_output.Ledger/>
+                <div>Memo</div>
+                <MemoDisplay Value=@_output.Memo />
+                <div>Crypto Balance</div>
+                <HbarDisplay Value=@_output.Balance />
+                <div>Smart Contract ID</div>
+                <div>@_output.SmartContractId</div>
+                <div>Proxy Address</div>
+                <AddressDisplay Value=@_output.Proxy />
+                <div>Receive Signature Required</div>
+                <div>@(_output.ReceiveSignatureRequired ? "Yes" : "No")</div>
+                <div>Auto-Renewal Period</div>
+                <TimespanDisplay Value=@_output.AutoRenewPeriod />
+                <div>Auto-Association Limit</div>
+                <AutoAssociationDisplay Value=@_output.AutoAssociationLimit />
+                <div>Expiration</div>
+                <div>@_output.Expiration</div>
+                <div>Endorsement</div>
+                <EndorsementDisplay Value="_output.Endorsement" />
+                <div>Deleted</div>
+                <div>@(_output.Deleted ? "Yes" : "No")</div>
             @if (_output.Tokens.Count > 0)
             {
-                <h3>Tokens</h3>
-                <div class="token-balances">
-                    <b>ID</b>
-                    <b>Symbol</b>
-                    <b>Balance</b>
-                    <b>Status</b>
-                    @foreach (var record in _output.Tokens)
-                    {
-                        var statuses = new List<String>(2);
-                        if(record.KycStatus == TokenKycStatus.Revoked)
+                if (_output.AssetCount == 1)
+                {
+                    <h3>Tokens (inc. one NFT)</h3>
+                }
+                else if (_output.AssetCount > 1)
+                {
+                    <h3>Tokens (inc. @_output.AssetCount NFTs)</h3>
+                }
+                else
+                {
+                    <h3>Tokens</h3>
+                }
+                    <div class="token-balances">
+                        <b>ID</b>
+                        <b>Symbol</b>
+                        <b>Balance</b>
+                        <b>Status</b>
+                        @foreach (var record in _output.Tokens)
                         {
-                            statuses.Add("KYC Pending");
+                            var statuses = new List<String>(2);
+                            if (record.KycStatus == TokenKycStatus.Revoked)
+                            {
+                                statuses.Add("KYC Pending");
+                            }
+                            if (record.TradableStatus == TokenTradableStatus.Suspended)
+                            {
+                                statuses.Add("Suspended");
+                            }
+                            if (record.AutoAssociated)
+                            {
+                                statuses.Add("Auto Associated");
+                            }
+                            if (statuses.Count == 0)
+                            {
+                                statuses.Add("OK");
+                            }
+                            <AddressDisplay Value=@record.Token />
+                            <div>@record.Symbol</div>
+                            <CryptoBalanceDisplay Value=@record />
+                            <div>@(string.Join(", ",statuses.ToArray()))</div>
                         }
-                        if(record.TradableStatus == TokenTradableStatus.Suspended)
-                        {
-                            statuses.Add("Suspended");
-                        }
-                        if(statuses.Count == 0)
-                        {
-                            statuses.Add("OK");
-                        }
-                        <AddressDisplay Address="@record.Token" />
-                        <div>@record.Symbol</div>
-                        <div>@record.Balance</div>
-                        <div>@(string.Join(", ",statuses.ToArray()))</div>
-                    }
-                </div>
+                    </div>
             }
             else
             {
                 <div>Tokens</div>
-                <div>No Token Associations Found</div>
+                <div>No Tokens or Associations Found</div>
             }
         }
         else

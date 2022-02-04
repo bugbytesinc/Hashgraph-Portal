@@ -1,107 +1,140 @@
 ﻿@page "/updatetoken"
-<EditForm class="query-page update-token-page" EditContext="@_editContext"  OnValidSubmit="HandleValidSubmit">
+<EditForm EditContext=@_editContext OnValidSubmit=@HandleValidSubmit>
     <h2>Update Token</h2>
     <DataAnnotationsValidator />
-    <section class="entry-form">
+    <fieldset>
         <label for="gateway">Gateway Node</label>
-        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
         <label for="payer">Payer</label>
-        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="(shrd.rlm.num)" />
-        <label for="memo">Memo</label>
-        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Transaction Memo (optional)" />
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="(shrd.rlm.num)" />
+        <label for="memo">Transaction Memo</label>
+        <InputText id="memo" @bind-Value=@_input.TransactionMemo placeholder="Transaction Memo (optional)" />
         <label for="token">Token to Update</label>
-        <InputAddress id="token" @bind-Value="@_input.Token" placeholder="(shrd.rlm.num)" />
+        <InputAddress id="token" @bind-Value=@_input.Token placeholder="(shrd.rlm.num)" />
         <div class="toggle-property">
-            <InputCheckbox id="togglesymbol" @bind-Value="@_input.UpdateSymbol" />
+            <InputCheckbox id="togglesymbol" @bind-Value=@_input.UpdateSymbol />
             <label for="togglesymbol">Update Token Symbol</label>
         </div>
         @if (_input.UpdateSymbol)
         {
             <label for="symbol">New Symbol</label>
-            <InputText id="symbol" @bind-Value="@_input.Symbol" placeholder="Token symbol (uppercase A-Z)" />
+            <InputText id="symbol" @bind-Value=@_input.Symbol placeholder="Token symbol (uppercase A-Z)" />
         }
         <div class="toggle-property">
-            <InputCheckbox id="togglename" @bind-Value="@_input.UpdateName" />
+            <InputCheckbox id="togglename" @bind-Value=@_input.UpdateName />
             <label for="togglename">Update Token Name / Description</label>
         </div>
         @if (_input.UpdateName)
         {
             <label for="name">New Name</label>
-            <InputText id="name" @bind-Value="@_input.Name" placeholder="Token Name / Description" />
+            <InputText id="name" @bind-Value=@_input.Name placeholder="Token Name / Description" />
         }
         <div class="toggle-property">
-            <InputCheckbox id="updatetreasury" @bind-Value="@_input.UpdateTreasury" />
+            <InputCheckbox id="togglememo" @bind-Value=@_input.UpdateMemo />
+            <label for="togglememo">Update Token Memo</label>
+        </div>
+        @if (_input.UpdateMemo)
+        {
+            <label for="tokenmemo">New Token Memo</label>
+            <InputText id="tokenmemo" @bind-Value=@_input.TokenMemo placeholder="Token Memo" />
+        }
+        <div class="toggle-property">
+            <InputCheckbox id="updatetreasury" @bind-Value=@_input.UpdateTreasury />
             <label for="updatetreasury">Update Treasury Acccount</label>
         </div>
         @if (_input.UpdateTreasury)
         {
             <label for="treasury">New Treasury</label>
-            <InputAddress id="treasury" @bind-Value="@_input.Treasury" Placeholder="(shrd.rlm.num)" />
+            <InputAddress id="treasury" @bind-Value=@_input.Treasury Placeholder="(shrd.rlm.num)" />
         }
         <div class="toggle-property">
-            <InputCheckbox id="updateadministrator" @bind-Value="@_input.UpdateAdministrator" />
+            <InputCheckbox id="updateadministrator" @bind-Value=@_input.UpdateAdministrator />
             <label for="updateadministrator">Update Administrator (aka. rotate key)</label>
         </div>
         @if (_input.UpdateAdministrator)
         {
             <label for="administrator">Endorsement</label>
-            <InputEndorsement id="administrator" @bind-Value="@_input.Administrator" Placeholder="None (make read-only)" />
+            <InputEndorsement id="administrator" @bind-Value=@_input.Administrator Placeholder="None (make read-only)" />
         }
         <div class="toggle-property">
-            <InputCheckbox id="updategrantkyc" @bind-Value="@_input.UpdateGrantKycEndorsement" />
+            <InputCheckbox id="updategrantkyc" @bind-Value=@_input.UpdateGrantKycEndorsement />
             <label for="updategrantkyc">Update Grant Kyc Endorsement (aka. rotate key)</label>
         </div>
         @if (_input.UpdateGrantKycEndorsement)
         {
             <label for="grantkyc">Endorsement</label>
-            <InputEndorsement id="grantkyc" @bind-Value="@_input.GrantKycEndorsement" Placeholder="None (make read-only)" />
+            <InputEndorsement id="grantkyc" @bind-Value=@_input.GrantKycEndorsement Placeholder="None (make read-only)" />
         }
         <div class="toggle-property">
-            <InputCheckbox id="updatesuspend" @bind-Value="@_input.UpdateSuspendEndorsement" />
+            <InputCheckbox id="updatesuspend" @bind-Value=@_input.UpdateSuspendEndorsement />
             <label for="updatesuspend">Update Suspend/Freeze Account Endorsement (aka. rotate key)</label>
         </div>
         @if (_input.UpdateSuspendEndorsement)
         {
             <label for="suspend">Endorsement</label>
-            <InputEndorsement id="suspend" @bind-Value="@_input.SuspendEndorsement" Placeholder="None (make read-only)" />
+            <InputEndorsement id="suspend" @bind-Value=@_input.SuspendEndorsement Placeholder="None (make read-only)" />
         }
         <div class="toggle-property">
-            <InputCheckbox id="updateconfiscate" @bind-Value="@_input.UpdateConfiscateEndorsement" />
+            <InputCheckbox id="updatepause" @bind-Value=@_input.UpdatePauseEndorsement />
+            <label for="updatepause">Update Pause Token Endorsement (aka. rotate key)</label>
+        </div>
+        @if (_input.UpdatePauseEndorsement)
+        {
+            <label for="pause">Endorsement</label>
+            <InputEndorsement id="pause" @bind-Value=@_input.PauseEndorsement Placeholder="None (make read-only)" />
+        }
+        <div class="toggle-property">
+            <InputCheckbox id="updateconfiscate" @bind-Value=@_input.UpdateConfiscateEndorsement />
             <label for="updateconfiscate">Update Confiscate/Wipe Endorsement (aka. rotate key)</label>
         </div>
         @if (_input.UpdateConfiscateEndorsement)
         {
             <label for="confiscate">Endorsement</label>
-            <InputEndorsement id="confiscate" @bind-Value="@_input.ConfiscateEndorsement" Placeholder="None (make read-only)" />
+            <InputEndorsement id="confiscate" @bind-Value=@_input.ConfiscateEndorsement Placeholder="None (make read-only)" />
         }
         <div class="toggle-property">
-            <InputCheckbox id="updatesupply" @bind-Value="@_input.UpdateSupplyEndorsement" />
+            <InputCheckbox id="updatesupply" @bind-Value=@_input.UpdateSupplyEndorsement />
             <label for="updatesupply">Update Supply/Mint Endorsement (aka. rotate key)</label>
         </div>
         @if (_input.UpdateSupplyEndorsement)
         {
             <label for="supply">Endorsement</label>
-            <InputEndorsement id="supply" @bind-Value="@_input.SupplyEndorsement" Placeholder="None (make read-only)" />
+            <InputEndorsement id="supply" @bind-Value=@_input.SupplyEndorsement Placeholder="None (make read-only)" />
         }
         <div class="toggle-property">
-            <InputCheckbox id="updaterenewaccount" @bind-Value="@_input.UpdateRenewAccount" />
+            <InputCheckbox id="updateroyalties" @bind-Value=@_input.UpdateRoyaltiesEndorsement />
+            <label for="updateroyalties">Update Royalties Endorsement (aka. rotate key)</label>
+        </div>
+        @if (_input.UpdateRoyaltiesEndorsement)
+        {
+            <label for="royalties">Endorsement</label>
+            <InputEndorsement id="royalties" @bind-Value=@_input.RoyaltiesEndorsement Placeholder="None (make read-only)" />
+        }
+        <div class="toggle-property">
+            <InputCheckbox id="updaterenewaccount" @bind-Value=@_input.UpdateRenewAccount />
             <label for="updaterenewaccount">Update Renew Payment Acccount</label>
         </div>
         @if (_input.UpdateRenewAccount)
         {
             <label for="renewaccount">New Account</label>
-            <InputAddress id="renewaccount" @bind-Value="@_input.RenewAccount" Placeholder="None (deletes when expires)" />
+            <InputAddress id="renewaccount" @bind-Value=@_input.RenewAccount Placeholder="None (deletes when expires)" />
         }
         <button type="submit">Update Token</button>
-    </section>
-    <Network @ref="_network">
-        @if (_output != null)
+    </fieldset>
+    <Network @ref=@_network>
+        @if (_output is null)
         {
-            <div>Token Updated Successfully!</div>
+            <div>Waiting for Input</div>
+        }
+        else if (_record is null)
+        {
+            <h3>Success</h3>
+            <button hg-get-record-button type="button" @onclick=@GetRecord>Get Record</button>
         }
         else
         {
-            <div>Waiting for Input</div>
+            <h3>Record</h3>
+            <RecordDisplay Value=@_record />
         }
     </Network>
 </EditForm>

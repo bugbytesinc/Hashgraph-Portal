@@ -1,11 +1,10 @@
-﻿namespace Hashgraph.Portal.Services
+﻿namespace Hashgraph.Portal.Services;
+
+public class RootClientService
 {
-    public class RootClientService
+    public Client RootClient { get; set; }
+    public RootClientService()
     {
-        public Client RootClient { get; set; }
-        public RootClientService()
-        {
-            RootClient = new Client();
-        }
+        RootClient = new Client();
     }
 }

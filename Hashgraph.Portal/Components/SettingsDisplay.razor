@@ -1,14 +1,14 @@
-﻿<section class="global-settings" @onclick="OnClick">
+﻿<section @onclick=@OnClick>
     <h2>Global Settings</h2>
     <dl>
         <dt>Max Tx Fee</dt>
-        <dd><BalanceDisplay Balance="(ulong)DefaultsService.FeeLimit" /></dd>
+        <dd><HbarDisplay Value="(ulong)DefaultsService.FeeLimit" /></dd>
         <dt>Tx Duration</dt>
-        <dd><TimespanDisplay TimeSpan="DefaultsService.TransactionDuration" /></dd>
+        <dd><TimespanDisplay Value="DefaultsService.TransactionDuration" /></dd>
         <dt>Rcpt Max Wait</dt>
-        <dd><TimespanDisplay TimeSpan="DefaultsService.ReceiptWaitDuration" /></dd>
+        <dd><TimespanDisplay Value="DefaultsService.ReceiptWaitDuration" /></dd>
         <dt>Rcpt Max Rtry</dt>
         <dd>@DefaultsService.ReceiptRetryCount</dd>
     </dl>
 </section>
-<UpdateSettingsDialog @ref="UpdateSettingsDialog" />
+<UpdateSettingsDialog @ref="_updateSettingsDialog" />

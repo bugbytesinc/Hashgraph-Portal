@@ -1,0 +1,64 @@
+﻿::deep form {
+    width: 60vw;
+}
+
+[hg-dialog-content] {
+    display: grid;
+}
+
+    [hg-dialog-content] p {
+        margin: 1rem 0;
+    }
+
+    [hg-dialog-content] label {
+        margin-top: 0.5rem;
+        font-size: 0.75rem;
+        color: var(--hg-cp-800);
+    }
+
+    [hg-dialog-content] textarea {
+        min-height: 3.75rem;
+        resize: none;
+    }
+
+    [hg-dialog-content] button {
+        font-size: 0.75rem;
+        padding: 0.125rem 0.375rem;
+        margin-top: -0.0625rem;
+        justify-self: end;
+    }
+
+    [hg-dialog-content] .signature-review {
+        min-height: 5.375rem;
+        margin-bottom: 0.5rem;
+        display: grid;
+        column-gap: 0.75rem;
+        grid-template-columns: minmax(0, 1fr) max-content;
+    }
+
+        [hg-dialog-content] .signature-review .status-message {
+            font-weight: bold;
+            color: var(--hg-cp-600);
+            margin-bottom: 0.5rem;
+            grid-column: 1 / 3;
+        }
+
+        [hg-dialog-content] .signature-review button {
+            font-size: 0.75rem;
+            padding: 0.125rem 0.375rem;
+            align-self: end;
+        }
+
+[hg-dialog-footer] {
+    text-align: initial;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content max-content max-content;
+    column-gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-top: 0.0625rem solid var(--hg-cp-100);
+}
+
+    [hg-dialog-footer] .countdown span {
+        color: var(--hg-cp-600);
+        font-weight: bold;
+    }

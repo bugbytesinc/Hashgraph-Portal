@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@namespace Hashgraph.Components
+<div hg-input-royalty @attributes="AdditionalAttributes" class="@_otherCssClasses @_fieldCssClasses">
+    @if(Value is not null) {
+        <label for="royaltytype">Royalty Type</label>
+        <div>
+            <InputRadioGroup @bind-Value=@Value.RoyaltyType>
+                <label><InputRadio Value=@RoyaltyType.Fixed/> Fixed</label>
+                <label><InputRadio Value=@RoyaltyType.Token/> Variable</label>
+                <label><InputRadio Value=@RoyaltyType.Asset/> Royalty</label>
+            </InputRadioGroup>
+        </div>
+        <label for="recaccount">To Account</label>
+        <InputAddress id="recaccount" @bind-Value=@Value.Account placeholder="(shrd.rlm.num)" />
+        @if (Value.RoyaltyType == RoyaltyType.Fixed)
+        {
+            <label for="paymenttoken">Payment Token</label>
+            <InputAddress id="paymenttoken" @bind-Value=@Value.Token placeholder="(shrd.rlm.num, empty for ℏ)" />
+            <label for="fixedamount">Amount</label>
+            <InputNumber id="fixedamount" @bind-Value=@Value.FixedAmount placeholder="Fixed Amount" />
+        } else {
+            <label for="numerator">Assessment</label>
+            <div hg-fraction-input>
+                <InputNumber id="numerator" @bind-Value=@Value.Numerator placeholder="Numerator" />
+                <span>/</span>
+                <InputNumber id="numerator" @bind-Value=@Value.Denominator placeholder="Denominator" />
+            </div>
+        }
+
+        if (Value.RoyaltyType == RoyaltyType.Token)
+        {
+            <label for="minimumpayment">Minium Payment</label>
+            <InputNumber id="minimumpayment" @bind-Value=@Value.Minimum placeholder="Minimum Amount" />
+            <label for="maximumpayment">Minium Payment</label>
+            <InputNumber id="maximumpayment" @bind-Value=@Value.Maximum placeholder="MaximumAmount" />
+            <label for="assessas">Assessed As</label>
+            <div hg-vertical-group>
+                <InputRadioGroup @bind-Value=@Value.AssessAsSurcharge>
+                    <label><InputRadio Value=@false/> Fees Deducted From Payment(s)</label>
+                    <label><InputRadio Value=@true/> Fees Applied in Addition to Payment(s)</label>
+                </InputRadioGroup>
+            </div>
+        }
+        if (Value.RoyaltyType == RoyaltyType.Asset)
+        {
+            <label for="fallbacktoken">Fallback Token</label>
+            <InputAddress id="fallbacktoken" @bind-Value=@Value.FallbackToken placeholder="(shrd.rlm.num, empty for ℏ)" />
+            <label for="fallbackamount">Fallback Amount</label>
+            <InputNumber id="fallbackamount" @bind-Value=@Value.FallbackAmount placeholder="Fallback Amount (optional)" />
+        }
+    }
+</div>

@@ -1,187 +1,46 @@
 ﻿@page "/"
-    <section class="home-page">
-        <h2>Welcome to the Hashgraph Portal for the Hedera Network</h2>
-        <p>
-            This site provides a web interface for invoking a variety of Hedera Network Services.
-            You can query an account balance, retrieve information about any account, and invoke
-            additional network functions as we continue to add new functionality.  This site is
-            primarily a reference implementation demonstrating the
-            <a href="https://bugbytesinc.github.io/Hashgraph/">.NET SDK for the Hedera Network</a>.
-        </p>
-        <p><b>PLEASE NOTE:</b></p>
-        <p>
-            While this app constructs Hedera Transactions and submits them to the network on your behalf,
-            it never asks for your private key(s) and is unable to &ldquo;sign&rdquo; your transactions.
-            Before submitting network transactions requiring signatures, the app will present you with
-            the bytes to be signed (hex encoded) and you must use a separate tool for signing the
-            transaction.  One such tool that can sign encoded Hedera Transactions is the
-            <a href="https://www.microsoft.com/store/productId/9PPB258CD9P7">Hashgraph Signing Tool</a> which
-            can be found in the Microsoft Windows App Store.  Don&rsquo;t trust this app?
-            We completely understand.  The source code for this app is open source,
-            located in <a href="https://github.com/bugbytesinc/Hashgraph-Signing-Tool">GitHub</a> you are
-            fee to examine the project and compile your own trusted executable.
-        </p>
-        <p>
-            <i>Don&rsquo;t trust this site?</i>  We&rsquo;re not offended, the source code for this
-            site is located in <a href="https://github.com/bugbytesinc/Hashgraph-Portal">GitHub</a>,
-            you are free and encouraged to run your own instance.
-        </p>
-        <p>
-            Thank you for your interest, please feel free to send any feedback our way,
-            the easiest place to find us is on the
-            <a href="http://hashgraph.com/discord">Hedera Discord Channel</a>
-        </p>
-        <h1>Quick Start for the Impatient</h1>
-        <p>
-            In this example, we will query the Hedera Network for detailed information about an account.
-            This is not a free query (unlike retrieving an account&rsquo;s balance), we will be creating
-            transactions that must be signed by a private key to pay for the transaction processing fees.
-            This site does not provide a facility to enter private keys, instead it produces the payment
-            portion of the transaction to be signed by a 3<sup>rd</sup> party application instead.
-            One such application is the
-            <a href="https://www.microsoft.com/en-us/p/hashgraph-signing-tool/9ppb258cd9p7?activetab=pivot:overviewtab" target="_blank">Hashgraph Transaction Signing Tool</a>
-            available in the windows store.  This is the application we will use in this example.
-        </p>
-        <h2>Prepare the Signing Tool</h2>
-        <p>
-            Install the <a href="https://www.microsoft.com/en-us/p/hashgraph-signing-tool/9ppb258cd9p7?activetab=pivot:overviewtab" target="_blank">Signing tool</a>
-            (Skip this section if you already have access to an appropriate signing tool).  Once installed, launch the application:
-        </p>
-        <img src="/images/tutorial/t001.png" />
-        <p>
-            The private key for our account is <i>302e020100300506032b6570</i>042204203d9df05c4eaaf3876e6599da6c79c6ab3de1c8099cc9646a4a58a96fd80f571c,
-            notice that we encode this with the prefix <b>302e020100300506032b6570</b>, enter this whole value for the <i>Private Key</i> and click <b>Continue</b>:
-        </p>
-        <img src="/images/tutorial/t002.png" />
-        <p>
-            Next, we confirm that the displayed <i>Public Key</i> corresponding to the private key we just entered matches our copy of our
-            public key: <i>302a300506032b6570</i>0321001b5b681625609b8d425c6bb91b3d658274b1f218eac5474b97071efd3eb2082e.  Click <b>Continue</b> to proceed:
-        </p>
-        <img src="/images/tutorial/t003.png" />
-        <p>
-            Our Signing Tool is now configured to sign transactions presented to us by the portal software.
-        </p>
-        <h2>Create the Query using the Portal</h2>
-        <p>
-            Go to <a href="https://hashgraph.bugbytes.com" target="_blank">https://hashgraph.bugbytes.com</a> and click on the <b>Account Info</b>
-            link on the left hand navigation:
-        </p>
-        <img src="/images/tutorial/t004.png" />
-        <p>
-            There are three pieces of required information: Gateway Node, Payer Account and Address to Query.
-            The gateway node is the Hedera Consensus node that will receive our request and fee payment.
-            The Payer is an account we control, it will pay the fees required to process this query and produce the results.
-            The Address to query is simply the account we wish to find out more about.
-        </p>
-        <p>
-            To select the gateway, click on <b>Select Gateway</b>:
-        </p>
-        <img src="/images/tutorial/t005.png" />
-        <p>
-            This lists the currently known main and test network nodes in the Hedera Network.  For our example,
-            lets select node <b>0.0.9</b> on the main network.  The UI will return to the previous page.
-            Next, our account number corresponding to the keys entered in the previous section is <b>0.0.29073</b>,
-            we shall enter that for the <i>Payer</i>, this will be the account that will pay the fees for querying
-            the network.  For the account of interest, let&rsquo;s use hash-hash.info&rsquo;s account, enter
-            <b>0.0.2877</b> for the <i>Account Number</i>.  The user interface should look like the following:
-        </p>
-        <img src="/images/tutorial/t006.png" />
-        <h2>Submit the Query to the Hedera Network</h2>
-        <p>
-            Next, we generate the query by clicking the <b>Get Info</b> button:
-        </p>
-        <img src="/images/tutorial/t007.png" />
-        <p>
-            The system generates the bytes (encoded in hex) representing the transaction to pay for the query
-            and presents it to the user for signing.  At this point, we copy the hex encoded hedera transaction
-            to the clipboard by clicking on the <b>Copy</b> button (or copying the text from the control).
-        </p>
-        <p>
-            Now we return to the signing tool:
-        </p>
-        <img src="/images/tutorial/t008.png" />
-        <p>
-            Click on the <b>Paste Transacton and Continue</b> button to paste the contents of the transaction into
-            the tool.  The singing tool will attempt to decode the contents of the transaction and present the
-            user with the details of the transaction for review.  This is a security feature to ensure that the
-            user can know exactly the contents of the transaction prior to authorizing it with a signature.
-        </p>
-        <img src="/images/tutorial/t009.png" />
-        <p>
-            Review the details of the transaction, when satisfied that the details are accurate, click the
-            <b>Sign and Copy to Clipboard</b> button to sign the transaction and place the signature back
-            onto the clipboard.
-        </p>
-        <img src="/images/tutorial/t010.png" />
-        <p>
-            We now return to the portal application in our browser.  Click the <b>Paste</b> button (or
-            paste the contents into the signatures field) to continue:
-        </p>
-        <img src="/images/tutorial/t011.png" />
-        <p>
-            The portal will attempt to decode the signature and present a list of keys that have
-            signed the transaction.  This is provided as a security measure to confirm that public keys
-            required to sign a transaction have signed it.  To continue click the <b>Submit to Network</b> button:
-        </p>
-        <img src="/images/tutorial/t012.png" />
-        <p>
-            After a few moments (you may see the <b>Log</b> tab for a few seconds) the network will return
-            with the information regarding our account <i>0.0.2877</i> we wanted to know more about.  That
-            completes our tutorial, feel free to read on for a few more tidbits.
-        </p>
-        <h2>Extras</h2>
-        <p>
-            One may have noticed in the screen shots above that there are a number of tabs in the user
-            interface.  These tabs provide additional information that may be useful to the user if
-            they need to diagnose an issue with an attempted transaction.
-        </p>
-        <h3>Logs</h3>
-        <p>
-            First let&rsquo;s discuss the <b>Log</b> tab:
-        </p>
-        <img src="/images/tutorial/t013.png" />
-        <p>
-            The log tab displays the communication to and from the network for the given transaction attempt.
-            While the communication itself is encoded in the gRPC format, this portal displays the results
-            in JSON format.  Since the format encoding relies heavily upon default values, one may not
-            see information they’d expect.  For example, the <b>SUCCESS</b> code is &ldquo;0&rdquo;, so for certain
-            transactions, a successful response may only consist of the code &ldquo;{}&rdquo; (an empty object).
-        </p>
-        <h3>Errors</h3>
-        <p>
-            In the event that something goes wrong that the user interface was unable to anticipate prior to
-            submitting the request to the network, the <b>Errors</b> tab will display automatically.  For
-            example, if the account we queried was invalid, we might see something similar to the following:
-        </p>
-        <img src="/images/tutorial/t014.png" />
-        <p>
-            (Additional information regarding errors can also be found in examining the logs discussed above.)
-        </p>
-        <h3>Transactions</h3>
-        <p>
-            The <b>Tx</b> (Transactions) tab exists to provide links to popular open sites providing information
-            regarding hedera transactions.  The portal lists any transaction submitted for the operation in this tab:
-        </p>
-        <img src="/images/tutorial/t015.png" />
-        <p>
-            For convenience, the portal provides links to the popular Hedera Network tracking applications containing
-            more information regarding the transaction created as a part of this request.  The portal does not
-            retrieve this information implicitly because in doing so, would incur a charge to the payer.  These sites,
-            at this time, provide this information for free.  For example, clicking on the
-            <a href="https://app.dragonglass.me/hedera/transactions/00290731579466626336163400" target="_blank">dragonglass</a>
-            link in our example provides the following:
-        </p>
-        <img src="/images/tutorial/t016.png" />
-        <p>
-            Clicking on the <a href="https://www.hasharc.com/tx/0.0.29073-1579466626-336163400" target="_blank">HashArc</a>
-            link takes us to:
-        </p>
-        <img src="/images/tutorial/t017.png" />
-        <p>
-            And last but not least, <a href="https://explorer.kabuto.sh/transaction/d12b18a1c5597ec294b9b80c8aa319121ef89952b5a48d91c404f300ff8dd66d1a5ea51995c7b9f8919ca270c95a44a1" target="_blank">Kabuto</a> provides:
-        </p>
-        <img src="/images/tutorial/t018.png" />
-        <p>
-            This concludes our brief tutorial.  Thanks for reading. Enjoy.
-        </p>
-    </section>
+<PageTitle>Hashgraph API Home</PageTitle>
+<section>
+    <h2>Welcome to the Hashgraph Portal for the Hedera Network</h2>
+    <p>
+        This site provides a web interface interacting with the Hedera Hashgraph Network.
+        With this site, you can invoke the publicly available features of the network including,
+        but not limited to, creating Non-Fungible tokens, invoking smart contracts, querying balances,
+        sending consensus messages and transferring crypto between multiple parties. Additionally,
+        this site is a reference implementation demonstrating how to create solutions using the
+        <a href="https://bugbytesinc.github.io/Hashgraph/">.NET SDK for the Hedera Network</a>.
+    </p>
+    <h3>You Must use an External Application to Sign Transactions</h3>
+    <p>
+        This site never asks you for your private key(s) and is unable to sign transactions
+        on your behalf by design.  You must acquire a separate Hedera Transaction signing tool
+        for this purpose.  One such tool that can sign encoded Hedera Transactions is the
+        <a href="https://www.microsoft.com/store/productId/9PPB258CD9P7">Hashgraph Signing Tool</a>
+        which can be found in the Microsoft Windows App Store. (The source code for the signing tool
+        is open source, located in <a href="https://github.com/bugbytesinc/Hashgraph-Signing-Tool">GitHub</a>
+        you are fee to examine the project and compile your own trusted executable.)
+    </p>
+    <p>
+        When submitting a transaction that requires a signature to validate, the application
+        will present the following dialog:
+    </p>
+    <img src="/images/waitingforsignatures.png" />
+    <p>
+        When presented with this dialog: copy the value of the &ldquo;Transaction in Hex&rdquo; box to
+        the clipboard (this is the &ldquo;encoded&rdquo; form of a transaction that must be digitally signed).
+        Next Paste the transaction value into the signing tool of your choice.  Use the tool to sign the
+        transaction and copy the encoded &ldquo;signature&rdquo; back to the clipboard.  Finally paste your 
+        newly crafted signature into the &ldquo;Signature(s) in Hex&rdquo; box and click the &ldquo;Submit to 
+        Network&rdquo; button on the dialog to continue the process.
+    </p>
+    <h3>This Project is Open Source</h3>
+    <p>
+        Don&rsquo;t trust this site? We&rsquo;re not offended, the source code for this site is located
+        in <a href="https://github.com/bugbytesinc/Hashgraph-Portal">GitHub</a>, you may download
+        and run your own trusted instance.
+    </p>
+    <p>
+        Thank you for your interest, please feel free to send any feedback our way, the easiest place to
+        find us is on the <a href="https://hedera.com/discord">Hedera Discord Channel</a>.
+    </p>
+</section>

@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@namespace Hashgraph.Components
+@if (_input != null)
+{
+    <div hg-dialog-mask>
+        <EditForm Model=@_input hg-dialog-container>
+            <div hg-dialog-title>Upload File</div>
+            <div hg-dialog-content class="upload-file-content">
+                @if (_input.Contents.IsEmpty)
+                {
+                    <label for="fileinput">Upload File</label>
+                    <InputFile id="fileinput" OnChange="OnFileInputChanged" />
+                }
+                <div class="status-message">@_input.StatusMessage</div>
+            </div>
+            <div hg-dialog-footer>
+                <button type="button" @onclick=@Close>Cancel</button>
+                <button @onclick=@Submit>Continue</button>
+            </div>
+        </EditForm>
+    </div>
+}

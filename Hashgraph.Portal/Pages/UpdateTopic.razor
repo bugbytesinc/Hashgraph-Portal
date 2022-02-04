@@ -1,62 +1,68 @@
 ﻿@page "/updatetopic"
-<EditForm class="query-page update-topic-page" EditContext="@_editContext"  OnValidSubmit="HandleValidSubmit">
+<EditForm class="query-page update-topic-page" EditContext=@_editContext OnValidSubmit=@HandleValidSubmit>
     <h2>Update Consensus Topic</h2>
     <DataAnnotationsValidator />
-    <section class="entry-form">
+    <fieldset>
         <label for="gateway">Gateway Node</label>
-        <InputGateway id="gateway" @bind-Value="@_input.Gateway" />
+        <InputGateway id="gateway" @bind-Value=@_input.Gateway />
         <label for="payer">Payer</label>
-        <InputAddress id="payer" @bind-Value="@_input.Payer" placeholder="(shrd.rlm.num)" />
+        <InputAddress id="payer" @bind-Value=@_input.Payer placeholder="(shrd.rlm.num)" />
         <label for="memo">Memo</label>
-        <InputText id="memo" @bind-Value="@_input.Memo" placeholder="Transaction Memo (optional)" />
+        <InputText id="memo" @bind-Value=@_input.Memo placeholder="Transaction Memo (optional)" />
         <label for="topic">Topic to Update</label>
-        <InputAddress id="topic" @bind-Value="@_input.Topic" placeholder="(shrd.rlm.num)" />
+        <InputAddress id="topic" @bind-Value=@_input.Topic placeholder="(shrd.rlm.num)" />
         <div class="toggle-property">
-            <InputCheckbox id="toggledescription" @bind-Value="@_input.UpdateDescription" />
-            <label for="toggledescription">Update Topic Description / Name</label>
+            <InputCheckbox id="toggledescription" @bind-Value=@_input.UpdateDescription />
+            <label for="toggledescription">Update Topic Memo/Description</label>
         </div>
         @if (_input.UpdateDescription)
         {
-            <label for="description">Description</label>
-            <InputText id="description" @bind-Value="@_input.Description" placeholder="Topic Description / Name" />
+            <label for="description">Topic Memo</label>
+            <InputText id="description" @bind-Value=@_input.Description placeholder="Topic Memo" />
         }
         <div class="toggle-property">
-            <InputCheckbox id="updateadministrator" @bind-Value="@_input.UpdateAdministrator" />
+            <InputCheckbox id="updateadministrator" @bind-Value=@_input.UpdateAdministrator />
             <label for="updateadministrator">Update Administrator (aka. rotate keys)</label>
         </div>
         @if (_input.UpdateAdministrator)
         {
             <label for="administrator">Administrator</label>
-            <InputEndorsement id="administrator" @bind-Value="@_input.Administrator" Placeholder="None (make read-only)" />
+            <InputEndorsement id="administrator" @bind-Value=@_input.Administrator Placeholder="None (make read-only)" />
         }
         <div class="toggle-property">
-            <InputCheckbox id="updateparticipant" @bind-Value="@_input.UpdateParticipant" />
+            <InputCheckbox id="updateparticipant" @bind-Value=@_input.UpdateParticipant />
             <label for="updateparticipant">Update Participant (aka. rotate keys)</label>
         </div>
         @if (_input.UpdateParticipant)
         {
             <label for="participant">Participant</label>
-            <InputEndorsement id="participant" @bind-Value="@_input.Participant" Placeholder="None (open to all)" />
+            <InputEndorsement id="participant" @bind-Value=@_input.Participant Placeholder="None (open to all)" />
         }
         <div class="toggle-property">
-            <InputCheckbox id="updaterenewaccount" @bind-Value="@_input.UpdateRenewAccount" />
+            <InputCheckbox id="updaterenewaccount" @bind-Value=@_input.UpdateRenewAccount />
             <label for="updaterenewaccount">Update Renew Payment Acccount</label>
         </div>
         @if (_input.UpdateRenewAccount)
         {
             <label for="renewaccount">Account</label>
-            <InputAddress id="renewaccount" @bind-Value="@_input.RenewAccount" Placeholder="None (deletes when expires)" />
+            <InputAddress id="renewaccount" @bind-Value=@_input.RenewAccount Placeholder="None (deletes when expires)" />
         }
         <button type="submit">Update Topic</button>
-    </section>
-    <Network @ref="_network">
-        @if (_output != null)
+    </fieldset>
+    <Network @ref=@_network>
+        @if (_output is null)
         {
-            <div>Topic Updated Successfully!</div>
+            <div>Waiting for Input</div>
+        }
+        else if (_record is null)
+        {
+            <h3>Success</h3>
+            <button hg-get-record-button type="button" @onclick=@GetRecord>Get Record</button>
         }
         else
         {
-            <div>Waiting for Input</div>
+            <h3>Record</h3>
+            <RecordDisplay Value=@_record />
         }
     </Network>
 </EditForm>
