@@ -14,20 +14,19 @@ steps:
   displayName: Restore Dependencies  
   inputs:
     command: restore
-    projects: Hashgraph.Portal/Hashgraph.Portal.csproj
+    projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: Build Projects  
   inputs:
     command: build
-    projects: Hashgraph.Portal/Hashgraph.Portal.csproj
+    projects: '**/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
   displayName: Publish Projects
   inputs:
     command: publish
-    projects: Hashgraph.Portal/Hashgraph.Portal.csproj
     publishWebProjects: True
     arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory)'
     zipAfterPublish: True
@@ -35,5 +34,5 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
   inputs:
-    pathtoPublish: '$(build.artifactstagingdirectory)'
+    pathtoPublish: '$(build.artifactstagingdirectory)/Hashgraph.Portal.zip'
     artifactName: 'hashgaph-portal-package-$(Build.BuildNumber)'
