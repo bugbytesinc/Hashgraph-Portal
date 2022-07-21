@@ -35,6 +35,31 @@
                 <InputNumber id="autoassociation" @bind-Value=@_input.AutoAssociationLimit placeholder="Update Auto Association Limit" />
         }
         <div class="toggle-property">
+            <InputCheckbox id="updatestaking" @bind-Value=@_input.UpdateStaking />
+            <label for="updatestaking">Update Staking</label>
+        </div>
+        @if (_input.UpdateStaking)
+        {
+            <label for="staking">Staking Selection</label>
+            <div>
+                <InputRadioGroup id="staking" @bind-Value=@_input.StakingSelection>
+                    <label><InputRadio Value=@StakingSelection.Node/> Node</label>
+                    <label><InputRadio Value=@StakingSelection.Account/> Account</label>
+                    <label><InputRadio Value=@StakingSelection.Declined/> Declined</label>
+                </InputRadioGroup>
+            </div>
+            @if(_input.StakingSelection == StakingSelection.Account)
+            {
+                <label for="proxyaccount">Proxy Stake to Account</label>
+                <InputAddress id="proxyaccount" @bind-Value=@_input.ProxyAccount placeholder="Proxy Account (shrd.rlm.num)" />            
+            }
+            @if (_input.StakingSelection == StakingSelection.Node)
+            {
+                <label for="stakingnode">Stake with Hedera Node</label>
+                <InputNumber id="stakingnode" @bind-Value=@_input.StakedNode placeholder="Hedera Node Id (number)" />
+            }            
+        }
+        <div class="toggle-property">
             <InputCheckbox id="updateendorsment" @bind-Value=@_input.UpdateEndorsement />
             <label for="updateendorsment">Update Endorsment (aka. rotate keys)</label>
         </div>

@@ -32,7 +32,7 @@ public partial class CreateTopic : ComponentBase
                 Memo = _input.Desciption?.Trim(),
                 Administrator = Endorsement.None.Equals(_input.Administrator) ? null : _input.Administrator,
                 Participant = Endorsement.None.Equals(_input.Participant) ? null : _input.Participant,
-                RenewAccount = _input.RenewAccount is null || _input.RenewAccount == Address.None ? null : new AddressOrAlias(_input.RenewAccount)
+                RenewAccount = Address.None.Equals(_input.RenewAccount) ? null : _input.RenewAccount,
             };
             _output = await client.CreateTopicAsync(createParams, ctx => ctx.Memo = _input.Memo?.Trim());
         });

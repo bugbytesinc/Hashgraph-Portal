@@ -16,32 +16,60 @@
     <Network @ref="_network">
         @if (_output != null)
         {
-                <div>Account Address</div>
-                <AddressDisplay Value=@_output.Address />
-                <div>Account Alias</div>
-                <AliasDisplay Value=@_output.Alias />
-                <div>Ledger</div>
-                <LedgerDisplay Value=@_output.Ledger/>
-                <div>Memo</div>
-                <MemoDisplay Value=@_output.Memo />
-                <div>Crypto Balance</div>
-                <HbarDisplay Value=@_output.Balance />
-                <div>Smart Contract ID</div>
-                <div>@_output.SmartContractId</div>
-                <div>Proxy Address</div>
-                <AddressDisplay Value=@_output.Proxy />
-                <div>Receive Signature Required</div>
-                <div>@(_output.ReceiveSignatureRequired ? "Yes" : "No")</div>
-                <div>Auto-Renewal Period</div>
-                <TimespanDisplay Value=@_output.AutoRenewPeriod />
-                <div>Auto-Association Limit</div>
-                <AutoAssociationDisplay Value=@_output.AutoAssociationLimit />
-                <div>Expiration</div>
-                <div>@_output.Expiration</div>
-                <div>Endorsement</div>
-                <EndorsementDisplay Value="_output.Endorsement" />
-                <div>Deleted</div>
-                <div>@(_output.Deleted ? "Yes" : "No")</div>
+            <div>Account Address</div>
+            <AddressDisplay Value=@_output.Address />
+            <div>Account Alias</div>
+            <AliasDisplay Value=@_output.Alias />
+            <div>Ledger</div>
+            <LedgerDisplay Value=@_output.Ledger />
+            <div>Memo</div>
+            <MemoDisplay Value=@_output.Memo />
+            <div>Crypto Balance</div>
+            <HbarDisplay Value=@_output.Balance />
+            <div>Smart Contract ID</div>
+            <div>@_output.ContractId</div>
+            <div>Receive Signature Required</div>
+            <div>@(_output.ReceiveSignatureRequired ? "Yes" : "No")</div>
+            <div>Auto-Renewal Period</div>
+            <TimespanDisplay Value=@_output.AutoRenewPeriod />
+            <div>Auto-Association Limit</div>
+            <AutoAssociationDisplay Value=@_output.AutoAssociationLimit />
+            <div>Expiration</div>
+            <div>@_output.Expiration</div>
+            @if (_output.StakingInfo is not null)
+            {
+                if (_output.StakingInfo.Declined)
+                {
+                    <div>Staking Reward</div>
+                    <div>Declined</div>
+                }
+                else
+                {
+                    if (_output.StakingInfo.Proxy != Address.None)
+                    {
+                        <div>Proxy Staked to</div>
+                        <AddressDisplay Value=@_output.StakingInfo.Proxy />
+                    }
+                    else if (_output.StakingInfo.Node > 0)
+                    {
+                        <div>Staked to Node</div>
+                        <div>@_output.StakingInfo.Node</div>
+                        <div>Staking Period Start</div>
+                        <div>@_output.StakingInfo.PeriodStart</div>
+                        <div>Pending Staking Reward</div>
+                        <HbarDisplay Value=@((ulong)_output.StakingInfo.PendingReward) />
+                    }
+                    if (_output.StakingInfo.Proxied > 0)
+                    {
+                        <div>Proxied to this account</div>
+                        <HbarDisplay Value=@((ulong)_output.StakingInfo.Proxied) />
+                    }
+                }
+            }
+            <div>Endorsement</div>
+            <EndorsementDisplay Value="_output.Endorsement" />
+            <div>Deleted</div>
+            <div>@(_output.Deleted ? "Yes" : "No")</div>
             @if (_output.Tokens.Count > 0)
             {
                 if (_output.AssetCount == 1)
@@ -56,36 +84,36 @@
                 {
                     <h3>Tokens</h3>
                 }
-                    <div class="token-balances">
-                        <b>ID</b>
-                        <b>Symbol</b>
-                        <b>Balance</b>
-                        <b>Status</b>
-                        @foreach (var record in _output.Tokens)
+                <div class="token-balances">
+                    <b>ID</b>
+                    <b>Symbol</b>
+                    <b>Balance</b>
+                    <b>Status</b>
+                    @foreach (var record in _output.Tokens)
+                    {
+                        var statuses = new List<String>(2);
+                        if (record.KycStatus == TokenKycStatus.Revoked)
                         {
-                            var statuses = new List<String>(2);
-                            if (record.KycStatus == TokenKycStatus.Revoked)
-                            {
-                                statuses.Add("KYC Pending");
-                            }
-                            if (record.TradableStatus == TokenTradableStatus.Suspended)
-                            {
-                                statuses.Add("Suspended");
-                            }
-                            if (record.AutoAssociated)
-                            {
-                                statuses.Add("Auto Associated");
-                            }
-                            if (statuses.Count == 0)
-                            {
-                                statuses.Add("OK");
-                            }
-                            <AddressDisplay Value=@record.Token />
-                            <div>@record.Symbol</div>
-                            <CryptoBalanceDisplay Value=@record />
-                            <div>@(string.Join(", ",statuses.ToArray()))</div>
+                            statuses.Add("KYC Pending");
                         }
-                    </div>
+                        if (record.TradableStatus == TokenTradableStatus.Suspended)
+                        {
+                            statuses.Add("Suspended");
+                        }
+                        if (record.AutoAssociated)
+                        {
+                            statuses.Add("Auto Associated");
+                        }
+                        if (statuses.Count == 0)
+                        {
+                            statuses.Add("OK");
+                        }
+                        <AddressDisplay Value=@record.Token />
+                        <div>@record.Symbol</div>
+                        <CryptoBalanceDisplay Value=@record />
+                        <div>@(string.Join(", ",statuses.ToArray()))</div>
+                    }
+                </div>
             }
             else
             {

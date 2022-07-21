@@ -15,8 +15,25 @@
         <InputCheckbox id="requirereceiverignature" @bind-Value=@_input.RequireReceiveSignature />
         <label for="autoassociate">Number of Auto-Associations</label>
         <InputNumber id="autoassociate" @bind-Value=@_input.AutoAssociationLimit placeholder="Count (optional)" />
-        <label for="proxy">Proxy Address</label>
-        <InputAddress id="proxy" @bind-Value=@_input.Proxy placeholder="Proxy (optional, shrd.rlm.num)" />
+        <label for="staking">Staking Selection</label>
+        <div>
+            <InputRadioGroup id="staking" @bind-Value=@_input.StakingSelection>
+                <label><InputRadio Value=@StakingSelection.Node/> Node</label>
+                <label><InputRadio Value=@StakingSelection.Account/> Account</label>
+                <label><InputRadio Value=@StakingSelection.Declined/> Declined</label>
+                <label><InputRadio Value=@StakingSelection.Unset/> Not Configured</label>
+            </InputRadioGroup>
+        </div>
+        @if(_input.StakingSelection == StakingSelection.Account)
+        {
+            <label for="proxyaccount">Proxy Stake to Account</label>
+            <InputAddress id="proxyaccount" @bind-Value=@_input.ProxyAccount placeholder="Proxy Account (shrd.rlm.num)" />            
+        }
+        @if (_input.StakingSelection == StakingSelection.Node)
+        {
+            <label for="stakingnode">Stake with Hedera Node</label>
+            <InputNumber id="stakingnode" @bind-Value=@_input.StakedNode placeholder="Hedera Node Id (number)" />
+        }
         <label for="accountmemo">Account Memo</label>
         <InputText id="accountmemo" @bind-Value=@_input.AccountMemo placeholder="Account Memo (optional)" />
         <label for="endorsment">Endorsement</label>

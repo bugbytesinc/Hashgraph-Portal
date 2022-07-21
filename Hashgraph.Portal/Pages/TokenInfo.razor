@@ -31,7 +31,7 @@
             <div>Circulation</div>
             <div>@FormatWithDecimals(_output.Circulation, _output.Decimals)</div>
             <div>Treasury</div>
-            <AddressOrAliasDisplay Value=@_output.Treasury />
+            <AddressDisplay Value=@_output.Treasury />
             @if (_output.Type == TokenType.Fungible)
             {
                 <div>Decimals</div>

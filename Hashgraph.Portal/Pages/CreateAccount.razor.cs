@@ -32,9 +32,22 @@ public partial class CreateAccount : ComponentBase
                 InitialBalance = (ulong)_input.InitialBalance.GetValueOrDefault(),
                 RequireReceiveSignature = _input.RequireReceiveSignature,
                 AutoAssociationLimit = _input.AutoAssociationLimit.GetValueOrDefault(),
-                Proxy = _input.Proxy is null ? null : new AddressOrAlias(_input.Proxy),
                 Memo = _input.AccountMemo?.Trim()
             };
+            switch (_input.StakingSelection)
+            {
+                case StakingSelection.Declined:
+                    createParams.DeclineStakeReward = true;
+                    break;
+                case StakingSelection.Account:
+                    createParams.ProxyAccount = _input.ProxyAccount ?? Address.None;
+                    break;
+                case StakingSelection.Node:
+                    createParams.StakedNode = _input.StakedNode.GetValueOrDefault();
+                    break;
+                default:
+                    break;
+            }
             _output = await client.CreateAccountAsync(createParams, ctx => ctx.Memo = _input.TransactionMemo?.Trim());
         });
     }
@@ -57,9 +70,13 @@ public class CreateAccountInput
     [Required]
     public Endorsement? Endorsement { get; set; } = default!;
     public bool RequireReceiveSignature { get; set; }
-    public Address? Proxy { get; set; }
+    public StakingSelection StakingSelection { get; set; }
+    public Address? ProxyAccount { get; set; }
+    [Range(0, long.MaxValue, ErrorMessage = "The staked node id must be greater than zero.")]
+    public long? StakedNode { get; set; }
     [MaxLength(100, ErrorMessage = "The account's memo field cannot exceed 100 characters.")]
     public string? AccountMemo { get; set; }
     [MaxLength(100, ErrorMessage = "The paying transaction memo field cannot exceed 100 characters.")]
     public string? TransactionMemo { get; set; }
 }
+

@@ -50,6 +50,22 @@ public partial class UpdateAccount : ComponentBase
                 AddIfNoOtherErrors(nameof(_input.Endorsement), "Please enter an auto association limit value.");
             }
         }
+        if (_input.UpdateStaking)
+        {
+            somethingIsSelected = true;
+            if (_input.StakingSelection == StakingSelection.Node && (_input.StakedNode is null || _input.StakedNode < 1))
+            {
+                AddIfNoOtherErrors(nameof(_input.StakedNode), "Please enter a valid node id.");
+            }
+            if (_input.StakingSelection == StakingSelection.Account && (_input.ProxyAccount is null || _input.ProxyAccount == Address.None))
+            {
+                AddIfNoOtherErrors(nameof(_input.ProxyAccount), "Please enter a proxy staking node.");
+            }
+            if (_input.StakingSelection is null)
+            {
+                AddIfNoOtherErrors(nameof(_input.StakingSelection), "Please chose a staking option.");
+            }
+        }
         if (!string.IsNullOrWhiteSpace(_input.AccountMemo))
         {
             somethingIsSelected = true;
@@ -95,6 +111,23 @@ public partial class UpdateAccount : ComponentBase
             {
                 updateParams.Memo = _input.AccountMemo;
             }
+            if (_input.UpdateStaking)
+            {
+                if (_input.StakingSelection == StakingSelection.Declined)
+                {
+                    updateParams.DeclineStakeReward = true;
+                }
+                else if (_input.StakingSelection == StakingSelection.Node)
+                {
+                    updateParams.DeclineStakeReward = false;
+                    updateParams.StakedNode = _input.StakedNode.GetValueOrDefault();
+                }
+                else if (_input.StakingSelection == StakingSelection.Account)
+                {
+                    updateParams.DeclineStakeReward = false;
+                    updateParams.ProxyAccount = _input.ProxyAccount;
+                }
+            }
             _output = await client.UpdateAccountAsync(updateParams, ctx => ctx.Memo = _input.TransactionMemo?.Trim());
         });
     }
@@ -122,4 +155,9 @@ public class UpdateAccountInput
     public int? AutoAssociationLimit { get; set; }
     [MaxLength(100, ErrorMessage = "The account's memo field cannot exceed 100 characters.")]
     public string? AccountMemo { get; set; }
+    public bool UpdateStaking { get; set; }
+    public StakingSelection? StakingSelection { get; set; }
+    public Address? ProxyAccount { get; set; }
+    [Range(0, long.MaxValue, ErrorMessage = "The staked node id must be greater than zero.")]
+    public long? StakedNode { get; set; }
 }

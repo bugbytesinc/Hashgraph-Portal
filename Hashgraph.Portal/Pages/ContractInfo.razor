@@ -32,6 +32,36 @@
             <TimespanDisplay Value=@_output.RenewPeriod />
             <div>Size (bytes)</div>
             <div>@_output.Size</div>
+            @if (_output.StakingInfo is not null)
+            {
+                if (_output.StakingInfo.Declined)
+                {
+                    <div>Staking Reward</div>
+                    <div>Declined</div>
+                }
+                else
+                {
+                    if (_output.StakingInfo.Proxy != Address.None)
+                    {
+                        <div>Proxy Staked to</div>
+                        <AddressDisplay Value=@_output.StakingInfo.Proxy />
+                    }
+                    else if (_output.StakingInfo.Node > 0)
+                    {
+                        <div>Staked to Node</div>
+                        <div>@_output.StakingInfo.Node</div>
+                        <div>Staking Period Start</div>
+                        <div>@_output.StakingInfo.PeriodStart</div>
+                        <div>Pending Staking Reward</div>
+                        <HbarDisplay Value=@((ulong)_output.StakingInfo.PendingReward) />
+                    }
+                    if (_output.StakingInfo.Proxied > 0)
+                    {
+                        <div>Proxied to this account</div>
+                        <HbarDisplay Value=@((ulong)_output.StakingInfo.Proxied) />
+                    }
+                }
+            }
             <div>Memo</div>
             <div>@_output.Memo</div>
             <div>Balance</div>

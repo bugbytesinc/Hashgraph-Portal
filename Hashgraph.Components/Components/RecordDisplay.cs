@@ -200,7 +200,7 @@ public class RecordDisplay : ComponentBase
                         builder.OpenElement("div");
                         builder.CloseElement();
                     }
-                    builder.OpenComponent<AddressOrAliasDisplay>();
+                    builder.OpenComponent<AddressDisplay>();
                     builder.AddAttribute("Value", transfer.Address);
                     builder.CloseComponent();
                     builder.OpenElement("div");
@@ -225,10 +225,10 @@ public class RecordDisplay : ComponentBase
                     builder.OpenComponent<AssetDisplay>();
                     builder.AddAttribute("Value", transfer.Asset);
                     builder.CloseComponent();
-                    builder.OpenComponent<AddressOrAliasDisplay>();
+                    builder.OpenComponent<AddressDisplay>();
                     builder.AddAttribute("Value", transfer.From);
                     builder.CloseComponent();
-                    builder.OpenComponent<AddressOrAliasDisplay>();
+                    builder.OpenComponent<AddressDisplay>();
                     builder.AddAttribute("Value", transfer.To);
                     builder.CloseComponent();
                     builder.CloseRegion();
@@ -276,7 +276,7 @@ public class RecordDisplay : ComponentBase
                     builder.OpenElement("div");
                     builder.AddContent($"{transfer.Amount:N}");
                     builder.CloseElement();
-                    builder.OpenComponent<AddressOrAliasDisplay>();
+                    builder.OpenComponent<AddressDisplay>();
                     builder.AddAttribute("Value", transfer.Receiver);
                     builder.CloseComponent();
                     builder.CloseRegion();

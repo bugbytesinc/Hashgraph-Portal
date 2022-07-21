@@ -5,7 +5,7 @@ namespace Hashgraph.Components;
 
 public class ContractCallResultDisplay : ComponentBase
 {
-    [Parameter] [EditorRequired] public ContractCallResult? Value { get; set; }
+    [Parameter][EditorRequired] public ContractCallResult? Value { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
@@ -37,29 +37,37 @@ public class ContractCallResultDisplay : ComponentBase
             builder.AddAttribute("Value", value.Bloom);
             builder.CloseComponent();
 
-            builder.AddMarkupContent("<div>Gas</div>");
+            builder.AddMarkupContent("<div>Gas Used</div>");
             builder.OpenComponent<HbarDisplay>();
-            builder.AddAttribute("Value", value.Gas);
+            builder.AddAttribute("Value", value.GasUsed);
             builder.CloseComponent();
 
-            if (value.CreatedContracts.Length > 0)
-            {
-                builder.AddMarkupContent("<div>Created Contracts</div>");
-                builder.OpenElement("div");
-                builder.OpenRegion();
-                var count = 0;
-                foreach (var contract in value.CreatedContracts)
-                {
-                    builder.OpenRegion(count++);
-                    builder.OpenComponent<AddressDisplay>();
-                    builder.AddAttribute("Value", contract);
-                    builder.CloseComponent();
-                    builder.CloseRegion();
-                }
-                builder.CloseRegion();
-                builder.CloseElement();
-            }
-            if (value.Events.Length > 0)
+            builder.AddMarkupContent("<div>Gas Limit</div>");
+            builder.OpenComponent<HbarDisplay>();
+            builder.AddAttribute("Value", value.GasLimit);
+            builder.CloseComponent();
+
+            builder.AddMarkupContent("<div>Payable Amount</div>");
+            builder.OpenComponent<HbarDisplay>();
+            builder.AddAttribute("Value", value.PayableAmount);
+            builder.CloseComponent();
+
+            builder.AddMarkupContent("<div>Message Sender</div>");
+            builder.OpenComponent<AddressDisplay>();
+            builder.AddAttribute("Value", value.MessageSender);
+            builder.CloseComponent();
+
+            builder.AddMarkupContent("<div>EVM Address</div>");
+            builder.OpenComponent<MonikerDisplay>();
+            builder.AddAttribute("Value", value.EncodedAddress);
+            builder.CloseComponent();
+
+            builder.AddMarkupContent("<div>Arguments</div>");
+            builder.OpenComponent<BinaryDisplay>();
+            builder.AddAttribute("Value", value.FunctionArgs.Data);
+            builder.CloseComponent();
+
+            if (value.Events.Count > 0)
             {
                 builder.AddMarkupContent("<h4>Events</h4>");
                 builder.OpenRegion();

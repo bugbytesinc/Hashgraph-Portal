@@ -56,9 +56,9 @@ public sealed class TokenTransferList : List<TokenTransferGroup>, IEquatable<Tok
         {
             if (group.Token is not null)
             {
-                foreach (var xfer in group.Transfers.ToTransferDictionary())
+                foreach (var xfer in group.Transfers.ToCryptoTransferList())
                 {
-                    list.Add(new TokenTransfer(group.Token, xfer.Key, xfer.Value));
+                    list.Add(new TokenTransfer(group.Token, xfer.Address, xfer.Amount, xfer.Delegated));
                 }
             }
         }

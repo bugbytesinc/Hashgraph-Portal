@@ -40,7 +40,7 @@ public class RoyaltyDisplay : ComponentBase
                         builder.CloseComponent();
                     }
                     builder.AddContent(" to ");
-                    builder.OpenComponent<AddressOrAliasDisplay>();
+                    builder.OpenComponent<AddressDisplay>();
                     builder.AddAttribute("Value", fixedRoyalty.Account);
                     builder.CloseComponent();
                     break;
@@ -55,7 +55,7 @@ public class RoyaltyDisplay : ComponentBase
                     {
                         builder.AddContent($"Pay {tokenRoyalty.Numerator}/{tokenRoyalty.Denominator} fraction taken from token payment to ");
                     }
-                    builder.OpenComponent<AddressOrAliasDisplay>();
+                    builder.OpenComponent<AddressDisplay>();
                     builder.AddAttribute("Value", tokenRoyalty.Account);
                     builder.CloseComponent();
                     if(tokenRoyalty.Minimum > 0)
@@ -71,7 +71,7 @@ public class RoyaltyDisplay : ComponentBase
                     builder.AddAttribute("hg-asset-royalty-display");
                     builder.AddMultipleAttributes(AdditionalAttributes);
                     builder.AddContent($"Pay {assetRoyalty.Numerator}/{assetRoyalty.Denominator} fraction of payment for asset to ");
-                    builder.OpenComponent<AddressOrAliasDisplay>();
+                    builder.OpenComponent<AddressDisplay>();
                     builder.AddAttribute("Value", assetRoyalty.Account);
                     builder.CloseComponent();
                     if(assetRoyalty.FallbackAmount > 0)

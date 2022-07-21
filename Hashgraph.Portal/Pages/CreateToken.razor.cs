@@ -87,7 +87,7 @@ public partial class CreateToken : ComponentBase
                     InitializeSuspended = _input.InitializeSuspended,
                     Expiration = DateTime.UtcNow.AddDays(90),
                     RenewPeriod = hasRenewalAccount ? TimeSpan.FromDays(90) : null,
-                    RenewAccount = hasRenewalAccount ? new AddressOrAlias(_input.RenewAccount!) : null
+                    RenewAccount = hasRenewalAccount ? _input.RenewAccount : null
                 };
                 _output = await client.CreateTokenAsync(createParams, ctx => ctx.Memo = _input.TransactionMemo?.Trim());
             }
@@ -110,7 +110,7 @@ public partial class CreateToken : ComponentBase
                     InitializeSuspended = _input.InitializeSuspended,
                     Expiration = DateTime.UtcNow.AddDays(90),
                     RenewPeriod = hasRenewalAccount ? TimeSpan.FromDays(90) : null,
-                    RenewAccount = hasRenewalAccount ? new AddressOrAlias(_input.RenewAccount!) : null
+                    RenewAccount = hasRenewalAccount ? _input.RenewAccount : null
                 };
                 _output = await client.CreateTokenAsync(createParams, ctx => ctx.Memo = _input.TransactionMemo?.Trim());
             }

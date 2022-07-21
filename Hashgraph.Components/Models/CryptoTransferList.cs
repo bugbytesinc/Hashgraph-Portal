@@ -2,8 +2,8 @@
 
 public sealed class CryptoTransferList : IEquatable<CryptoTransferList>
 {
-    public List<CryptoTransfer> From { get; } = new List<CryptoTransfer>(new[] { new CryptoTransfer() });
-    public List<CryptoTransfer> To { get; } = new List<CryptoTransfer>(new[] { new CryptoTransfer() });
+    public List<CryptoTransferModel> From { get; } = new List<CryptoTransferModel>(new[] { new CryptoTransferModel() });
+    public List<CryptoTransferModel> To { get; } = new List<CryptoTransferModel>(new[] { new CryptoTransferModel() });
     public bool Equals(CryptoTransferList? other)
     {
         if (other is null || From.Count != other.From.Count || To.Count != other.To.Count)
@@ -58,9 +58,9 @@ public sealed class CryptoTransferList : IEquatable<CryptoTransferList>
     {
         return !(left == right);
     }
-    public Dictionary<AddressOrAlias, long> ToTransferDictionary()
+    public CryptoTransfer[] ToCryptoTransferList()
     {
-        var xferMap = new Dictionary<AddressOrAlias, long>();
+        var xferMap = new Dictionary<Address, long>();
         foreach (var xfer in From)
         {
             if (xfer.Address != null)
@@ -89,14 +89,15 @@ public sealed class CryptoTransferList : IEquatable<CryptoTransferList>
                 }
             }
         }
-        return xferMap;
+        // Note: this will need to change when we enable spending allowances
+        return xferMap.Select(pair => new CryptoTransfer(pair.Key, pair.Value, false)).ToArray();
     }
 }
-public sealed class CryptoTransfer : IEquatable<CryptoTransfer>
+public sealed class CryptoTransferModel : IEquatable<CryptoTransferModel>
 {
     public Address? Address { get; set; } = null;
     public long? Amount { get; set; }
-    public bool Equals(CryptoTransfer? other)
+    public bool Equals(CryptoTransferModel? other)
     {
         if (other is null)
         {
@@ -116,7 +117,7 @@ public sealed class CryptoTransfer : IEquatable<CryptoTransfer>
         {
             return true;
         }
-        if (obj is CryptoTransfer other)
+        if (obj is CryptoTransferModel other)
         {
             return Equals(other);
         }
@@ -126,7 +127,7 @@ public sealed class CryptoTransfer : IEquatable<CryptoTransfer>
     {
         return $"CryptoTransfer:{Address}:{Amount}".GetHashCode();
     }
-    public static bool operator ==(CryptoTransfer left, CryptoTransfer right)
+    public static bool operator ==(CryptoTransferModel left, CryptoTransferModel right)
     {
         if (left is null)
         {
@@ -134,7 +135,7 @@ public sealed class CryptoTransfer : IEquatable<CryptoTransfer>
         }
         return left.Equals(right);
     }
-    public static bool operator !=(CryptoTransfer left, CryptoTransfer right)
+    public static bool operator !=(CryptoTransferModel left, CryptoTransferModel right)
     {
         return !(left == right);
     }

@@ -51,7 +51,7 @@ namespace Hashgraph.Components
         private void CheckForChildFieldChanges(object? sender, FieldChangedEventArgs evt)
         {
             // Quick filter out to those likely contained inside this control
-            if (evt.FieldIdentifier.Model is CryptoTransfer)
+            if (evt.FieldIdentifier.Model is CryptoTransferModel)
             {
                 ProcessModelChange();
             }
@@ -77,7 +77,7 @@ namespace Hashgraph.Components
                     }
                     else if (Value.From.Count == 0)
                     {
-                        Value.From.Add(new CryptoTransfer());
+                        Value.From.Add(new CryptoTransferModel());
                     }
                     if (Value.To.Count > 1)
                     {
@@ -85,7 +85,7 @@ namespace Hashgraph.Components
                     }
                     else if (Value.To.Count == 0)
                     {
-                        Value.To.Add(new CryptoTransfer());
+                        Value.To.Add(new CryptoTransferModel());
                     }
                     Value.To[0].Amount = Value.From[0].Amount;
                 }
@@ -93,24 +93,24 @@ namespace Hashgraph.Components
             }
             ProcessModelChange();
         }
-        private void RemoveToRow(CryptoTransfer item)
+        private void RemoveToRow(CryptoTransferModel item)
         {
             Value?.To.Remove(item);
             ProcessModelChange();
         }
-        private void RemoveFromRow(CryptoTransfer item)
+        private void RemoveFromRow(CryptoTransferModel item)
         {
             Value?.From.Remove(item);
             ProcessModelChange();
         }
         private void AddFromRow()
         {
-            Value?.From.Add(new CryptoTransfer());
+            Value?.From.Add(new CryptoTransferModel());
             ProcessModelChange();
         }
         private void AddToRow()
         {
-            Value?.To.Add(new CryptoTransfer());
+            Value?.To.Add(new CryptoTransferModel());
             ProcessModelChange();
         }
         private void ProcessModelChange()
@@ -146,14 +146,14 @@ namespace Hashgraph.Components
                 {
                     _validationMessages.Add(_fieldIdentifier, $"The sum of {TransferLabel} Transfers From and To do not match.");
                 }
-                else if (Value.ToTransferDictionary().Any(pair => pair.Value == 0))
+                else if (Value.ToCryptoTransferList().Any(pair => pair.Amount == 0))
                 {
                     _validationMessages.Add(_fieldIdentifier, $"The net sum of {TransferLabel} Transfers is zero for one or more accounts.");
                 }
             }
             _editContext.NotifyValidationStateChanged();
         }
-        private static (bool invalidAddress, bool invalidAmount, long sum) ValidateList(List<CryptoTransfer> list)
+        private static (bool invalidAddress, bool invalidAmount, long sum) ValidateList(List<CryptoTransferModel> list)
         {
             bool invalidAddress = false;
             bool invalidAmount = false;

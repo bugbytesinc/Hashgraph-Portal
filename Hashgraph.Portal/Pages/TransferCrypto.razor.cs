@@ -46,9 +46,10 @@ public partial class TransferCrypto : ComponentBase
         {
             var tokenTransfers = _input.TokenTransfers.ToTransferList().ToArray();
             var assetTransfers = _input.AssetTransfers.ToAssetTransferList().ToArray();
+            var cryptoTransfers = _input.CryptoTransfers?.ToCryptoTransferList();
             _output = await client.TransferAsync(new TransferParams
             {
-                CryptoTransfers = _input.CryptoTransfers?.ToTransferDictionary(),
+                CryptoTransfers = cryptoTransfers?.Length > 0 ? cryptoTransfers : null,
                 TokenTransfers = tokenTransfers.Length > 0 ? tokenTransfers : null,
                 AssetTransfers = assetTransfers.Length > 0 ? assetTransfers : null,
             },
